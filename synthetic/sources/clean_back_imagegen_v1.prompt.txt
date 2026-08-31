@@ -1,0 +1,9 @@
+Use case: precise-object-edit
+Asset type: canonical clean-back source image for a machine-vision synthetic defect dataset
+Input image: edit target, 20260827_171603.jpg, a KEC KIA7809AF DPAK/TO-252 component seen from the metal-tab back
+Primary request: remove only the visible scratch lines, scuff marks, and small surface spots from the silver metal tab, restoring a clean uniform but realistic brushed/stamped metal surface consistent with the untouched surrounding metal
+Composition/framing: preserve the original portrait photograph, exact component position, scale, perspective, camera distance, and framing
+Lighting/mood: preserve the original diffuse factory-floor lighting, exposure, reflections, shadows, focus, and white fibrous background
+Materials/textures: keep the black molded package, all three leads, metal-tab outline, slot, notches, edges, thickness cues, and lead bends exactly unchanged
+Constraints: change only the damaged appearance on the silver metal tab; preserve component geometry and every edge pixel as closely as possible; preserve three leads and their exact lengths/positions; preserve the black body, background, shadows, resolution, and aspect ratio; no added text, logos, parts, holes, or defects
+Avoid: altered lead count, altered lead shape, deformed package, changed camera angle, changed background, overly polished chrome, new scratches, blur, text, watermark

@@ -1,0 +1,88 @@
+{
+  "release": "synthetic-v2-700",
+  "generator_version": "2.0.0",
+  "qc_gate_version": "dual-resolution-post-jpeg-v1",
+  "generator_script": "scripts/generate_synthetic_v2_700.py",
+  "generator_script_sha256": "abbfdd2ce9fc2538f497d867007c6e1805bf03bf957e8797adefe51af1910ea3",
+  "config_path": "configs/synthetic_v2_700.json",
+  "config_sha256": "fdcbf940176700536c05a5f2e7aa1f3420334372adeb3f7969fb932b7ebfa6ee",
+  "base_path": "synthetic/sources/clean_back_crop_v1.png",
+  "base_sha256": "cb5fed83f6415c3bb3f6c26fce8fee402b064f28c0ad1c03b1bdc5dfa8d1ad8a",
+  "source_domain": "synthetic_restored",
+  "split": "train",
+  "evaluation_eligible": "NO",
+  "sample_count": 700,
+  "manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+  "instances_sha256": "5305835862931747a3135b895a2f5c47ee954edb902fa8017b3938d4db7d8b2c",
+  "summary_sha256": "a7aa73e80b98be3d4b968d41e133f687ba20da8547b06466a7db3c16791d8992",
+  "overview_contact_sheet_sha256": "d5cbb76f3c0970e6478b0d11a798d9894d48515cf2dceeddc24934bea51b1021",
+  "full_contact_sheet_sha256": {
+    "synthetic/v2_700/annotations/contact_sheets/scratch_raw_100_at_224.jpg": "7b1bc7504e04b44a5e12bd973c5c64bd869889c1f1eff2f19cd96dd5902eb407",
+    "synthetic/v2_700/annotations/contact_sheets/scratch_overlay_100_at_224.jpg": "15e893d543674b3a2e3d2b5c4b0ce0607e7a34eea8e95f5234ab967e8bf716ef",
+    "synthetic/v2_700/annotations/contact_sheets/surface_spot_raw_100_at_224.jpg": "647a982674dad1cc28a7312bcb589d706db139d36f532086a3ca7e1b353120b5",
+    "synthetic/v2_700/annotations/contact_sheets/surface_spot_overlay_100_at_224.jpg": "966fa968024ec955099a8436ebd7fbb9a100067923148781452b5af9794e5503",
+    "synthetic/v2_700/annotations/contact_sheets/discoloration_raw_100_at_224.jpg": "97c3a6fff2b54c8ce7c0bddb4326af8ae8effbe0535012d17e9f6d3b0eeaa758",
+    "synthetic/v2_700/annotations/contact_sheets/discoloration_overlay_100_at_224.jpg": "24443941d946556f2824c391f9a7ea369840a95bd2cfc4d490b3c2d2f362dcee",
+    "synthetic/v2_700/annotations/contact_sheets/contamination_raw_100_at_224.jpg": "2e90f7705d1bdabc9374e2c8e405940c631b445a1117b94777cbd15fd5878cff",
+    "synthetic/v2_700/annotations/contact_sheets/contamination_overlay_100_at_224.jpg": "3d94832e7dcdb56af8ba93e189fd8b5dd9f6bb348fc94edf5abe95d29cc53deb",
+    "synthetic/v2_700/annotations/contact_sheets/lead_breakage_raw_100_at_224.jpg": "a5cd23ddb2931b76e1cf7891983fe287f8b5de5b9181532e6f7ff828a5392abf",
+    "synthetic/v2_700/annotations/contact_sheets/lead_breakage_overlay_100_at_224.jpg": "bda0a4f01afa1c10e3c409cefe16017dd5160aee30db2ad214c09e1b1dfb3575",
+    "synthetic/v2_700/annotations/contact_sheets/body_chip_raw_100_at_224.jpg": "d5a7ba2aa12cbf093983fb801d54537d87dc54835b2a76cd7618cd6459bc0637",
+    "synthetic/v2_700/annotations/contact_sheets/body_chip_overlay_100_at_224.jpg": "247bbcce8dd477bd672e472ae8a990398cb5ae3086e5b6c103f2d1126259f622",
+    "synthetic/v2_700/annotations/contact_sheets/body_crack_raw_100_at_224.jpg": "10e4152fe5e69184f12812b918631979deafcf655cba02d796721bf727bfa016",
+    "synthetic/v2_700/annotations/contact_sheets/body_crack_overlay_100_at_224.jpg": "c9b544d9147f30ce3cdc1005b73ee3c7d16ffd3a4febd677e3ae3ecc6caf9cf7"
+  },
+  "class_counts": {
+    "scratch": 100,
+    "surface_spot": 100,
+    "discoloration": 100,
+    "contamination": 100,
+    "lead_breakage": 100,
+    "body_chip": 100,
+    "body_crack": 100
+  },
+  "severity_counts": {
+    "scratch": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "surface_spot": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "discoloration": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "contamination": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "lead_breakage": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "body_chip": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "body_crack": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    }
+  },
+  "notes": [
+    "All images passed paired-clean post-JPEG visibility gates at 512 and 224 pixels.",
+    "delta_e76_p50 is the median CIE76 distance over masked pixels, not CIEDE2000.",
+    "This release contains seven synthetic defect classes and is train-only.",
+    "The restored single base is not a confirmed real normal specimen.",
+    "Real-only validation/test performance remains NOT VERIFIED."
+  ]
+}

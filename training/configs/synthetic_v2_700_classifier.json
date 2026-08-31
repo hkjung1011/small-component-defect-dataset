@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.1",
+  "release": "synthetic-v2-700",
+  "manifest": "synthetic/v2_700/annotations/manifest.csv",
+  "classes": [
+    "scratch",
+    "surface_spot",
+    "discoloration",
+    "contamination",
+    "lead_breakage",
+    "body_chip",
+    "body_crack"
+  ],
+  "expected_samples_per_class": 100,
+  "severities": [
+    "mild",
+    "moderate",
+    "severe"
+  ],
+  "expected_severity_per_class": {
+    "mild": 40,
+    "moderate": 40,
+    "severe": 20
+  },
+  "split": {
+    "strategy": "sha256_rank_within_class_severity",
+    "seed": 2700700,
+    "train_per_class": 28,
+    "test_per_class": 72,
+    "severity_quotas": {
+      "mild": {
+        "train": 11,
+        "test": 29
+      },
+      "moderate": {
+        "train": 11,
+        "test": 29
+      },
+      "severe": {
+        "train": 6,
+        "test": 14
+      }
+    },
+    "validation_per_class": 4,
+    "validation_seed": 2700702,
+    "validation_severity_policy": {
+      "base_per_severity": 1,
+      "extra_by_class_index_parity": {
+        "even": "mild",
+        "odd": "moderate"
+      }
+    }
+  },
+  "integrity": {
+    "verify_image_sha256": true,
+    "require_unique_image_sha256": true,
+    "required_qc_status": "AUTO_PASS_POST_JPEG_512_224",
+    "expected_width": 512,
+    "expected_height": 512
+  },
+  "model": {
+    "architecture": "resnet18",
+    "input_size": 224,
+    "fixed_component_roi_xyxy": [96, 64, 384, 416],
+    "normalization": {
+      "mean": [0.485, 0.456, 0.406],
+      "std": [0.229, 0.224, 0.225]
+    },
+    "weights": {
+      "mode": "torchvision_cache",
+      "path": null,
+      "network_download_permitted": false,
+      "expected_cache_filename": "resnet18-f37072fd.pth"
+    }
+  },
+  "training": {
+    "seed": 2700701,
+    "augmentation_seed": 2700703,
+    "epochs": 30,
+    "freeze_backbone_epochs": 4,
+    "batch_size": 28,
+    "num_workers": 0,
+    "head_learning_rate": 0.0005,
+    "fine_tune_learning_rate": 0.00005,
+    "weight_decay": 0.0001,
+    "augmentation": {
+      "enabled": true,
+      "horizontal_flip_probability": 0.5,
+      "rotation_degrees": 3.0,
+      "translation_fraction": 0.02
+    },
+    "early_stopping": {
+      "enabled": true,
+      "patience": 6,
+      "min_delta": 0.0001,
+      "metric": "validation_loss"
+    }
+  },
+  "evaluation": {
+    "scope": "synthetic_same_base_sanity_only",
+    "expected_same_base_overlap": true,
+    "disclaimers": [
+      "The 504-image test set is never used for early stopping or model selection.",
+      "All partitions originate from the same restored synthetic component base.",
+      "Reported metrics do not estimate independent-specimen or real-domain generalization.",
+      "AUTO_PASS and generator visibility values are synthetic self-QC, not human verification."
+    ]
+  }
+}

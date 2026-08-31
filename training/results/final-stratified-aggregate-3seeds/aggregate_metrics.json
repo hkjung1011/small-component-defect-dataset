@@ -1,0 +1,510 @@
+{
+  "classes": [
+    "scratch",
+    "surface_spot",
+    "discoloration",
+    "contamination",
+    "lead_breakage",
+    "body_chip",
+    "body_crack"
+  ],
+  "evaluation_scope": "synthetic_same_base_sanity_only",
+  "experiment_identity": {
+    "classes": [
+      "scratch",
+      "surface_spot",
+      "discoloration",
+      "contamination",
+      "lead_breakage",
+      "body_chip",
+      "body_crack"
+    ],
+    "evaluation_scope": "synthetic_same_base_sanity_only",
+    "manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+    "model": {
+      "architecture": "resnet18",
+      "fixed_component_roi_xyxy": [
+        96,
+        64,
+        384,
+        416
+      ],
+      "input_size": 224,
+      "normalization": {
+        "mean": [
+          0.485,
+          0.456,
+          0.406
+        ],
+        "std": [
+          0.229,
+          0.224,
+          0.225
+        ]
+      },
+      "weights_sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec"
+    },
+    "release": "synthetic-v2-700",
+    "split_fingerprint_sha256": "38edccbcdd706764a63e7d48a90a657f512712d5b28faeef788d5fd5009479c8",
+    "training_hyperparameters": {
+      "augmentation": {
+        "enabled": true,
+        "horizontal_flip_probability": 0.5,
+        "rotation_degrees": 3.0,
+        "translation_fraction": 0.02
+      },
+      "batch_size": 28,
+      "early_stopping": {
+        "enabled": true,
+        "metric": "validation_loss",
+        "min_delta": 0.0001,
+        "patience": 6
+      },
+      "epochs_requested": 30,
+      "fine_tune_learning_rate": 5e-05,
+      "freeze_backbone_epochs": 4,
+      "head_learning_rate": 0.0005,
+      "weight_decay": 0.0001
+    }
+  },
+  "manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+  "overall_recall_by_severity": [
+    {
+      "recall_max": 0.9408866995073891,
+      "recall_mean": 0.9376026272577996,
+      "recall_min": 0.9359605911330049,
+      "recall_sample_std": 0.0028440899960080054,
+      "severity": "mild",
+      "support_per_run": 203
+    },
+    {
+      "recall_max": 0.9950738916256158,
+      "recall_mean": 0.9901477832512315,
+      "recall_min": 0.9802955665024631,
+      "recall_sample_std": 0.008532269988024015,
+      "severity": "moderate",
+      "support_per_run": 203
+    },
+    {
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "severe",
+      "support_per_run": 98
+    }
+  ],
+  "per_class": [
+    {
+      "class": "scratch",
+      "class_index": 0,
+      "f1_max": 0.9787234042553191,
+      "f1_mean": 0.971322849213691,
+      "f1_min": 0.9565217391304348,
+      "f1_sample_std": 0.012818137336309881,
+      "precision_max": 1.0,
+      "precision_mean": 1.0,
+      "precision_min": 1.0,
+      "precision_sample_std": 0.0,
+      "recall_max": 0.9583333333333334,
+      "recall_mean": 0.9444444444444444,
+      "recall_min": 0.9166666666666666,
+      "recall_sample_std": 0.02405626121623445,
+      "support_per_run": 72
+    },
+    {
+      "class": "surface_spot",
+      "class_index": 1,
+      "f1_max": 0.971830985915493,
+      "f1_mean": 0.9695656456219837,
+      "f1_min": 0.965034965034965,
+      "f1_sample_std": 0.003923684484791157,
+      "precision_max": 0.9857142857142858,
+      "precision_mean": 0.9810865191146881,
+      "precision_min": 0.971830985915493,
+      "precision_sample_std": 0.008015526876073284,
+      "recall_max": 0.9583333333333334,
+      "recall_mean": 0.9583333333333334,
+      "recall_min": 0.9583333333333334,
+      "recall_sample_std": 0.0,
+      "support_per_run": 72
+    },
+    {
+      "class": "discoloration",
+      "class_index": 2,
+      "f1_max": 1.0,
+      "f1_mean": 0.9953701470942851,
+      "f1_min": 0.993006993006993,
+      "f1_sample_std": 0.004009860265787474,
+      "precision_max": 1.0,
+      "precision_mean": 0.9954337899543378,
+      "precision_min": 0.9863013698630136,
+      "precision_sample_std": 0.007908907797118192,
+      "recall_max": 1.0,
+      "recall_mean": 0.9953703703703703,
+      "recall_min": 0.9861111111111112,
+      "recall_sample_std": 0.008018753738744774,
+      "support_per_run": 72
+    },
+    {
+      "class": "contamination",
+      "class_index": 3,
+      "f1_max": 0.9523809523809524,
+      "f1_mean": 0.9517180137869793,
+      "f1_min": 0.951048951048951,
+      "f1_sample_std": 0.0006660217834040272,
+      "precision_max": 0.9577464788732394,
+      "precision_mean": 0.9454284305528758,
+      "precision_min": 0.9333333333333333,
+      "precision_sample_std": 0.01220809973678035,
+      "recall_max": 0.9722222222222222,
+      "recall_mean": 0.9583333333333334,
+      "recall_min": 0.9444444444444444,
+      "recall_sample_std": 0.013888888888888895,
+      "support_per_run": 72
+    },
+    {
+      "class": "lead_breakage",
+      "class_index": 4,
+      "f1_max": 0.993103448275862,
+      "f1_mean": 0.9863322182911899,
+      "f1_min": 0.9795918367346939,
+      "f1_sample_std": 0.006755858593028582,
+      "precision_max": 0.9863013698630136,
+      "precision_mean": 0.9730914476119955,
+      "precision_min": 0.96,
+      "precision_sample_std": 0.013151085177574878,
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "support_per_run": 72
+    },
+    {
+      "class": "body_chip",
+      "class_index": 5,
+      "f1_max": 0.9594594594594595,
+      "f1_mean": 0.9446394446394447,
+      "f1_min": 0.9220779220779222,
+      "f1_sample_std": 0.019856813461270342,
+      "precision_max": 0.9342105263157895,
+      "precision_mean": 0.9111325060619028,
+      "precision_min": 0.8658536585365854,
+      "precision_sample_std": 0.03921508500306766,
+      "recall_max": 0.9861111111111112,
+      "recall_mean": 0.9814814814814815,
+      "recall_min": 0.9722222222222222,
+      "recall_sample_std": 0.008018753738744838,
+      "support_per_run": 72
+    },
+    {
+      "class": "body_crack",
+      "class_index": 6,
+      "f1_max": 0.9859154929577464,
+      "f1_mean": 0.978689156213879,
+      "f1_min": 0.9714285714285714,
+      "f1_sample_std": 0.007243521487810688,
+      "precision_max": 1.0,
+      "precision_mean": 1.0,
+      "precision_min": 1.0,
+      "precision_sample_std": 0.0,
+      "recall_max": 0.9722222222222222,
+      "recall_mean": 0.9583333333333334,
+      "recall_min": 0.9444444444444444,
+      "recall_sample_std": 0.013888888888888895,
+      "support_per_run": 72
+    }
+  ],
+  "recall_by_class_severity": [
+    {
+      "class": "scratch",
+      "recall_max": 0.9310344827586207,
+      "recall_mean": 0.896551724137931,
+      "recall_min": 0.8620689655172413,
+      "recall_sample_std": 0.03448275862068967,
+      "severity": "mild",
+      "support_per_run": 29
+    },
+    {
+      "class": "scratch",
+      "recall_max": 1.0,
+      "recall_mean": 0.9655172413793104,
+      "recall_min": 0.9310344827586207,
+      "recall_sample_std": 0.03448275862068967,
+      "severity": "moderate",
+      "support_per_run": 29
+    },
+    {
+      "class": "scratch",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "severe",
+      "support_per_run": 14
+    },
+    {
+      "class": "surface_spot",
+      "recall_max": 0.896551724137931,
+      "recall_mean": 0.896551724137931,
+      "recall_min": 0.896551724137931,
+      "recall_sample_std": 0.0,
+      "severity": "mild",
+      "support_per_run": 29
+    },
+    {
+      "class": "surface_spot",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "moderate",
+      "support_per_run": 29
+    },
+    {
+      "class": "surface_spot",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "severe",
+      "support_per_run": 14
+    },
+    {
+      "class": "discoloration",
+      "recall_max": 1.0,
+      "recall_mean": 0.9885057471264368,
+      "recall_min": 0.9655172413793104,
+      "recall_sample_std": 0.019908629972056037,
+      "severity": "mild",
+      "support_per_run": 29
+    },
+    {
+      "class": "discoloration",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "moderate",
+      "support_per_run": 29
+    },
+    {
+      "class": "discoloration",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "severe",
+      "support_per_run": 14
+    },
+    {
+      "class": "contamination",
+      "recall_max": 0.9655172413793104,
+      "recall_mean": 0.9195402298850575,
+      "recall_min": 0.8620689655172413,
+      "recall_sample_std": 0.05267328385006717,
+      "severity": "mild",
+      "support_per_run": 29
+    },
+    {
+      "class": "contamination",
+      "recall_max": 1.0,
+      "recall_mean": 0.9770114942528736,
+      "recall_min": 0.9310344827586207,
+      "recall_sample_std": 0.039817259944112136,
+      "severity": "moderate",
+      "support_per_run": 29
+    },
+    {
+      "class": "contamination",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "severe",
+      "support_per_run": 14
+    },
+    {
+      "class": "lead_breakage",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "mild",
+      "support_per_run": 29
+    },
+    {
+      "class": "lead_breakage",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "moderate",
+      "support_per_run": 29
+    },
+    {
+      "class": "lead_breakage",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "severe",
+      "support_per_run": 14
+    },
+    {
+      "class": "body_chip",
+      "recall_max": 0.9655172413793104,
+      "recall_mean": 0.9540229885057472,
+      "recall_min": 0.9310344827586207,
+      "recall_sample_std": 0.0199086299720561,
+      "severity": "mild",
+      "support_per_run": 29
+    },
+    {
+      "class": "body_chip",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "moderate",
+      "support_per_run": 29
+    },
+    {
+      "class": "body_chip",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "severe",
+      "support_per_run": 14
+    },
+    {
+      "class": "body_crack",
+      "recall_max": 0.9310344827586207,
+      "recall_mean": 0.9080459770114943,
+      "recall_min": 0.896551724137931,
+      "recall_sample_std": 0.019908629972056037,
+      "severity": "mild",
+      "support_per_run": 29
+    },
+    {
+      "class": "body_crack",
+      "recall_max": 1.0,
+      "recall_mean": 0.9885057471264368,
+      "recall_min": 0.9655172413793104,
+      "recall_sample_std": 0.019908629972056037,
+      "severity": "moderate",
+      "support_per_run": 29
+    },
+    {
+      "class": "body_crack",
+      "recall_max": 1.0,
+      "recall_mean": 1.0,
+      "recall_min": 1.0,
+      "recall_sample_std": 0.0,
+      "severity": "severe",
+      "support_per_run": 14
+    }
+  ],
+  "run_count": 3,
+  "runs": [
+    "final-stratified-seed-2700701",
+    "final-stratified-seed-2700711",
+    "final-stratified-seed-2700721"
+  ],
+  "schema_version": "1.1",
+  "split_fingerprint_sha256": "38edccbcdd706764a63e7d48a90a657f512712d5b28faeef788d5fd5009479c8",
+  "statistics": "arithmetic mean and sample standard deviation across training seeds",
+  "summary": {
+    "accuracy": {
+      "max": 0.9742063492063492,
+      "mean": 0.9708994708994709,
+      "min": 0.9662698412698413,
+      "sample_std": 0.004130289681480407
+    },
+    "macro_f1": {
+      "max": 0.9742267272707595,
+      "mean": 0.9710910678373503,
+      "min": 0.966712661513294,
+      "sample_std": 0.003908146738230121
+    },
+    "macro_precision": {
+      "max": 0.9747231905629298,
+      "mean": 0.9723103847565429,
+      "min": 0.9690106847951342,
+      "sample_std": 0.002957721499471046
+    },
+    "macro_recall": {
+      "max": 0.9742063492063492,
+      "mean": 0.9708994708994709,
+      "min": 0.9662698412698413,
+      "sample_std": 0.004130289681480407
+    },
+    "weighted_f1": {
+      "max": 0.9742267272707595,
+      "mean": 0.9710910678373503,
+      "min": 0.966712661513294,
+      "sample_std": 0.003908146738230103
+    },
+    "weighted_precision": {
+      "max": 0.9747231905629298,
+      "mean": 0.9723103847565429,
+      "min": 0.9690106847951343,
+      "sample_std": 0.002957721499470984
+    },
+    "weighted_recall": {
+      "max": 0.9742063492063492,
+      "mean": 0.9708994708994709,
+      "min": 0.9662698412698413,
+      "sample_std": 0.004130289681480407
+    }
+  },
+  "test_target_gate": {
+    "sample_count_per_run": 504,
+    "status": "PASS",
+    "support_per_class_severity": {
+      "body_chip": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "body_crack": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "contamination": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "discoloration": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "lead_breakage": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "scratch": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "surface_spot": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      }
+    },
+    "target_fingerprint_sha256": "0c4e554c39fca3afd6a65a241a8290c898bd7c298e446bc906b51537b63da132"
+  },
+  "training_seeds": [
+    2700701,
+    2700711,
+    2700721
+  ],
+  "warning": "All runs use the same 504 synthetic same-base test images; variation only reflects training stochasticity, not new-specimen uncertainty."
+}

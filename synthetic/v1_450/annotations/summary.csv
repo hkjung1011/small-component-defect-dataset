@@ -1,0 +1,14 @@
+axis,value,count
+primary_class,normal_proxy,50
+primary_class,scratch,50
+primary_class,surface_spot,50
+primary_class,discoloration,50
+primary_class,contamination,50
+primary_class,lead_breakage,50
+primary_class,body_chip,50
+primary_class,body_crack,50
+primary_class,multi_defect,50
+severity,none,50
+severity,mild,250
+severity,moderate,128
+severity,severe,22

@@ -1,0 +1,86 @@
+{
+  "release": "synthetic-v1-450",
+  "sample_id_prefix": "syn-v1-450",
+  "generator_version": "1.1.1",
+  "global_seed": 7809250,
+  "image_size": 512,
+  "samples_per_primary_class": 50,
+  "jpeg_quality": 94,
+  "source_domain": "synthetic_restored",
+  "split": "train",
+  "evaluation_eligible": "NO",
+  "human_qa_path": "annotations/synthetic_v1_450_human_qa.csv",
+  "base": {
+    "base_image_id": "IMGGEN-CLEAN-BACK-V1",
+    "base_group_id": "SYNTH-BASE-KIA7809AF-BACK-001",
+    "source_specimen_group": "SPEC-A",
+    "view": "back",
+    "path": "synthetic/sources/clean_back_crop_v1.png",
+    "base_real_label": "NG_SCRATCH",
+    "base_restored": true,
+    "restoration_method": "OpenAI built-in image generation precise-object-edit"
+  },
+  "primary_classes": [
+    "normal_proxy",
+    "scratch",
+    "surface_spot",
+    "discoloration",
+    "contamination",
+    "lead_breakage",
+    "body_chip",
+    "body_crack",
+    "multi_defect"
+  ],
+  "class_ids": {
+    "background": 0,
+    "scratch": 1,
+    "surface_spot": 2,
+    "discoloration": 3,
+    "contamination": 4,
+    "lead_breakage": 5,
+    "body_chip": 6,
+    "body_crack": 7
+  },
+  "multi_defect_pairs": [
+    ["scratch", "surface_spot"],
+    ["scratch", "discoloration"],
+    ["scratch", "lead_breakage"],
+    ["contamination", "body_crack"],
+    ["discoloration", "body_chip"]
+  ],
+  "severity_weights": {
+    "mild": 0.65,
+    "moderate": 0.30,
+    "severe": 0.05
+  },
+  "minimum_pre_transform_mean_abs_delta": {
+    "normal_proxy": 0.0,
+    "scratch": 8.0,
+    "surface_spot": 5.0,
+    "discoloration": 3.5,
+    "contamination": 5.0,
+    "lead_breakage": 10.0,
+    "body_chip": 10.0,
+    "body_crack": 4.0,
+    "multi_defect": 5.0
+  },
+  "rois_normalized": {
+    "metal_tab": [[0.318, 0.197], [0.570, 0.193], [0.594, 0.238], [0.594, 0.472], [0.330, 0.482], [0.310, 0.252]],
+    "mount_slot": [0.389, 0.254, 0.514, 0.316],
+    "body": [[0.267, 0.232], [0.645, 0.232], [0.650, 0.595], [0.275, 0.595]],
+    "left_lead": [[0.325, 0.577], [0.389, 0.577], [0.389, 0.735], [0.330, 0.735]],
+    "center_lead": [[0.449, 0.580], [0.510, 0.580], [0.510, 0.638], [0.449, 0.638]],
+    "right_lead": [[0.578, 0.574], [0.646, 0.574], [0.646, 0.735], [0.584, 0.735]]
+  },
+  "domain_randomization": {
+    "rotation_deg": [-8.0, 8.0],
+    "scale": [0.92, 1.08],
+    "translation_px": [-12, 12],
+    "brightness": [0.93, 1.07],
+    "contrast": [0.90, 1.10],
+    "saturation": [0.92, 1.08],
+    "channel_gain": [0.96, 1.04],
+    "blur_radius": [0.0, 0.9],
+    "noise_sigma": [0.0, 3.0]
+  }
+}

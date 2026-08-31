@@ -1,0 +1,429 @@
+{
+  "accuracy": 0.9662698412698413,
+  "classes": [
+    "scratch",
+    "surface_spot",
+    "discoloration",
+    "contamination",
+    "lead_breakage",
+    "body_chip",
+    "body_crack"
+  ],
+  "confusion_matrix": [
+    [
+      66,
+      0,
+      0,
+      0,
+      0,
+      6,
+      0
+    ],
+    [
+      0,
+      69,
+      0,
+      3,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      71,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      1,
+      0,
+      69,
+      0,
+      2,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      72,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      1,
+      71,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      0,
+      2,
+      69
+    ]
+  ],
+  "evaluation_scope": "synthetic_same_base_sanity_only",
+  "macro_avg": {
+    "f1": 0.966712661513294,
+    "precision": 0.9690106847951342,
+    "recall": 0.9662698412698413,
+    "support": 504
+  },
+  "metadata": {
+    "base_group_overlap": [
+      "SYNTH-BASE-KIA7809AF-BACK-001"
+    ],
+    "early_stopping_enabled": true,
+    "environment": {
+      "cublas_workspace_config": ":4096:8",
+      "cuda_available": true,
+      "cuda_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "deterministic_algorithms": true,
+      "device": "cuda",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "python": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+      "torch": "2.11.0+cu128",
+      "torchvision": "0.26.0+cu128"
+    },
+    "evaluation_scope": "synthetic_same_base_sanity_only",
+    "fixed_component_roi_xyxy": [
+      96,
+      64,
+      384,
+      416
+    ],
+    "input_size": 224,
+    "manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+    "model": {
+      "architecture": "resnet18",
+      "network_download_permitted": false,
+      "pretrained": true,
+      "weights_mode": "torchvision_cache",
+      "weights_path": "resnet18-f37072fd.pth",
+      "weights_sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec"
+    },
+    "normalization": {
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    },
+    "release": "synthetic-v2-700",
+    "roi_source": "single class-independent config constant",
+    "roi_uses_label_mask_or_bbox": false,
+    "selected_epoch": 30,
+    "selection_metric": "validation_loss",
+    "selection_set": "validation (4/class carved from 28/class training pool)",
+    "source_specimen_group_overlap": [
+      "SPEC-A"
+    ],
+    "split_fingerprint_sha256": "38edccbcdd706764a63e7d48a90a657f512712d5b28faeef788d5fd5009479c8",
+    "stopped_early": false,
+    "test_set_used_for_model_selection": false,
+    "training": {
+      "augmentation": {
+        "enabled": true,
+        "horizontal_flip_probability": 0.5,
+        "rotation_degrees": 3.0,
+        "translation_fraction": 0.02
+      },
+      "augmentation_scope": "gradient_train only",
+      "augmentation_seed": 2700723,
+      "batch_size": 28,
+      "color_jitter_used": false,
+      "early_stopping": {
+        "enabled": true,
+        "metric": "validation_loss",
+        "min_delta": 0.0001,
+        "patience": 6
+      },
+      "epochs_completed": 30,
+      "epochs_requested": 30,
+      "fine_tune_learning_rate": 5e-05,
+      "freeze_backbone_epochs": 4,
+      "head_learning_rate": 0.0005,
+      "sample_counts": {
+        "gradient_train": 168,
+        "test": 504,
+        "validation": 28
+      },
+      "sample_severity_counts": {
+        "gradient_train": {
+          "mild": 66,
+          "moderate": 67,
+          "severe": 35
+        },
+        "test": {
+          "mild": 203,
+          "moderate": 203,
+          "severe": 98
+        },
+        "validation": {
+          "mild": 11,
+          "moderate": 10,
+          "severe": 7
+        }
+      },
+      "samples_per_class": {
+        "gradient_train": {
+          "body_chip": 24,
+          "body_crack": 24,
+          "contamination": 24,
+          "discoloration": 24,
+          "lead_breakage": 24,
+          "scratch": 24,
+          "surface_spot": 24
+        },
+        "test": {
+          "body_chip": 72,
+          "body_crack": 72,
+          "contamination": 72,
+          "discoloration": 72,
+          "lead_breakage": 72,
+          "scratch": 72,
+          "surface_spot": 72
+        },
+        "validation": {
+          "body_chip": 4,
+          "body_crack": 4,
+          "contamination": 4,
+          "discoloration": 4,
+          "lead_breakage": 4,
+          "scratch": 4,
+          "surface_spot": 4
+        }
+      },
+      "samples_per_class_severity": {
+        "gradient_train": {
+          "body_chip": {
+            "mild": 10,
+            "moderate": 9,
+            "severe": 5
+          },
+          "body_crack": {
+            "mild": 9,
+            "moderate": 10,
+            "severe": 5
+          },
+          "contamination": {
+            "mild": 10,
+            "moderate": 9,
+            "severe": 5
+          },
+          "discoloration": {
+            "mild": 9,
+            "moderate": 10,
+            "severe": 5
+          },
+          "lead_breakage": {
+            "mild": 9,
+            "moderate": 10,
+            "severe": 5
+          },
+          "scratch": {
+            "mild": 9,
+            "moderate": 10,
+            "severe": 5
+          },
+          "surface_spot": {
+            "mild": 10,
+            "moderate": 9,
+            "severe": 5
+          }
+        },
+        "test": {
+          "body_chip": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "body_crack": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "contamination": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "discoloration": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "lead_breakage": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "scratch": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "surface_spot": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          }
+        },
+        "validation": {
+          "body_chip": {
+            "mild": 1,
+            "moderate": 2,
+            "severe": 1
+          },
+          "body_crack": {
+            "mild": 2,
+            "moderate": 1,
+            "severe": 1
+          },
+          "contamination": {
+            "mild": 1,
+            "moderate": 2,
+            "severe": 1
+          },
+          "discoloration": {
+            "mild": 2,
+            "moderate": 1,
+            "severe": 1
+          },
+          "lead_breakage": {
+            "mild": 2,
+            "moderate": 1,
+            "severe": 1
+          },
+          "scratch": {
+            "mild": 2,
+            "moderate": 1,
+            "severe": 1
+          },
+          "surface_spot": {
+            "mild": 1,
+            "moderate": 2,
+            "severe": 1
+          }
+        }
+      },
+      "seed": 2700721,
+      "validation_or_test_augmentation_used": false,
+      "weight_decay": 0.0001
+    },
+    "warnings": [
+      "AUTO_PASS and generator visibility values are synthetic self-QC, not human verification.",
+      "All partitions originate from the same restored synthetic component base.",
+      "All samples share one synthetic base_group_id; train/test are not independent-specimen splits.",
+      "Manifest rows are not marked evaluation-eligible; test metrics are synthetic same-base sanity metrics only.",
+      "Reported metrics do not estimate independent-specimen or real-domain generalization.",
+      "Some or all manifest rows are not human-verified; AUTO_PASS is generator self-QC.",
+      "The 504-image test set is never used for early stopping or model selection.",
+      "base_group_id overlaps between train and test; metrics cannot estimate independent-specimen or real-domain generalization."
+    ]
+  },
+  "per_class": [
+    {
+      "class": "scratch",
+      "class_index": 0,
+      "f1": 0.9565217391304348,
+      "false_negative": 6,
+      "false_positive": 0,
+      "precision": 1.0,
+      "recall": 0.9166666666666666,
+      "support": 72,
+      "true_positive": 66
+    },
+    {
+      "class": "surface_spot",
+      "class_index": 1,
+      "f1": 0.971830985915493,
+      "false_negative": 3,
+      "false_positive": 1,
+      "precision": 0.9857142857142858,
+      "recall": 0.9583333333333334,
+      "support": 72,
+      "true_positive": 69
+    },
+    {
+      "class": "discoloration",
+      "class_index": 2,
+      "f1": 0.993006993006993,
+      "false_negative": 1,
+      "false_positive": 0,
+      "precision": 1.0,
+      "recall": 0.9861111111111112,
+      "support": 72,
+      "true_positive": 71
+    },
+    {
+      "class": "contamination",
+      "class_index": 3,
+      "f1": 0.9517241379310345,
+      "false_negative": 3,
+      "false_positive": 4,
+      "precision": 0.9452054794520548,
+      "recall": 0.9583333333333334,
+      "support": 72,
+      "true_positive": 69
+    },
+    {
+      "class": "lead_breakage",
+      "class_index": 4,
+      "f1": 0.993103448275862,
+      "false_negative": 0,
+      "false_positive": 1,
+      "precision": 0.9863013698630136,
+      "recall": 1.0,
+      "support": 72,
+      "true_positive": 72
+    },
+    {
+      "class": "body_chip",
+      "class_index": 5,
+      "f1": 0.9220779220779222,
+      "false_negative": 1,
+      "false_positive": 11,
+      "precision": 0.8658536585365854,
+      "recall": 0.9861111111111112,
+      "support": 72,
+      "true_positive": 71
+    },
+    {
+      "class": "body_crack",
+      "class_index": 6,
+      "f1": 0.9787234042553191,
+      "false_negative": 3,
+      "false_positive": 0,
+      "precision": 1.0,
+      "recall": 0.9583333333333334,
+      "support": 72,
+      "true_positive": 69
+    }
+  ],
+  "sample_count": 504,
+  "schema_version": "1.0",
+  "weighted_avg": {
+    "f1": 0.966712661513294,
+    "precision": 0.9690106847951343,
+    "recall": 0.9662698412698413,
+    "support": 504
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "release": "synthetic-v1-450",
+  "generator_version": "1.1.1",
+  "generator_script": "scripts/generate_synthetic_v1_450.py",
+  "generator_script_sha256": "40f2d733e6f4778fd715c2d9afc9af15745d5b83beebeb60d17a05e9676e6e77",
+  "config_path": "configs/synthetic_v1_450.json",
+  "config_sha256": "7cc6627693f1a190ee26cfdbda90e0c69510377724d9484d14996ca83b755ffc",
+  "base_path": "synthetic/sources/clean_back_crop_v1.png",
+  "base_sha256": "cb5fed83f6415c3bb3f6c26fce8fee402b064f28c0ad1c03b1bdc5dfa8d1ad8a",
+  "source_domain": "synthetic_restored",
+  "split": "train",
+  "sample_count": 450,
+  "manifest_sha256": "b17f96f70c441ef7272cb4e032a72ce8ac7f44a97be5513fea1f61b291f03509",
+  "instances_sha256": "f08ad45a49bfadbe42fada2ec5c823a413aadbd2939faf505b335690f083dd95",
+  "summary_sha256": "dff643417a7c998a05813de081efbd28305962785cade891e612e2aa7dd0233e",
+  "class_counts": {
+    "normal_proxy": 50,
+    "scratch": 50,
+    "surface_spot": 50,
+    "discoloration": 50,
+    "contamination": 50,
+    "lead_breakage": 50,
+    "body_chip": 50,
+    "body_crack": 50,
+    "multi_defect": 50
+  },
+  "notes": [
+    "This release is train-only synthetic data.",
+    "normal_proxy is restored synthetic imagery, not a confirmed real normal specimen.",
+    "Real-only validation/test performance remains NOT VERIFIED."
+  ]
+}

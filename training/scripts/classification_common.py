@@ -1,0 +1,1365 @@
+"""Shared, deterministic utilities for the synthetic 7-class classifier.
+
+The integrity and split code deliberately uses only the Python standard library.
+This keeps ``--check-only`` usable before PyTorch is installed or before a model
+training environment is provisioned.
+"""
+
+from __future__ import annotations
+
+import csv
+import hashlib
+import json
+import math
+import random
+from collections import Counter, defaultdict
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Iterable, Sequence
+
+
+class PipelineError(RuntimeError):
+    """Raised when data or configuration cannot satisfy a hard pipeline gate."""
+
+
+@dataclass(frozen=True)
+class Sample:
+    sample_id: str
+    image_path: str
+    image_absolute_path: Path
+    label: str
+    severity: str
+    image_sha256: str
+    sample_seed: str
+    base_group_id: str
+    source_specimen_group: str
+    domain: str
+    qc_status: str
+    human_verified: str
+    evaluation_eligible: str
+    width: int
+    height: int
+
+
+@dataclass(frozen=True)
+class SplitRecord:
+    sample: Sample
+    split: str
+    model_split: str
+    class_severity_rank: int
+    split_key_sha256: str
+    validation_key_sha256: str
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def write_json(path: Path, value: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _require_mapping(value: Any, name: str) -> dict[str, Any]:
+    if not isinstance(value, dict):
+        raise PipelineError(f"config field must be an object: {name}")
+    return value
+
+
+def load_config(config_path: Path) -> tuple[dict[str, Any], Path, Path]:
+    config_path = config_path.resolve()
+    if not config_path.is_file():
+        raise PipelineError(f"config not found: {config_path}")
+    try:
+        config = json.loads(config_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise PipelineError(f"cannot read config {config_path}: {error}") from error
+    if not isinstance(config, dict):
+        raise PipelineError("top-level config must be an object")
+
+    # training/configs/<name>.json -> repository root
+    if len(config_path.parents) < 3:
+        raise PipelineError(f"cannot infer repository root from {config_path}")
+    repository_root = config_path.parents[2]
+    classes = config.get("classes")
+    if not isinstance(classes, list) or len(classes) != 7:
+        raise PipelineError("config classes must contain exactly 7 entries")
+    if any(not isinstance(name, str) or not name for name in classes):
+        raise PipelineError("every class name must be a non-empty string")
+    if len(set(classes)) != len(classes):
+        raise PipelineError("config classes contain duplicates")
+
+    severities = config.get("severities")
+    if severities != ["mild", "moderate", "severe"]:
+        raise PipelineError(
+            "config severities must be ordered as mild, moderate, severe"
+        )
+    expected_severity_per_class = _require_mapping(
+        config.get("expected_severity_per_class"),
+        "expected_severity_per_class",
+    )
+    required_manifest_severity = {"mild": 40, "moderate": 40, "severe": 20}
+    if expected_severity_per_class != required_manifest_severity:
+        raise PipelineError(
+            "expected_severity_per_class must be mild=40, moderate=40, severe=20"
+        )
+
+    split_config = _require_mapping(config.get("split"), "split")
+    train_per_class = int(split_config.get("train_per_class", -1))
+    test_per_class = int(split_config.get("test_per_class", -1))
+    expected_per_class = int(config.get("expected_samples_per_class", -1))
+    if train_per_class != 28 or test_per_class != 72:
+        raise PipelineError("this release requires exactly 28 train and 72 test per class")
+    if train_per_class + test_per_class != expected_per_class:
+        raise PipelineError(
+            "train_per_class + test_per_class must equal expected_samples_per_class"
+        )
+    if split_config.get("strategy") != "sha256_rank_within_class_severity":
+        raise PipelineError("unsupported split strategy")
+    if not isinstance(split_config.get("seed"), int):
+        raise PipelineError("split.seed must be an integer")
+    if int(split_config.get("validation_per_class", -1)) != 4:
+        raise PipelineError(
+            "the 28/class training pool requires exactly 4/class validation samples"
+        )
+    if not isinstance(split_config.get("validation_seed"), int):
+        raise PipelineError("split.validation_seed must be an integer")
+    severity_quotas = _require_mapping(
+        split_config.get("severity_quotas"), "split.severity_quotas"
+    )
+    required_split_quotas = {
+        "mild": {"train": 11, "test": 29},
+        "moderate": {"train": 11, "test": 29},
+        "severe": {"train": 6, "test": 14},
+    }
+    if severity_quotas != required_split_quotas:
+        raise PipelineError(
+            "split severity quotas must be mild=11/29, moderate=11/29, "
+            "severe=6/14 (train/test)"
+        )
+    validation_policy = _require_mapping(
+        split_config.get("validation_severity_policy"),
+        "split.validation_severity_policy",
+    )
+    if int(validation_policy.get("base_per_severity", -1)) != 1:
+        raise PipelineError("validation must include one base sample per severity")
+    parity_policy = _require_mapping(
+        validation_policy.get("extra_by_class_index_parity"),
+        "split.validation_severity_policy.extra_by_class_index_parity",
+    )
+    if parity_policy != {"even": "mild", "odd": "moderate"}:
+        raise PipelineError(
+            "validation extra severity must alternate even=mild, odd=moderate"
+        )
+
+    _require_mapping(config.get("integrity"), "integrity")
+    _require_mapping(config.get("model"), "model")
+    training_config = _require_mapping(config.get("training"), "training")
+    augmentation = _require_mapping(
+        training_config.get("augmentation"), "training.augmentation"
+    )
+    if float(augmentation.get("rotation_degrees", 0.0)) > 5.0:
+        raise PipelineError("train rotation augmentation must not exceed 5 degrees")
+    if float(augmentation.get("translation_fraction", 0.0)) > 0.04:
+        raise PipelineError("train translation augmentation must not exceed 0.04")
+    flip_probability = float(
+        augmentation.get("horizontal_flip_probability", 0.0)
+    )
+    if not 0.0 <= flip_probability <= 0.5:
+        raise PipelineError("horizontal flip probability must be between 0 and 0.5")
+    if "color_jitter" in augmentation:
+        raise PipelineError("ColorJitter is prohibited for this defect-class pipeline")
+    _require_mapping(config.get("evaluation"), "evaluation")
+    return config, config_path, repository_root
+
+
+def resolve_repository_path(repository_root: Path, relative_path: str) -> Path:
+    candidate = (repository_root / Path(relative_path)).resolve()
+    try:
+        candidate.relative_to(repository_root)
+    except ValueError as error:
+        raise PipelineError(f"path escapes repository root: {relative_path}") from error
+    return candidate
+
+
+def load_and_validate_manifest(
+    config: dict[str, Any], repository_root: Path
+) -> tuple[list[Sample], dict[str, Any]]:
+    manifest_value = config.get("manifest")
+    if not isinstance(manifest_value, str) or not manifest_value:
+        raise PipelineError("config manifest must be a non-empty relative path")
+    manifest_path = resolve_repository_path(repository_root, manifest_value)
+    if not manifest_path.is_file():
+        raise PipelineError(
+            "release manifest not found (release generation may still be pending): "
+            f"{manifest_path}"
+        )
+
+    required_columns = {
+        "sample_id",
+        "image_path",
+        "primary_class",
+        "severity",
+        "image_sha256",
+        "sample_seed",
+        "base_group_id",
+        "source_specimen_group",
+        "domain",
+        "qc_status",
+        "human_verified",
+        "evaluation_eligible",
+        "width",
+        "height",
+    }
+    try:
+        with manifest_path.open("r", encoding="utf-8-sig", newline="") as stream:
+            reader = csv.DictReader(stream)
+            fieldnames = set(reader.fieldnames or [])
+            missing = sorted(required_columns - fieldnames)
+            if missing:
+                raise PipelineError(
+                    "manifest missing required columns: " + ", ".join(missing)
+                )
+            raw_rows = list(reader)
+    except OSError as error:
+        raise PipelineError(f"cannot read manifest {manifest_path}: {error}") from error
+
+    classes: list[str] = list(config["classes"])
+    class_set = set(classes)
+    severities: list[str] = list(config["severities"])
+    severity_set = set(severities)
+    expected_severity_per_class: dict[str, int] = config[
+        "expected_severity_per_class"
+    ]
+    expected_per_class = int(config["expected_samples_per_class"])
+    expected_total = expected_per_class * len(classes)
+    if len(raw_rows) != expected_total:
+        raise PipelineError(
+            f"manifest row count mismatch: expected {expected_total}, got {len(raw_rows)}"
+        )
+
+    integrity = config["integrity"]
+    verify_hashes = bool(integrity.get("verify_image_sha256", True))
+    require_unique_hashes = bool(integrity.get("require_unique_image_sha256", True))
+    required_qc_status = str(integrity.get("required_qc_status", "AUTO_PASS"))
+    expected_width = int(integrity.get("expected_width", 512))
+    expected_height = int(integrity.get("expected_height", 512))
+    roi = config["model"].get("fixed_component_roi_xyxy")
+    if (
+        not isinstance(roi, list)
+        or len(roi) != 4
+        or any(not isinstance(value, int) for value in roi)
+    ):
+        raise PipelineError("model.fixed_component_roi_xyxy must contain 4 integers")
+    roi_x1, roi_y1, roi_x2, roi_y2 = roi
+    if not (0 <= roi_x1 < roi_x2 <= expected_width):
+        raise PipelineError("fixed component ROI x bounds are invalid")
+    if not (0 <= roi_y1 < roi_y2 <= expected_height):
+        raise PipelineError("fixed component ROI y bounds are invalid")
+    release_root = manifest_path.parents[1]
+
+    samples: list[Sample] = []
+    ids: set[str] = set()
+    paths: set[str] = set()
+    hashes: set[str] = set()
+    errors: list[str] = []
+    warnings: list[str] = []
+    class_counts: Counter[str] = Counter()
+    severity_counts: Counter[str] = Counter()
+    class_severity_counts: Counter[tuple[str, str]] = Counter()
+    domain_counts: Counter[str] = Counter()
+    qc_counts: Counter[str] = Counter()
+    human_verified_counts: Counter[str] = Counter()
+    evaluation_eligible_counts: Counter[str] = Counter()
+
+    for row_index, row in enumerate(raw_rows, start=2):
+        sample_id = (row.get("sample_id") or "").strip()
+        image_relative = (row.get("image_path") or "").strip()
+        label = (row.get("primary_class") or "").strip()
+        severity = (row.get("severity") or "").strip()
+        image_sha = (row.get("image_sha256") or "").strip().lower()
+        sample_seed = (row.get("sample_seed") or "").strip()
+        qc_status = (row.get("qc_status") or "").strip()
+        human_verified = (row.get("human_verified") or "").strip()
+        evaluation_eligible = (row.get("evaluation_eligible") or "").strip()
+        try:
+            width = int((row.get("width") or "").strip())
+            height = int((row.get("height") or "").strip())
+        except ValueError:
+            width = -1
+            height = -1
+
+        row_errors: list[str] = []
+        if not sample_id:
+            row_errors.append("empty sample_id")
+        elif sample_id in ids:
+            row_errors.append(f"duplicate sample_id {sample_id}")
+        if not image_relative:
+            row_errors.append("empty image_path")
+            image_absolute = repository_root
+        else:
+            try:
+                image_absolute = resolve_repository_path(repository_root, image_relative)
+                image_absolute.relative_to(release_root)
+            except (PipelineError, ValueError):
+                row_errors.append(f"image path outside release: {image_relative}")
+                image_absolute = repository_root
+            if image_relative in paths:
+                row_errors.append(f"duplicate image_path {image_relative}")
+            if not image_absolute.is_file():
+                row_errors.append(f"missing image {image_relative}")
+        if label not in class_set:
+            row_errors.append(f"unexpected class {label!r}")
+        if severity not in severity_set:
+            row_errors.append(f"unexpected severity {severity!r}")
+        if len(image_sha) != 64 or any(ch not in "0123456789abcdef" for ch in image_sha):
+            row_errors.append("invalid image_sha256")
+        elif require_unique_hashes and image_sha in hashes:
+            row_errors.append(f"duplicate image_sha256 {image_sha}")
+        if not sample_seed:
+            row_errors.append("empty sample_seed")
+        if qc_status != required_qc_status:
+            row_errors.append(
+                f"qc_status is {qc_status!r}, expected {required_qc_status!r}"
+            )
+        if width != expected_width or height != expected_height:
+            row_errors.append(
+                f"image dimensions are {width}x{height}, expected "
+                f"{expected_width}x{expected_height}"
+            )
+        if verify_hashes and image_absolute.is_file() and len(image_sha) == 64:
+            actual_sha = sha256_file(image_absolute)
+            if actual_sha != image_sha:
+                row_errors.append(
+                    f"image SHA mismatch expected={image_sha} actual={actual_sha}"
+                )
+
+        if row_errors:
+            errors.extend(f"row {row_index} ({sample_id or 'UNKNOWN'}): {item}" for item in row_errors)
+            continue
+
+        ids.add(sample_id)
+        paths.add(image_relative)
+        hashes.add(image_sha)
+        class_counts[label] += 1
+        severity_counts[severity] += 1
+        class_severity_counts[(label, severity)] += 1
+        domain_counts[(row.get("domain") or "").strip()] += 1
+        qc_counts[qc_status] += 1
+        human_verified_counts[human_verified] += 1
+        evaluation_eligible_counts[evaluation_eligible] += 1
+        samples.append(
+            Sample(
+                sample_id=sample_id,
+                image_path=image_relative,
+                image_absolute_path=image_absolute,
+                label=label,
+                severity=severity,
+                image_sha256=image_sha,
+                sample_seed=sample_seed,
+                base_group_id=(row.get("base_group_id") or "").strip(),
+                source_specimen_group=(row.get("source_specimen_group") or "").strip(),
+                domain=(row.get("domain") or "").strip(),
+                qc_status=qc_status,
+                human_verified=human_verified,
+                evaluation_eligible=evaluation_eligible,
+                width=width,
+                height=height,
+            )
+        )
+
+    if errors:
+        preview = "\n".join(errors[:30])
+        suffix = "" if len(errors) <= 30 else f"\n... {len(errors) - 30} more errors"
+        raise PipelineError(f"manifest integrity gate failed:\n{preview}{suffix}")
+
+    for class_name in classes:
+        count = class_counts[class_name]
+        if count != expected_per_class:
+            errors.append(
+                f"class count mismatch {class_name}: expected {expected_per_class}, got {count}"
+            )
+        for severity_name in severities:
+            expected_severity_count = int(
+                expected_severity_per_class[severity_name]
+            )
+            actual_severity_count = class_severity_counts[
+                (class_name, severity_name)
+            ]
+            if actual_severity_count != expected_severity_count:
+                errors.append(
+                    f"class×severity count mismatch {class_name}/{severity_name}: "
+                    f"expected {expected_severity_count}, got {actual_severity_count}"
+                )
+    if errors:
+        raise PipelineError("manifest class gate failed:\n" + "\n".join(errors))
+
+    base_groups = sorted({sample.base_group_id for sample in samples})
+    specimen_groups = sorted({sample.source_specimen_group for sample in samples})
+    if len(base_groups) == 1:
+        warnings.append(
+            "All samples share one synthetic base_group_id; train/test are not "
+            "independent-specimen splits."
+        )
+    if human_verified_counts and set(human_verified_counts) != {"YES"}:
+        warnings.append(
+            "Some or all manifest rows are not human-verified; AUTO_PASS is generator self-QC."
+        )
+    if evaluation_eligible_counts and set(evaluation_eligible_counts) != {"YES"}:
+        warnings.append(
+            "Manifest rows are not marked evaluation-eligible; test metrics are synthetic "
+            "same-base sanity metrics only."
+        )
+
+    audit = {
+        "manifest": manifest_value,
+        "manifest_sha256": sha256_file(manifest_path),
+        "sample_count": len(samples),
+        "class_counts": {name: class_counts[name] for name in classes},
+        "severity_counts": {
+            severity_name: severity_counts[severity_name]
+            for severity_name in severities
+        },
+        "class_severity_counts": {
+            class_name: {
+                severity_name: class_severity_counts[
+                    (class_name, severity_name)
+                ]
+                for severity_name in severities
+            }
+            for class_name in classes
+        },
+        "domain_counts": dict(sorted(domain_counts.items())),
+        "qc_status_counts": dict(sorted(qc_counts.items())),
+        "human_verified_counts": dict(sorted(human_verified_counts.items())),
+        "evaluation_eligible_counts": dict(
+            sorted(evaluation_eligible_counts.items())
+        ),
+        "unique_image_sha256_count": len(hashes),
+        "base_group_ids": base_groups,
+        "source_specimen_groups": specimen_groups,
+        "image_hashes_verified": verify_hashes,
+        "expected_image_size": [expected_width, expected_height],
+        "fixed_component_roi_xyxy": roi,
+        "fixed_component_roi_is_class_independent": True,
+        "warnings": warnings,
+    }
+    return samples, audit
+
+
+def deterministic_split(
+    samples: Sequence[Sample], config: dict[str, Any]
+) -> tuple[list[SplitRecord], dict[str, Any]]:
+    classes: list[str] = list(config["classes"])
+    severities: list[str] = list(config["severities"])
+    split_config = config["split"]
+    split_seed = int(split_config["seed"])
+    validation_per_class = int(split_config["validation_per_class"])
+    validation_seed = int(split_config["validation_seed"])
+    severity_quotas: dict[str, dict[str, int]] = split_config[
+        "severity_quotas"
+    ]
+    validation_policy = split_config["validation_severity_policy"]
+    parity_policy = validation_policy["extra_by_class_index_parity"]
+    base_validation_quota = int(validation_policy["base_per_severity"])
+    grouped: dict[tuple[str, str], list[tuple[str, Sample]]] = defaultdict(list)
+
+    for sample in samples:
+        payload = (
+            f"{split_seed}\0{sample.label}\0{sample.severity}\0"
+            f"{sample.sample_id}\0{sample.sample_seed}"
+        ).encode("utf-8")
+        key = hashlib.sha256(payload).hexdigest()
+        grouped[(sample.label, sample.severity)].append((key, sample))
+
+    records: list[SplitRecord] = []
+    for class_index, class_name in enumerate(classes):
+        parity = "even" if class_index % 2 == 0 else "odd"
+        extra_validation_severity = parity_policy[parity]
+        validation_quotas = {
+            severity_name: base_validation_quota
+            + (1 if severity_name == extra_validation_severity else 0)
+            for severity_name in severities
+        }
+        if sum(validation_quotas.values()) != validation_per_class:
+            raise PipelineError(
+                f"validation quota mismatch for {class_name}: {validation_quotas}"
+            )
+        for severity_name in severities:
+            quota = severity_quotas[severity_name]
+            train_quota = int(quota["train"])
+            test_quota = int(quota["test"])
+            ranked = sorted(
+                grouped[(class_name, severity_name)],
+                key=lambda item: (item[0], item[1].sample_id),
+            )
+            expected = train_quota + test_quota
+            if len(ranked) != expected:
+                raise PipelineError(
+                    f"cannot split {class_name}/{severity_name}: "
+                    f"expected {expected}, got {len(ranked)}"
+                )
+            outer_train = ranked[:train_quota]
+            validation_key_by_id = {
+                sample.sample_id: hashlib.sha256(
+                    (
+                        f"{validation_seed}\0{class_name}\0{severity_name}\0"
+                        f"{sample.sample_id}\0"
+                        f"{sample.sample_seed}"
+                    ).encode("utf-8")
+                ).hexdigest()
+                for _key, sample in outer_train
+            }
+            validation_ranked = sorted(
+                outer_train,
+                key=lambda item: (
+                    validation_key_by_id[item[1].sample_id],
+                    item[1].sample_id,
+                ),
+            )
+            validation_ids = {
+                sample.sample_id
+                for _key, sample in validation_ranked[
+                    : validation_quotas[severity_name]
+                ]
+            }
+            for rank, (key, sample) in enumerate(ranked):
+                split_name = "train" if rank < train_quota else "test"
+                if split_name == "test":
+                    model_split = "test"
+                    validation_key = ""
+                else:
+                    model_split = (
+                        "validation"
+                        if sample.sample_id in validation_ids
+                        else "gradient_train"
+                    )
+                    validation_key = validation_key_by_id[sample.sample_id]
+                records.append(
+                    SplitRecord(
+                        sample=sample,
+                        split=split_name,
+                        model_split=model_split,
+                        class_severity_rank=rank,
+                        split_key_sha256=key,
+                        validation_key_sha256=validation_key,
+                    )
+                )
+
+    canonical = "".join(
+        f"{record.sample.sample_id},{record.sample.severity},"
+        f"{record.split},{record.model_split}\n"
+        for record in sorted(records, key=lambda item: item.sample.sample_id)
+    )
+    fingerprint = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    train_records = [record for record in records if record.split == "train"]
+    test_records = [record for record in records if record.split == "test"]
+    gradient_records = [
+        record for record in records if record.model_split == "gradient_train"
+    ]
+    validation_records = [
+        record for record in records if record.model_split == "validation"
+    ]
+    train_ids = {record.sample.sample_id for record in train_records}
+    test_ids = {record.sample.sample_id for record in test_records}
+    train_hashes = {record.sample.image_sha256 for record in train_records}
+    test_hashes = {record.sample.image_sha256 for record in test_records}
+    if train_ids & test_ids:
+        raise PipelineError("sample_id leakage between train and test")
+    if train_hashes & test_hashes:
+        raise PipelineError("exact image SHA leakage between train and test")
+    model_split_id_sets = {
+        name: {
+            record.sample.sample_id
+            for record in records
+            if record.model_split == name
+        }
+        for name in ("gradient_train", "validation", "test")
+    }
+    model_split_hash_sets = {
+        name: {
+            record.sample.image_sha256
+            for record in records
+            if record.model_split == name
+        }
+        for name in ("gradient_train", "validation", "test")
+    }
+    for left, right in (
+        ("gradient_train", "validation"),
+        ("gradient_train", "test"),
+        ("validation", "test"),
+    ):
+        if model_split_id_sets[left] & model_split_id_sets[right]:
+            raise PipelineError(f"sample_id leakage between {left} and {right}")
+        if model_split_hash_sets[left] & model_split_hash_sets[right]:
+            raise PipelineError(f"exact image SHA leakage between {left} and {right}")
+
+    train_base_groups = {record.sample.base_group_id for record in train_records}
+    test_base_groups = {record.sample.base_group_id for record in test_records}
+    train_specimen_groups = {
+        record.sample.source_specimen_group for record in train_records
+    }
+    test_specimen_groups = {
+        record.sample.source_specimen_group for record in test_records
+    }
+    base_overlap = sorted(train_base_groups & test_base_groups)
+    specimen_overlap = sorted(train_specimen_groups & test_specimen_groups)
+
+    expected_base_overlap = bool(
+        config["evaluation"].get("expected_same_base_overlap", True)
+    )
+    if expected_base_overlap and not base_overlap:
+        raise PipelineError(
+            "config expects same-base overlap, but train/test base_group_id sets are disjoint"
+        )
+
+    def counts_for(split_name: str, field: str = "split") -> dict[str, int]:
+        counter = Counter(
+            record.sample.label
+            for record in records
+            if getattr(record, field) == split_name
+        )
+        return {name: counter[name] for name in classes}
+
+    def severity_counts_for(
+        split_name: str, field: str = "split"
+    ) -> dict[str, int]:
+        counter = Counter(
+            record.sample.severity
+            for record in records
+            if getattr(record, field) == split_name
+        )
+        return {name: counter[name] for name in severities}
+
+    def class_severity_counts_for(
+        split_name: str, field: str = "split"
+    ) -> dict[str, dict[str, int]]:
+        counter = Counter(
+            (record.sample.label, record.sample.severity)
+            for record in records
+            if getattr(record, field) == split_name
+        )
+        return {
+            class_name: {
+                severity_name: counter[(class_name, severity_name)]
+                for severity_name in severities
+            }
+            for class_name in classes
+        }
+
+    outer_class_severity = {
+        "train": class_severity_counts_for("train"),
+        "test": class_severity_counts_for("test"),
+    }
+    model_class_severity = {
+        "gradient_train": class_severity_counts_for(
+            "gradient_train", "model_split"
+        ),
+        "validation": class_severity_counts_for("validation", "model_split"),
+        "test": class_severity_counts_for("test", "model_split"),
+    }
+    for class_index, class_name in enumerate(classes):
+        parity = "even" if class_index % 2 == 0 else "odd"
+        extra_validation_severity = parity_policy[parity]
+        for severity_name in severities:
+            quota = severity_quotas[severity_name]
+            if outer_class_severity["train"][class_name][severity_name] != int(
+                quota["train"]
+            ):
+                raise PipelineError(
+                    f"outer train severity quota failed for {class_name}/{severity_name}"
+                )
+            if outer_class_severity["test"][class_name][severity_name] != int(
+                quota["test"]
+            ):
+                raise PipelineError(
+                    f"outer test severity quota failed for {class_name}/{severity_name}"
+                )
+            expected_validation = base_validation_quota + (
+                1 if severity_name == extra_validation_severity else 0
+            )
+            if (
+                model_class_severity["validation"][class_name][severity_name]
+                != expected_validation
+            ):
+                raise PipelineError(
+                    f"validation severity quota failed for {class_name}/{severity_name}"
+                )
+
+    warnings = list(config["evaluation"].get("disclaimers", []))
+    if base_overlap:
+        warnings.append(
+            "base_group_id overlaps between train and test; metrics cannot estimate "
+            "independent-specimen or real-domain generalization."
+        )
+    split_audit = {
+        "strategy": split_config["strategy"],
+        "seed": split_seed,
+        "validation_seed": validation_seed,
+        "severity_quotas": severity_quotas,
+        "validation_severity_policy": validation_policy,
+        "fingerprint_sha256": fingerprint,
+        "counts": {
+            "train": len(train_records),
+            "test": len(test_records),
+            "total": len(records),
+        },
+        "class_counts": {
+            "train": counts_for("train"),
+            "test": counts_for("test"),
+        },
+        "severity_counts": {
+            "train": severity_counts_for("train"),
+            "test": severity_counts_for("test"),
+        },
+        "class_severity_counts": outer_class_severity,
+        "model_counts": {
+            "gradient_train": len(gradient_records),
+            "validation": len(validation_records),
+            "test": len(test_records),
+        },
+        "model_class_counts": {
+            "gradient_train": counts_for("gradient_train", "model_split"),
+            "validation": counts_for("validation", "model_split"),
+            "test": counts_for("test", "model_split"),
+        },
+        "model_severity_counts": {
+            "gradient_train": severity_counts_for(
+                "gradient_train", "model_split"
+            ),
+            "validation": severity_counts_for("validation", "model_split"),
+            "test": severity_counts_for("test", "model_split"),
+        },
+        "model_class_severity_counts": model_class_severity,
+        "sample_id_overlap_count": len(train_ids & test_ids),
+        "exact_image_sha256_overlap_count": len(train_hashes & test_hashes),
+        "model_split_pairwise_sample_id_overlap_count": 0,
+        "model_split_pairwise_exact_image_sha256_overlap_count": 0,
+        "base_group_overlap": base_overlap,
+        "source_specimen_group_overlap": specimen_overlap,
+        "evaluation_scope": config["evaluation"]["scope"],
+        "warnings": warnings,
+    }
+    return records, split_audit
+
+
+def write_split_artifacts(
+    output_directory: Path,
+    records: Sequence[SplitRecord],
+    manifest_audit: dict[str, Any],
+    split_audit: dict[str, Any],
+) -> None:
+    output_directory.mkdir(parents=True, exist_ok=True)
+    assignment_path = output_directory / "split_assignments.csv"
+    with assignment_path.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.writer(stream, lineterminator="\n")
+        writer.writerow(
+            [
+                "sample_id",
+                "image_path",
+                "primary_class",
+                "severity",
+                "split",
+                "model_split",
+                "class_severity_rank",
+                "split_key_sha256",
+                "validation_key_sha256",
+                "sample_seed",
+                "image_sha256",
+                "base_group_id",
+                "source_specimen_group",
+            ]
+        )
+        for record in sorted(
+            records,
+            key=lambda item: (
+                item.split,
+                item.sample.label,
+                item.sample.severity,
+                item.class_severity_rank,
+                item.sample.sample_id,
+            ),
+        ):
+            writer.writerow(
+                [
+                    record.sample.sample_id,
+                    record.sample.image_path,
+                    record.sample.label,
+                    record.sample.severity,
+                    record.split,
+                    record.model_split,
+                    record.class_severity_rank,
+                    record.split_key_sha256,
+                    record.validation_key_sha256,
+                    record.sample.sample_seed,
+                    record.sample.image_sha256,
+                    record.sample.base_group_id,
+                    record.sample.source_specimen_group,
+                ]
+            )
+    write_json(output_directory / "manifest_audit.json", manifest_audit)
+    write_json(output_directory / "split_audit.json", split_audit)
+
+
+def split_samples(
+    records: Sequence[SplitRecord], split_name: str
+) -> list[Sample]:
+    return [record.sample for record in records if record.model_split == split_name]
+
+
+def confusion_matrix(
+    true_indices: Sequence[int], predicted_indices: Sequence[int], class_count: int
+) -> list[list[int]]:
+    if len(true_indices) != len(predicted_indices):
+        raise PipelineError("prediction and target lengths differ")
+    matrix = [[0 for _ in range(class_count)] for _ in range(class_count)]
+    for true_index, predicted_index in zip(true_indices, predicted_indices):
+        if not 0 <= true_index < class_count:
+            raise PipelineError(f"target index out of range: {true_index}")
+        if not 0 <= predicted_index < class_count:
+            raise PipelineError(f"prediction index out of range: {predicted_index}")
+        matrix[true_index][predicted_index] += 1
+    return matrix
+
+
+def calculate_metrics(
+    matrix: Sequence[Sequence[int]], classes: Sequence[str]
+) -> dict[str, Any]:
+    if len(matrix) != len(classes) or any(len(row) != len(classes) for row in matrix):
+        raise PipelineError("confusion matrix dimensions do not match classes")
+    total = sum(sum(row) for row in matrix)
+    per_class: list[dict[str, Any]] = []
+    for index, class_name in enumerate(classes):
+        true_positive = int(matrix[index][index])
+        support = int(sum(matrix[index]))
+        predicted_count = int(sum(row[index] for row in matrix))
+        false_positive = predicted_count - true_positive
+        false_negative = support - true_positive
+        precision_denominator = true_positive + false_positive
+        recall_denominator = true_positive + false_negative
+        precision = (
+            true_positive / precision_denominator if precision_denominator else 0.0
+        )
+        recall = true_positive / recall_denominator if recall_denominator else 0.0
+        f1 = 2.0 * precision * recall / (precision + recall) if precision + recall else 0.0
+        per_class.append(
+            {
+                "class": class_name,
+                "class_index": index,
+                "precision": precision,
+                "recall": recall,
+                "f1": f1,
+                "support": support,
+                "true_positive": true_positive,
+                "false_positive": false_positive,
+                "false_negative": false_negative,
+            }
+        )
+
+    macro = {
+        metric: sum(row[metric] for row in per_class) / len(per_class)
+        for metric in ("precision", "recall", "f1")
+    }
+    weighted = {
+        metric: (
+            sum(row[metric] * row["support"] for row in per_class) / total
+            if total
+            else 0.0
+        )
+        for metric in ("precision", "recall", "f1")
+    }
+    macro["support"] = total
+    weighted["support"] = total
+    correct = sum(int(matrix[index][index]) for index in range(len(classes)))
+    return {
+        "accuracy": correct / total if total else 0.0,
+        "sample_count": total,
+        "per_class": per_class,
+        "macro_avg": macro,
+        "weighted_avg": weighted,
+    }
+
+
+def write_confusion_png(
+    path: Path, matrix: Sequence[Sequence[int]], classes: Sequence[str]
+) -> None:
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except ModuleNotFoundError as error:
+        raise PipelineError(
+            "Pillow is required to write confusion_matrix.png; install "
+            "training/configs/requirements-classification.txt"
+        ) from error
+
+    cell = 96
+    left = 180
+    top = 120
+    bottom = 70
+    width = left + cell * len(classes) + 20
+    height = top + cell * len(classes) + bottom
+    image = Image.new("RGB", (width, height), "white")
+    draw = ImageDraw.Draw(image)
+    try:
+        font = ImageFont.truetype("arial.ttf", 15)
+        small_font = ImageFont.truetype("arial.ttf", 12)
+        title_font = ImageFont.truetype("arialbd.ttf", 20)
+    except OSError:
+        font = ImageFont.load_default()
+        small_font = font
+        title_font = font
+
+    draw.text((20, 18), "Confusion matrix", fill="black", font=title_font)
+    draw.text(
+        (20, 48),
+        "rows = true class, columns = predicted class",
+        fill=(70, 70, 70),
+        font=font,
+    )
+    maximum = max((max(row) for row in matrix), default=1) or 1
+
+    for index, class_name in enumerate(classes):
+        x = left + index * cell + 4
+        draw.text((x, top - 48), class_name, fill="black", font=small_font)
+        y = top + index * cell + cell // 2 - 8
+        draw.text((8, y), class_name, fill="black", font=font)
+
+    for row_index, row in enumerate(matrix):
+        for column_index, value in enumerate(row):
+            ratio = value / maximum
+            color = (
+                int(245 - 185 * ratio),
+                int(248 - 125 * ratio),
+                int(255 - 35 * ratio),
+            )
+            x0 = left + column_index * cell
+            y0 = top + row_index * cell
+            x1 = x0 + cell
+            y1 = y0 + cell
+            draw.rectangle((x0, y0, x1, y1), fill=color, outline=(180, 180, 180))
+            value_text = str(value)
+            try:
+                box = draw.textbbox((0, 0), value_text, font=font)
+                text_width = box[2] - box[0]
+                text_height = box[3] - box[1]
+            except AttributeError:
+                text_width, text_height = draw.textsize(value_text, font=font)
+            draw.text(
+                (
+                    x0 + (cell - text_width) / 2,
+                    y0 + (cell - text_height) / 2,
+                ),
+                value_text,
+                fill="white" if ratio > 0.58 else "black",
+                font=font,
+            )
+    draw.text(
+        (20, height - 42),
+        "Scope: synthetic same-base sanity test (not real-domain generalization)",
+        fill=(145, 35, 35),
+        font=small_font,
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(path, format="PNG", optimize=True)
+
+
+def write_evaluation_artifacts(
+    output_directory: Path,
+    classes: Sequence[str],
+    predictions: Sequence[dict[str, Any]],
+    matrix: Sequence[Sequence[int]],
+    metrics: dict[str, Any],
+    metadata: dict[str, Any],
+) -> None:
+    output_directory.mkdir(parents=True, exist_ok=True)
+    prediction_path = output_directory / "predictions.csv"
+    prediction_columns = [
+        "sample_id",
+        "image_path",
+        "true_class",
+        "severity",
+        "predicted_class",
+        "correct",
+        "confidence",
+        "split",
+    ]
+    with prediction_path.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(
+            stream, fieldnames=prediction_columns, lineterminator="\n"
+        )
+        writer.writeheader()
+        for row in predictions:
+            writer.writerow({column: row[column] for column in prediction_columns})
+
+    with (output_directory / "metrics_per_class.csv").open(
+        "w", encoding="utf-8", newline=""
+    ) as stream:
+        fieldnames = [
+            "class",
+            "class_index",
+            "precision",
+            "recall",
+            "f1",
+            "support",
+            "true_positive",
+            "false_positive",
+            "false_negative",
+        ]
+        writer = csv.DictWriter(stream, fieldnames=fieldnames, lineterminator="\n")
+        writer.writeheader()
+        for row in metrics["per_class"]:
+            formatted = dict(row)
+            for key in ("precision", "recall", "f1"):
+                formatted[key] = f"{float(formatted[key]):.10f}"
+            writer.writerow(formatted)
+
+    with (output_directory / "confusion_matrix.csv").open(
+        "w", encoding="utf-8", newline=""
+    ) as stream:
+        writer = csv.writer(stream, lineterminator="\n")
+        writer.writerow(["true_class\\predicted_class", *classes])
+        for class_name, row in zip(classes, matrix):
+            writer.writerow([class_name, *row])
+
+    summary = {
+        "schema_version": "1.0",
+        "evaluation_scope": metadata["evaluation_scope"],
+        "accuracy": metrics["accuracy"],
+        "sample_count": metrics["sample_count"],
+        "macro_avg": metrics["macro_avg"],
+        "weighted_avg": metrics["weighted_avg"],
+        "per_class": metrics["per_class"],
+        "confusion_matrix": [list(row) for row in matrix],
+        "classes": list(classes),
+        "metadata": metadata,
+    }
+    write_json(output_directory / "metrics_summary.json", summary)
+    write_confusion_png(output_directory / "confusion_matrix.png", matrix, classes)
+
+
+def seed_everything(seed: int, torch_module: Any) -> None:
+    random.seed(seed)
+    torch_module.manual_seed(seed)
+    if torch_module.cuda.is_available():
+        torch_module.cuda.manual_seed_all(seed)
+    torch_module.use_deterministic_algorithms(True)
+    if hasattr(torch_module.backends, "cudnn"):
+        torch_module.backends.cudnn.deterministic = True
+        torch_module.backends.cudnn.benchmark = False
+
+
+def load_ml_dependencies(require_torchvision: bool = False) -> tuple[Any, Any, Any]:
+    try:
+        import torch
+    except ModuleNotFoundError as error:
+        raise PipelineError(
+            "PyTorch is required for training/evaluation; install "
+            "training/configs/requirements-classification.txt"
+        ) from error
+    try:
+        from PIL import Image, ImageOps
+    except ModuleNotFoundError as error:
+        raise PipelineError(
+            "Pillow is required for training/evaluation; install "
+            "training/configs/requirements-classification.txt"
+        ) from error
+    if require_torchvision:
+        try:
+            import torchvision  # noqa: F401
+        except ModuleNotFoundError as error:
+            raise PipelineError(
+                "torchvision is required for ResNet-18; install "
+                "training/configs/requirements-classification.txt"
+            ) from error
+    return torch, Image, ImageOps
+
+
+def choose_device(requested: str, torch_module: Any) -> Any:
+    if requested == "auto":
+        return torch_module.device("cuda" if torch_module.cuda.is_available() else "cpu")
+    if requested == "cuda" and not torch_module.cuda.is_available():
+        raise PipelineError("CUDA requested but torch.cuda.is_available() is false")
+    if requested not in {"cpu", "cuda"}:
+        raise PipelineError(f"unsupported device: {requested}")
+    return torch_module.device(requested)
+
+
+def create_dataset_class(torch_module: Any, image_module: Any, image_ops_module: Any) -> Any:
+    class ClassificationDataset(torch_module.utils.data.Dataset):
+        def __init__(
+            self,
+            samples: Sequence[Sample],
+            class_to_index: dict[str, int],
+            input_size: int,
+            mean: Sequence[float],
+            std: Sequence[float],
+            fixed_component_roi_xyxy: Sequence[int],
+            training: bool = False,
+            augmentation: dict[str, Any] | None = None,
+            augmentation_seed: int = 0,
+        ) -> None:
+            self.samples = list(samples)
+            self.class_to_index = class_to_index
+            self.input_size = input_size
+            self.mean = torch_module.tensor(mean, dtype=torch_module.float32).view(3, 1, 1)
+            self.std = torch_module.tensor(std, dtype=torch_module.float32).view(3, 1, 1)
+            self.fixed_component_roi_xyxy = tuple(fixed_component_roi_xyxy)
+            self.training = training
+            self.augmentation = augmentation or {"enabled": False}
+            self.augmentation_seed = augmentation_seed
+            self.epoch = 0
+            if (self.std <= 0).any():
+                raise PipelineError("normalization std values must be positive")
+
+        def set_epoch(self, epoch: int) -> None:
+            self.epoch = int(epoch)
+
+        def __len__(self) -> int:
+            return len(self.samples)
+
+        def __getitem__(self, index: int) -> tuple[Any, int, str]:
+            sample = self.samples[index]
+            with image_module.open(sample.image_absolute_path) as opened:
+                image = opened.convert("RGB")
+                if image.size != (sample.width, sample.height):
+                    raise PipelineError(
+                        f"decoded image dimensions changed for {sample.sample_id}: "
+                        f"manifest={(sample.width, sample.height)} decoded={image.size}"
+                    )
+                # This ROI is fixed globally and is never derived from the label,
+                # defect mask, defect bbox, or sample-specific metadata.
+                image = image.crop(self.fixed_component_roi_xyxy)
+                if self.training and bool(self.augmentation.get("enabled", False)):
+                    augmentation_key = hashlib.sha256(
+                        (
+                            f"{self.augmentation_seed}\0{self.epoch}\0"
+                            f"{sample.sample_id}"
+                        ).encode("utf-8")
+                    ).digest()
+                    rng = random.Random(int.from_bytes(augmentation_key[:8], "big"))
+                    if rng.random() < float(
+                        self.augmentation.get("horizontal_flip_probability", 0.0)
+                    ):
+                        image = image_ops_module.mirror(image)
+                    rotation_limit = float(
+                        self.augmentation.get("rotation_degrees", 0.0)
+                    )
+                    translation_fraction = float(
+                        self.augmentation.get("translation_fraction", 0.0)
+                    )
+                    angle = rng.uniform(-rotation_limit, rotation_limit)
+                    translate_x = round(
+                        rng.uniform(-translation_fraction, translation_fraction)
+                        * image.width
+                    )
+                    translate_y = round(
+                        rng.uniform(-translation_fraction, translation_fraction)
+                        * image.height
+                    )
+                    image = image.rotate(
+                        angle,
+                        resample=image_module.Resampling.BILINEAR,
+                        translate=(translate_x, translate_y),
+                        fillcolor=(244, 244, 244),
+                    )
+                image = image.resize(
+                    (self.input_size, self.input_size),
+                    resample=image_module.Resampling.BILINEAR,
+                )
+                buffer = bytearray(image.tobytes())
+            tensor = torch_module.frombuffer(buffer, dtype=torch_module.uint8)
+            tensor = tensor.reshape(self.input_size, self.input_size, 3)
+            tensor = tensor.permute(2, 0, 1).to(dtype=torch_module.float32).div_(255.0)
+            tensor = (tensor - self.mean) / self.std
+            return tensor, self.class_to_index[sample.label], sample.sample_id
+
+    return ClassificationDataset
+
+
+def build_model(
+    config: dict[str, Any],
+    class_count: int,
+    torch_module: Any,
+    weights_mode_override: str | None = None,
+    local_weights_override: Path | None = None,
+) -> tuple[Any, dict[str, Any]]:
+    model_config = config["model"]
+    architecture = str(model_config.get("architecture", "small_cnn"))
+    weights_config = _require_mapping(model_config.get("weights", {}), "model.weights")
+    weights_mode = weights_mode_override or str(weights_config.get("mode", "none"))
+    configured_path = weights_config.get("path")
+    local_weights = local_weights_override
+    if local_weights is None and isinstance(configured_path, str) and configured_path:
+        local_weights = Path(configured_path).expanduser().resolve()
+    nn = torch_module.nn
+
+    if architecture == "small_cnn":
+        if weights_mode != "none" or local_weights is not None:
+            raise PipelineError("small_cnn supports weights.mode='none' only")
+
+        class ConvBlock(nn.Module):
+            def __init__(self, in_channels: int, out_channels: int) -> None:
+                super().__init__()
+                self.layers = nn.Sequential(
+                    nn.Conv2d(in_channels, out_channels, 3, padding=1, bias=False),
+                    nn.BatchNorm2d(out_channels),
+                    nn.ReLU(inplace=True),
+                    nn.Conv2d(out_channels, out_channels, 3, padding=1, bias=False),
+                    nn.BatchNorm2d(out_channels),
+                    nn.ReLU(inplace=True),
+                    nn.MaxPool2d(2),
+                )
+
+            def forward(self, inputs: Any) -> Any:
+                return self.layers(inputs)
+
+        class SmallDefectCNN(nn.Module):
+            def __init__(self) -> None:
+                super().__init__()
+                self.features = nn.Sequential(
+                    ConvBlock(3, 32),
+                    ConvBlock(32, 64),
+                    ConvBlock(64, 128),
+                    ConvBlock(128, 192),
+                    nn.AdaptiveAvgPool2d((1, 1)),
+                )
+                self.classifier = nn.Sequential(
+                    nn.Flatten(),
+                    nn.Dropout(p=0.20),
+                    nn.Linear(192, class_count),
+                )
+
+            def forward(self, inputs: Any) -> Any:
+                return self.classifier(self.features(inputs))
+
+        model = SmallDefectCNN()
+        return model, {
+            "architecture": architecture,
+            "weights_mode": "none",
+            "weights_path": None,
+            "pretrained": False,
+        }
+
+    if architecture != "resnet18":
+        raise PipelineError(f"unsupported model architecture: {architecture}")
+
+    load_ml_dependencies(require_torchvision=True)
+    import torchvision
+
+    model = torchvision.models.resnet18(weights=None)
+    loaded_path: Path | None = None
+    if weights_mode == "none":
+        if local_weights is not None:
+            raise PipelineError("local weights path supplied while weights.mode is 'none'")
+    elif weights_mode == "local_path":
+        if local_weights is None:
+            raise PipelineError("weights.mode='local_path' requires model.weights.path")
+        loaded_path = local_weights
+    elif weights_mode == "torchvision_cache":
+        from urllib.parse import urlparse
+
+        filename = Path(
+            urlparse(torchvision.models.ResNet18_Weights.DEFAULT.url).path
+        ).name
+        expected_filename = weights_config.get("expected_cache_filename")
+        if expected_filename and expected_filename != filename:
+            raise PipelineError(
+                "configured torchvision cache filename differs from torchvision "
+                f"ResNet18_Weights.DEFAULT: {expected_filename} != {filename}"
+            )
+        loaded_path = Path(torch_module.hub.get_dir()) / "checkpoints" / filename
+    else:
+        raise PipelineError(f"unsupported weights mode: {weights_mode}")
+
+    if loaded_path is not None:
+        if not loaded_path.is_file():
+            raise PipelineError(
+                "local torchvision weights not found; this pipeline never downloads weights: "
+                f"{loaded_path}"
+            )
+        try:
+            state = torch_module.load(
+                loaded_path, map_location="cpu", weights_only=True
+            )
+        except TypeError:
+            state = torch_module.load(loaded_path, map_location="cpu")
+        if isinstance(state, dict) and "state_dict" in state:
+            state = state["state_dict"]
+        if not isinstance(state, dict):
+            raise PipelineError(f"unexpected local weights format: {loaded_path}")
+        state = {
+            key.removeprefix("module."): value for key, value in state.items()
+        }
+        model.load_state_dict(state, strict=True)
+
+    model.fc = nn.Linear(model.fc.in_features, class_count)
+    return model, {
+        "architecture": architecture,
+        "weights_mode": weights_mode,
+        # Persist only the portable filename. Absolute cache paths can expose a
+        # workstation username and are not needed because the SHA-256 identifies
+        # the exact pretrained file.
+        "weights_path": loaded_path.name if loaded_path else None,
+        "weights_sha256": sha256_file(loaded_path) if loaded_path else None,
+        "pretrained": loaded_path is not None,
+        "network_download_permitted": False,
+    }
+
+
+def evaluate_model(
+    model: Any,
+    loader: Any,
+    samples_by_id: dict[str, Sample],
+    classes: Sequence[str],
+    device: Any,
+    torch_module: Any,
+) -> tuple[list[dict[str, Any]], list[list[int]], dict[str, Any]]:
+    model.eval()
+    true_indices: list[int] = []
+    predicted_indices: list[int] = []
+    predictions: list[dict[str, Any]] = []
+    with torch_module.no_grad():
+        for inputs, targets, sample_ids in loader:
+            inputs = inputs.to(device)
+            targets = targets.to(device)
+            logits = model(inputs)
+            probabilities = torch_module.softmax(logits, dim=1)
+            confidence, predicted = probabilities.max(dim=1)
+            target_values = targets.cpu().tolist()
+            predicted_values = predicted.cpu().tolist()
+            confidence_values = confidence.cpu().tolist()
+            for sample_id, target, prediction, score in zip(
+                sample_ids,
+                target_values,
+                predicted_values,
+                confidence_values,
+            ):
+                sample = samples_by_id[sample_id]
+                predictions.append(
+                    {
+                        "sample_id": sample_id,
+                        "image_path": sample.image_path,
+                        "true_class": classes[target],
+                        "severity": sample.severity,
+                        "predicted_class": classes[prediction],
+                        "correct": "YES" if target == prediction else "NO",
+                        "confidence": f"{score:.10f}",
+                        "split": "test",
+                    }
+                )
+            true_indices.extend(target_values)
+            predicted_indices.extend(predicted_values)
+    matrix = confusion_matrix(true_indices, predicted_indices, len(classes))
+    metrics = calculate_metrics(matrix, classes)
+    return predictions, matrix, metrics
+
+
+def mean(values: Iterable[float]) -> float:
+    values = list(values)
+    return sum(values) / len(values) if values else math.nan

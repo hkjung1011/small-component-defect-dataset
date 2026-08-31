@@ -1,0 +1,36 @@
+sample_id,reviewer,review_date,review_scope,status,note
+syn-v1-450-normal_proxy-0000,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,contact sheet sample; empty defect mask confirmed
+syn-v1-450-normal_proxy-0001,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,contact sheet sample; empty defect mask confirmed
+syn-v1-450-normal_proxy-0002,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,contact sheet sample; empty defect mask confirmed
+syn-v1-450-scratch-0000,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,scratch location and mask alignment plausible
+syn-v1-450-scratch-0001,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,scratch location and mask alignment plausible
+syn-v1-450-scratch-0002,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,scratch location and mask alignment plausible
+syn-v1-450-surface_spot-0000,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,surface spot remains localized on metal tab
+syn-v1-450-surface_spot-0001,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,surface spot remains localized on metal tab
+syn-v1-450-surface_spot-0002,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,surface spot remains localized on metal tab
+syn-v1-450-discoloration-0000,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,soft discoloration boundary and mask alignment plausible
+syn-v1-450-discoloration-0001,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,soft discoloration boundary and mask alignment plausible
+syn-v1-450-discoloration-0002,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,soft discoloration boundary and mask alignment plausible
+syn-v1-450-contamination-0000,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,contamination cluster and mask alignment plausible
+syn-v1-450-contamination-0001,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,contamination cluster and mask alignment plausible
+syn-v1-450-contamination-0002,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,contamination cluster and mask alignment plausible
+syn-v1-450-lead_breakage-0000,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,distal lead material-loss proxy and mask align
+syn-v1-450-lead_breakage-0001,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,distal lead material-loss proxy and mask align
+syn-v1-450-lead_breakage-0002,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,distal lead material-loss proxy and mask align
+syn-v1-450-body_chip-0000,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,body-edge material-loss proxy and mask align
+syn-v1-450-body_chip-0001,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,body-edge material-loss proxy and mask align
+syn-v1-450-body_chip-0002,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,body-edge material-loss proxy and mask align
+syn-v1-450-body_crack-0000,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,body crack path and mask alignment plausible
+syn-v1-450-body_crack-0001,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,body crack path and mask alignment plausible
+syn-v1-450-body_crack-0002,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,body crack path and mask alignment plausible
+syn-v1-450-multi_defect-0000,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,multi-defect class masks remain separable
+syn-v1-450-multi_defect-0001,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,multi-defect class masks remain separable
+syn-v1-450-multi_defect-0002,OpenAI Codex,2026-08-31,image_and_mask_overlay,PASS_POC_VISUAL,multi-defect class masks remain separable
+syn-v1-450-scratch-0035,OpenAI Codex,2026-08-31,severe_visual_sample,PASS_POC_VISUAL,severe X-like scratches are visible and localized to metal tab
+syn-v1-450-surface_spot-0040,OpenAI Codex,2026-08-31,severe_visual_sample,PASS_POC_VISUAL,severe localized dark spot is visible
+syn-v1-450-discoloration-0047,OpenAI Codex,2026-08-31,severe_visual_sample,PASS_POC_VISUAL,broad color-shift proxy remains subtle but visible; domain realism not verified
+syn-v1-450-contamination-0046,OpenAI Codex,2026-08-31,severe_visual_sample,PASS_POC_VISUAL,localized contamination tint remains visible without geometry drift
+syn-v1-450-lead_breakage-0015,OpenAI Codex,2026-08-31,severe_visual_sample,PASS_POC_VISUAL,missing distal lead proxy is visible; production realism not verified
+syn-v1-450-body_chip-0020,OpenAI Codex,2026-08-31,severe_visual_sample,PASS_POC_VISUAL,edge-connected body material loss is visible
+syn-v1-450-body_crack-0004,OpenAI Codex,2026-08-31,severe_visual_sample,PASS_POC_VISUAL,body crack remains visible after domain randomization
+syn-v1-450-multi_defect-0038,OpenAI Codex,2026-08-31,severe_visual_sample,PASS_POC_VISUAL,multi-defect scratch and spot remain jointly visible
