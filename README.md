@@ -4,6 +4,38 @@ KEC `KIA7809AF`로 식별된 소형 전원 반도체 사진 17장을 직접 수�
 
 실데이터와 별도로, clean-back 복원본에서 자동 생성한 train-only synthetic 이미지 2,050장과 pixel mask 2,050장을 포함합니다.
 
+## 저작권 및 이용 제한 / Copyright and use restrictions
+
+> [!CAUTION]
+> 이 repository는 검토와 시연을 위해 공개되었으며 **open source 또는 open data가 아닙니다**. 권리가 성립하고 `hkjung1011`이 보유하는 범위에서 © 2026 hkjung1011. All Rights Reserved.
+>
+> 관련 법령과 GitHub 이용약관에 따라 허용되는 열람 및 GitHub 기능 내 fork를 제외하고 추가 라이선스는 부여되지 않습니다. 사전 서면 허가 없이 코드, 합성데이터, 이미지, mask, annotation, label, metadata, checkpoint 및 문서를 외부 복제·수정·재배포·재호스팅·판매하거나, 상업적으로 이용하거나, 다른 dataset에 편입하거나, AI/ML 학습·평가·fine-tuning 또는 파생물 제작에 사용하도록 허가하지 않습니다. 자세한 내용은 [LICENSE_STATUS.md](LICENSE_STATUS.md)를 확인하십시오.
+>
+> Public visibility is **not** an open-source or open-data license. Except for use permitted by applicable law and viewing or forking through GitHub's functionality under its Terms of Service, no additional permission is granted to reproduce, modify, redistribute, externally host, sell, commercially exploit, incorporate into another dataset, use for AI/ML training, evaluation or fine-tuning, or create derivatives without prior written permission.
+
+## 합성 데이터 미리보기
+
+아래 자료는 `synthetic-v2-700`의 7개 **합성 결함 class** 예시입니다. 실제 결함 사진이나 독립 specimen이 아니며, 모두 `TRAIN_ONLY / evaluation_eligible=NO`입니다. Overview의 각 행은 원본 합성 이미지와 mask overlay를 함께 보여줍니다.
+
+[![Synthetic v2 700: seven defect classes and mask overlays](synthetic/v2_700/contact_sheet.jpg)](synthetic/v2_700/contact_sheet.jpg)
+
+### 클래스별 대표 이미지
+
+<table>
+  <tr>
+    <td align="center"><a href="synthetic/v2_700/images/scratch/syn-v2-700-scratch-0000.jpg"><img src="synthetic/v2_700/images/scratch/syn-v2-700-scratch-0000.jpg" alt="Synthetic scratch example" width="190"></a><br><code>scratch</code><br>스크래치 · mild</td>
+    <td align="center"><a href="synthetic/v2_700/images/surface_spot/syn-v2-700-surface_spot-0001.jpg"><img src="synthetic/v2_700/images/surface_spot/syn-v2-700-surface_spot-0001.jpg" alt="Synthetic surface spot example" width="190"></a><br><code>surface_spot</code><br>표면 반점 · moderate</td>
+    <td align="center"><a href="synthetic/v2_700/images/discoloration/syn-v2-700-discoloration-0000.jpg"><img src="synthetic/v2_700/images/discoloration/syn-v2-700-discoloration-0000.jpg" alt="Synthetic discoloration example" width="190"></a><br><code>discoloration</code><br>변색 · moderate</td>
+    <td align="center"><a href="synthetic/v2_700/images/contamination/syn-v2-700-contamination-0002.jpg"><img src="synthetic/v2_700/images/contamination/syn-v2-700-contamination-0002.jpg" alt="Synthetic contamination example" width="190"></a><br><code>contamination</code><br>오염 · moderate</td>
+  </tr>
+  <tr>
+    <td align="center"><a href="synthetic/v2_700/images/lead_breakage/syn-v2-700-lead_breakage-0000.jpg"><img src="synthetic/v2_700/images/lead_breakage/syn-v2-700-lead_breakage-0000.jpg" alt="Synthetic lead breakage example" width="190"></a><br><code>lead_breakage</code><br>리드 파손 · moderate</td>
+    <td align="center"><a href="synthetic/v2_700/images/body_chip/syn-v2-700-body_chip-0001.jpg"><img src="synthetic/v2_700/images/body_chip/syn-v2-700-body_chip-0001.jpg" alt="Synthetic body chip example" width="190"></a><br><code>body_chip</code><br>바디 깨짐 · moderate</td>
+    <td align="center"><a href="synthetic/v2_700/images/body_crack/syn-v2-700-body_crack-0000.jpg"><img src="synthetic/v2_700/images/body_crack/syn-v2-700-body_crack-0000.jpg" alt="Synthetic body crack example" width="190"></a><br><code>body_crack</code><br>바디 균열 · severe</td>
+    <td align="center"><strong>전체 자료</strong><br><br><a href="synthetic/v2_700/images">700 images</a><br><a href="synthetic/v2_700/masks">700 pixel masks</a><br><a href="synthetic/v2_700/annotations/contact_sheets">class별 100장 QA sheets</a></td>
+  </tr>
+</table>
+
 ## 최종 판정
 
 | 구분 | 사진 수 | 의미 |
@@ -81,4 +113,4 @@ python training/scripts/train_eval_classifier.py --check-only
 
 ## 사용 제한
 
-이 저장소에는 공개 라이선스가 부여되지 않았습니다. 사진 기반 외관 판정은 전기적 정상성, 진품 여부, 안전성 또는 양산 합격을 보증하지 않습니다.
+이 저장소에는 공개 재사용 라이선스가 부여되지 않았습니다. 세부 조건은 [LICENSE_STATUS.md](LICENSE_STATUS.md)를 따릅니다. 사진 기반 외관 판정은 전기적 정상성, 진품 여부, 안전성 또는 양산 합격을 보증하지 않습니다.
