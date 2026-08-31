@@ -408,11 +408,22 @@ def main() -> int:
             continue
         with other_manifest.open(encoding="utf-8", newline="") as stream:
             other_rows = list(csv.DictReader(stream))
-        duplicate_ids = current_ids & {row["sample_id"] for row in other_rows}
-        duplicate_seeds = current_seeds & {row["sample_seed"] for row in other_rows}
-        duplicate_images = current_image_hashes & {
-            row["image_sha256"] for row in other_rows
-        }
+        other_fields = set(other_rows[0]) if other_rows else set()
+        duplicate_ids = (
+            current_ids & {row["sample_id"] for row in other_rows}
+            if "sample_id" in other_fields
+            else set()
+        )
+        duplicate_seeds = (
+            current_seeds & {row["sample_seed"] for row in other_rows}
+            if "sample_seed" in other_fields
+            else set()
+        )
+        duplicate_images = (
+            current_image_hashes & {row["image_sha256"] for row in other_rows}
+            if "image_sha256" in other_fields
+            else set()
+        )
         other_release = other_manifest.parents[1].name
         if duplicate_ids:
             errors.append(

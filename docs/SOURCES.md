@@ -13,3 +13,20 @@
 제3자 문서의 재배포 권한을 별도로 확인하지 않았으므로 PDF 원문은 repository에 포함하지 않습니다. 위 SHA-256은 조회일에 공식 KEC URL에서 받은 원문을 검증하기 위한 값이며, 문서는 각 공식 URL에서 직접 내려받아야 합니다.
 
 주의: product page에는 여러 ordering suffix와 EOL 관련 정보가 함께 표시됩니다. 사진의 top marking만으로 suffix와 현재 조달 상태를 특정할 수 없으므로 구매 전 KEC 또는 공인 유통사 확인이 필요합니다.
+
+## Synthetic v4 conveyor asset provenance
+
+생성일: 2026-08-31
+
+`synthetic-v4-conveyor`에는 인터넷에서 수집한 컨베이어 사진이나 제3자 제품 사진을 추가하지 않았습니다. 빈 검정 belt texture만 OpenAI built-in image generation으로 만들고, 부품·결함은 기존 repository source와 deterministic mask composition으로 생성합니다.
+
+| Asset | 생성/파생 방법 | SHA-256 |
+|---|---|---|
+| `synthetic/sources/conveyor_black_imagegen_v1.png` | OpenAI built-in image generation, 빈 matte-black conveyor background | `4f126b1373f98256da366b271a585939ff4a551daeb2efc0b8cd3b8ec6392543` |
+| `synthetic/sources/conveyor_black_imagegen_v1.prompt.txt` | 위 background를 생성한 보존 prompt | `061ac9444a8025ed54ba1d29ce14e7315c97a5ebfc37f6a3a1e7e87cdfadbfed` |
+| `synthetic/sources/nominal_component_alpha_v1.png` | v2 component ROI union에서 mount slot을 제외한 deterministic alpha | `3fbdf78090c1b3ac12b91a08bd2be20ee43e1c69f76665d5a34f12785773f043` |
+| `synthetic/sources/nominal_component_alpha_v1_overlay.jpg` | alpha 경계 확인용 overlay | `477e688f473175513dd63540ac02e23def13d717e18116b2da2d379c3cc8773d` |
+
+배경 prompt 원문과 asset hash는 repository에 함께 보존합니다. ImageGen은 빈 배경 asset에만 사용했고 부품의 결함 형상이나 label geometry를 생성·수정하는 데 사용하지 않았습니다. 네 가지 조명 profile은 generator가 component alpha 내부에만 deterministic transform으로 적용합니다.
+
+이 provenance 기록은 공개 재사용 허가가 아닙니다. v4 asset, 합성 장면, mask와 annotation의 이용 조건은 [LICENSE_STATUS.md](../LICENSE_STATUS.md)를 따릅니다.

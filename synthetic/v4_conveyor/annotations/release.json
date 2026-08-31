@@ -1,0 +1,196 @@
+{
+  "background_asset_id": "IMGGEN-CONVEYOR-BLACK-V1",
+  "background_prompt_sha256": "061ac9444a8025ed54ba1d29ce14e7315c97a5ebfc37f6a3a1e7e87cdfadbfed",
+  "background_sha256": "4f126b1373f98256da366b271a585939ff4a551daeb2efc0b8cd3b8ec6392543",
+  "class_counts": {
+    "body_chip": 240,
+    "body_crack": 240,
+    "contamination": 240,
+    "discoloration": 240,
+    "lead_breakage": 240,
+    "normal_proxy": 240,
+    "scratch": 240,
+    "surface_spot": 240
+  },
+  "class_profile_counts": {
+    "body_chip": {
+      "cool_component_spot": 60,
+      "neutral_component_spot": 60,
+      "side_component_spot": 60,
+      "warm_component_spot": 60
+    },
+    "body_crack": {
+      "cool_component_spot": 60,
+      "neutral_component_spot": 60,
+      "side_component_spot": 60,
+      "warm_component_spot": 60
+    },
+    "contamination": {
+      "cool_component_spot": 60,
+      "neutral_component_spot": 60,
+      "side_component_spot": 60,
+      "warm_component_spot": 60
+    },
+    "discoloration": {
+      "cool_component_spot": 60,
+      "neutral_component_spot": 60,
+      "side_component_spot": 60,
+      "warm_component_spot": 60
+    },
+    "lead_breakage": {
+      "cool_component_spot": 60,
+      "neutral_component_spot": 60,
+      "side_component_spot": 60,
+      "warm_component_spot": 60
+    },
+    "normal_proxy": {
+      "cool_component_spot": 60,
+      "neutral_component_spot": 60,
+      "side_component_spot": 60,
+      "warm_component_spot": 60
+    },
+    "scratch": {
+      "cool_component_spot": 60,
+      "neutral_component_spot": 60,
+      "side_component_spot": 60,
+      "warm_component_spot": 60
+    },
+    "surface_spot": {
+      "cool_component_spot": 60,
+      "neutral_component_spot": 60,
+      "side_component_spot": 60,
+      "warm_component_spot": 60
+    }
+  },
+  "class_profile_grid_cell_count_range": [
+    7,
+    8
+  ],
+  "classification_eligible": "NO",
+  "component_coco_sha256": "de1260e0c52aefc116a5b65fc6f173bea3b81fbdc1404df726ed752189c5ac8d",
+  "component_instance_count": 1920,
+  "config_path": "configs/synthetic_v4_conveyor.json",
+  "config_sha256": "fa5adb968da368a28b85a711cd7b3d0aab6829453361eb686e915af6797cf717",
+  "contact_sheet_sha256": {
+    "synthetic/v4_conveyor/annotations/contact_sheets/cool_component_spot_overlay_96_at_160.jpg": "4e6c52afa94883ba4f3a75c3703c7b83d3f17a2b51a12ce0d6c9cdc10fb542ec",
+    "synthetic/v4_conveyor/annotations/contact_sheets/cool_component_spot_raw_96_at_160.jpg": "eb62e9c8c28fd9e6abc363c5732063085f4c95a557048ff4030f8e4e540a2fa3",
+    "synthetic/v4_conveyor/annotations/contact_sheets/neutral_component_spot_overlay_96_at_160.jpg": "eb0d557a895a86b19b3f4dba0e89eaad83136dc24c4f3d3ee02fa084d8be100e",
+    "synthetic/v4_conveyor/annotations/contact_sheets/neutral_component_spot_raw_96_at_160.jpg": "cf4194ef5cb404b2b0bd73642430a69d9911f45f60fcb14fe0015a2bb1eb939f",
+    "synthetic/v4_conveyor/annotations/contact_sheets/side_component_spot_overlay_96_at_160.jpg": "ac8ebb115b57ab6eac6542f3b264fe31022245ec6aef123b85485dcbdc25b1a9",
+    "synthetic/v4_conveyor/annotations/contact_sheets/side_component_spot_raw_96_at_160.jpg": "49c70102129cf55cf336659ef631458e9e63f9fa6d5a882a4850477bd1d0e770",
+    "synthetic/v4_conveyor/annotations/contact_sheets/warm_component_spot_overlay_96_at_160.jpg": "86c41411842d2ef208cf0b61f978cbc1ce634b641fc63d5f2f48a3a22faa45b8",
+    "synthetic/v4_conveyor/annotations/contact_sheets/warm_component_spot_raw_96_at_160.jpg": "c0af13ea64a295e13e87ef3d1e9f2b59b61ae9e29f586f7c803cad84f02cef91"
+  },
+  "defect_annotation_count": 1680,
+  "defect_coco_sha256": "0a2459a30546f793e879e82aaa738408e54b334b3b2a6bd0118a5aae37840714",
+  "defect_parent_count": 168,
+  "defect_parent_placement_slot_reuse_range": [
+    2,
+    2
+  ],
+  "defect_parent_profile_reuse_range": [
+    2,
+    3
+  ],
+  "defect_parent_reuse_range": [
+    10,
+    10
+  ],
+  "evaluation_eligible": "NO",
+  "generator_script": "scripts/generate_synthetic_v4_conveyor.py",
+  "generator_script_sha256": "177cc44d3f14b4466a2b6b4a1cb0329d0eb57c9094b129f0544511be63c05524",
+  "generator_version": "4.0.0",
+  "helper_script_sha256": {
+    "scripts/generate_synthetic_v1_450.py": "40f2d733e6f4778fd715c2d9afc9af15745d5b83beebeb60d17a05e9676e6e77",
+    "scripts/generate_synthetic_v2_700.py": "abbfdd2ce9fc2538f497d867007c6e1805bf03bf957e8797adefe51af1910ea3",
+    "scripts/generate_synthetic_v3_conditions.py": "21194506114004772e28987b82ac8531a0291141f2fc0e665d0532a510bd5098"
+  },
+  "instances_per_scene": 5,
+  "instances_sha256": "2c76f4422b6caed8bd1a67bd036e767feeea342662d98e9c87ce5967fd27ef45",
+  "limitations": [
+    "All scenes are train-only composites derived from one synthetic-restored physical base family.",
+    "normal_proxy is paired-clean synthetic data and is not confirmed real OK data.",
+    "This balanced pilot uses five distinct status classes per scene; it does not model normal-heavy or repeated-status production prevalence.",
+    "These scenes must never be repartitioned into validation or test data.",
+    "Existing ResNet-18 checkpoints do not process full multi-instance scenes."
+  ],
+  "manifest_sha256": "d0378e9693413f0efecab3ed6a780a78d32aa3f538519d5892396df8bc3ff77b",
+  "nominal_component_alpha_sha256": "3fbdf78090c1b3ac12b91a08bd2be20ee43e1c69f76665d5a34f12785773f043",
+  "normal_parent_count": 168,
+  "normal_parent_reuse_range": [
+    1,
+    2
+  ],
+  "normal_proxy_instance_count": 240,
+  "overview_contact_sheet_sha256": "3b1ab78ed4ae9b66f398d7cd6e689a98fe837c26a659a4737a2e8d7e38a711e7",
+  "profile_grid_cell_counts": {
+    "cool_component_spot": {
+      "0": 60,
+      "1": 60,
+      "2": 60,
+      "3": 60,
+      "4": 60,
+      "5": 60,
+      "6": 60,
+      "7": 60
+    },
+    "neutral_component_spot": {
+      "0": 60,
+      "1": 60,
+      "2": 60,
+      "3": 60,
+      "4": 60,
+      "5": 60,
+      "6": 60,
+      "7": 60
+    },
+    "side_component_spot": {
+      "0": 60,
+      "1": 60,
+      "2": 60,
+      "3": 60,
+      "4": 60,
+      "5": 60,
+      "6": 60,
+      "7": 60
+    },
+    "warm_component_spot": {
+      "0": 60,
+      "1": 60,
+      "2": 60,
+      "3": 60,
+      "4": 60,
+      "5": 60,
+      "6": 60,
+      "7": 60
+    }
+  },
+  "profile_scene_counts": {
+    "cool_component_spot": 96,
+    "neutral_component_spot": 96,
+    "side_component_spot": 96,
+    "warm_component_spot": 96
+  },
+  "qc_gate_version": "multi-instance-paired-clean-1024-v1",
+  "release": "synthetic-v4-conveyor",
+  "requirements_path": "requirements-synthetic.txt",
+  "requirements_sha256": "445952014c05a210088d847236be8fab262f66d28109ff8abb6d168d157c2b21",
+  "runtime_contract": {
+    "libjpeg": "8.0",
+    "numpy": "2.5.1",
+    "pillow": "12.3.0",
+    "python": "3.14.6",
+    "zlib": "1.3.1.zlib-ng"
+  },
+  "scene_count": 384,
+  "source_manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+  "source_release": "synthetic-v2-700",
+  "source_split_assignments_sha256": "7382226b846133b8e3049ce48d61c25ddd8247cd582d6f066a63cbac839fec22",
+  "split": "train",
+  "summary_sha256": "88c39942883a42f1a41cfc44db3ed3a6600b0ea219b6aa6ed490bcea22998628",
+  "task_type": "multi_instance_detection_segmentation",
+  "tracked_payload_bytes": 143362066,
+  "tracked_payload_bytes_before_release_json": 143354747,
+  "training_use": "TRAIN_ONLY_MULTI_SCENE_SYNTHETIC",
+  "unique_image_sha256_count": 384
+}

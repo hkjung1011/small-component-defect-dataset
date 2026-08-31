@@ -1,4 +1,5 @@
 *.md text eol=lf
+.gitattributes text eol=lf
 *.csv text eol=lf
 *.py text eol=lf
 *.json text eol=lf
@@ -8,3 +9,4 @@
 *.jpeg binary
 *.png binary
 *.pdf binary
+synthetic/v4_conveyor/.synthetic_v4_conveyor_marker text eol=lf

@@ -289,11 +289,18 @@ def main() -> int:
             continue
         other_rows = read_csv(other_manifest)
         release_name = other_manifest.parents[1].name
-        if current_ids & {row["sample_id"] for row in other_rows}:
+        other_fields = set(other_rows[0]) if other_rows else set()
+        if "sample_id" in other_fields and current_ids & {
+            row["sample_id"] for row in other_rows
+        }:
             errors.append(f"cross-release sample ID duplicate with {release_name}")
-        if current_seeds & {row["sample_seed"] for row in other_rows}:
+        if "sample_seed" in other_fields and current_seeds & {
+            row["sample_seed"] for row in other_rows
+        }:
             errors.append(f"cross-release seed duplicate with {release_name}")
-        if current_hashes & {row["image_sha256"] for row in other_rows}:
+        if "image_sha256" in other_fields and current_hashes & {
+            row["image_sha256"] for row in other_rows
+        }:
             errors.append(f"cross-release image duplicate with {release_name}")
 
     if not release_path.exists():

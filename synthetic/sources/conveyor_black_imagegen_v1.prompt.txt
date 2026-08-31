@@ -1,0 +1,15 @@
+Use case: photorealistic-natural
+Asset type: industrial machine-vision synthetic dataset background texture
+Primary request: a top-down orthographic view of an empty black conveyor belt surface, background only
+Scene/backdrop: continuous matte black industrial rubber conveyor belt filling the entire square frame
+Style/medium: realistic machine-vision photograph, physically plausible rubber texture
+Composition/framing: straight top-down, flat plane, no visible belt edges, no horizon, no perspective convergence, tile-friendly continuous surface
+Lighting/mood: dim and very even background illumination; keep the belt dark while retaining subtle fine rubber grain
+Color palette: neutral charcoal-black only
+Materials/textures: fine matte rubber grain, extremely subtle shallow linear wear in the belt travel direction
+Constraints: empty belt only; no electronic components; no objects; no text; no logos; no labels; no arrows; no seams; no holes; no colored marks; no cast shadows; no bright hotspot; no strong reflection; no vignette; no watermark
+Avoid: woven fabric, concrete, stone, leather, carbon fiber, metallic surface, glossy wet surface, dramatic studio lighting
+
+Generation mode: OpenAI built-in image generation
+Generated: 2026-08-31
+Intended use: train-only synthetic background asset

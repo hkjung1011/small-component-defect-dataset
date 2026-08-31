@@ -1,2 +1,2 @@
-numpy==2.3.5
+numpy==2.5.1
 Pillow==12.3.0

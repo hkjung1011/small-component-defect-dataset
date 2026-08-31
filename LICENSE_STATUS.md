@@ -16,7 +16,8 @@ No open-source, open-data, Creative Commons, or other public reuse license is gr
 
 - 사용자 제공 사진과 파생 crop: 공개 열람 가능, 별도 재사용 라이선스 없음
 - 검증 script와 라벨 문서: 공개 열람 가능, 별도 재사용 라이선스 없음
-- OpenAI built-in image generation으로 만든 clean-back 복원본과 synthetic 파생 이미지·mask: 공개 열람 가능, `TRAIN_ONLY`, 별도 재사용 라이선스 없음
+- OpenAI built-in image generation으로 만든 clean-back 복원본·검정 conveyor background와 synthetic 파생 이미지·mask·COCO/YOLO annotation: 공개 열람 가능, `TRAIN_ONLY`, 별도 재사용 라이선스 없음
+- `synthetic-v4-conveyor`의 384개 장면과 1,920개 component instance: `evaluation_eligible=NO`, `normal_proxy`는 실제 정상품이 아니며 별도 재사용 라이선스 없음
 - KEC 문서: 권리는 KEC에 있으며 원문은 repository에 포함하지 않고 공식 URL과 검증용 SHA-256만 기록
 
 제3자 자료는 각 권리자와 이용조건을 따릅니다. 이 고지는 `hkjung1011`이 보유하지 않거나 관련 법령상 보호되지 않는 요소에 대한 권리를 주장하지 않으며, 법적으로 허용되는 이용을 제한하지 않습니다.

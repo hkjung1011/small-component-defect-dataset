@@ -1,5 +1,18 @@
 # Changelog
 
+## v7 / synthetic-v4-conveyor - 2026-09-01
+
+- 1280×720 검정 컨베이어 배경의 train-only 다중 부품 장면 384장 추가
+- 장면당 겹침·잘림 없는 component 5개, 총 1,920개 instance와 8개 status class 각 240개 균형화
+- `normal_proxy`와 7개 결함 class를 분리하고, `normal_proxy`는 실제 정상품이 아닌 paired-clean 합성본으로 명시
+- neutral/warm/cool/side 4개 component-only 조명 profile을 각 96개 장면에 적용하고 background light-spill gate 추가
+- component status와 defect localization을 분리한 COCO/YOLO label, component instance-ID mask, defect semantic mask 제공
+- v2 `gradient_train` parent 168개만 사용하고 family 계보와 train-only 고정으로 validation/test 파생 누수 차단
+- 전체 384개 장면 deterministic batch replay, label/hash/QC/payload 검증 추가
+- Python 3.14.6 / NumPy 2.5.1 / Pillow 12.3.0 / libjpeg 8.0 runtime과 helper script·requirements SHA를 고정
+- 기존 v2-only `model_final.pt` 3개는 다중 부품 전체 장면 detector가 아니며 v4 성능은 실물 데이터에서 검증되지 않았음을 명시
+- release 명칭은 과거 실제 사진 label audit `v4`와 혼동을 피하기 위해 changelog version `v7`로 기록
+
 ## v6 / synthetic-v3-conditions - 2026-08-31
 
 - v2 고정 split의 `gradient_train` parent 168장만 source로 사용

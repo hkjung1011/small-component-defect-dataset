@@ -1,0 +1,17 @@
+dimension,value,count
+component_status_class,normal_proxy,240
+component_status_class,scratch,240
+component_status_class,surface_spot,240
+component_status_class,discoloration,240
+component_status_class,contamination,240
+component_status_class,lead_breakage,240
+component_status_class,body_chip,240
+component_status_class,body_crack,240
+lighting_profile_scene,neutral_component_spot,96
+class_pair_range,neutral_component_spot,34..35
+lighting_profile_scene,warm_component_spot,96
+class_pair_range,warm_component_spot,34..35
+lighting_profile_scene,cool_component_spot,96
+class_pair_range,cool_component_spot,34..35
+lighting_profile_scene,side_component_spot,96
+class_pair_range,side_component_spot,34..35
