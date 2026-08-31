@@ -1,0 +1,130 @@
+{
+  "release": "synthetic-v3-conditions",
+  "sample_id_prefix": "syn-v3-cond",
+  "generator_version": "3.0.0",
+  "qc_gate_version": "condition-replay-post-jpeg-512-224-v1",
+  "global_seed": 310083117,
+  "image_size": 512,
+  "model_input_size": 224,
+  "source_domain": "synthetic_conditioned_from_v2",
+  "split": "train",
+  "model_split": "gradient_train_auxiliary",
+  "training_use": "TRAIN_ONLY_CONDITION_SYNTHETIC",
+  "evaluation_eligible": "NO",
+  "max_condition_attempts": 40,
+  "adaptive_visibility_attenuation": {
+    "full_strength_attempts": 20,
+    "minimum_strength_scale": 0.08,
+    "reference_jpeg_quality": 95
+  },
+  "source": {
+    "release": "synthetic-v2-700",
+    "manifest_path": "synthetic/v2_700/annotations/manifest.csv",
+    "manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+    "config_path": "configs/synthetic_v2_700.json",
+    "config_sha256": "fdcbf940176700536c05a5f2e7aa1f3420334372adeb3f7969fb932b7ebfa6ee",
+    "split_assignments_path": "training/results/preflight-final/split_assignments.csv",
+    "split_assignments_sha256": "7382226b846133b8e3049ce48d61c25ddd8247cd582d6f066a63cbac839fec22",
+    "required_parent_model_split": "gradient_train",
+    "expected_parent_count": 168,
+    "expected_parent_count_per_class": 24
+  },
+  "profiles": [
+    "underexposure",
+    "overexposure",
+    "warm_directional",
+    "cool_directional",
+    "soft_shadow_vignette",
+    "specular_sensor"
+  ],
+  "profile_ranges": {
+    "underexposure": {
+      "exposure_ev": [-0.75, -0.35],
+      "gamma": [1.04, 1.16],
+      "contrast": [0.90, 1.05],
+      "blur_radius": [0.0, 0.35],
+      "noise_sigma": [1.0, 3.5],
+      "jpeg_quality": [86, 94]
+    },
+    "overexposure": {
+      "exposure_ev": [0.25, 0.60],
+      "gamma": [0.88, 0.98],
+      "contrast": [0.90, 1.08],
+      "blur_radius": [0.0, 0.30],
+      "noise_sigma": [0.5, 2.5],
+      "jpeg_quality": [88, 96]
+    },
+    "warm_directional": {
+      "exposure_ev": [-0.10, 0.18],
+      "gamma": [0.94, 1.06],
+      "contrast": [0.92, 1.10],
+      "channel_gain_r": [1.08, 1.16],
+      "channel_gain_g": [1.01, 1.07],
+      "channel_gain_b": [0.82, 0.92],
+      "gradient_strength": [0.12, 0.30],
+      "gradient_angle_deg": [135.0, 225.0],
+      "blur_radius": [0.0, 0.40],
+      "noise_sigma": [0.5, 3.0],
+      "jpeg_quality": [86, 95]
+    },
+    "cool_directional": {
+      "exposure_ev": [-0.12, 0.16],
+      "gamma": [0.94, 1.06],
+      "contrast": [0.92, 1.10],
+      "channel_gain_r": [0.84, 0.94],
+      "channel_gain_g": [0.98, 1.05],
+      "channel_gain_b": [1.08, 1.18],
+      "gradient_strength": [0.12, 0.30],
+      "gradient_angle_deg": [-45.0, 45.0],
+      "blur_radius": [0.0, 0.40],
+      "noise_sigma": [0.5, 3.0],
+      "jpeg_quality": [86, 95]
+    },
+    "soft_shadow_vignette": {
+      "exposure_ev": [-0.18, 0.10],
+      "gamma": [0.96, 1.08],
+      "contrast": [0.88, 1.08],
+      "shadow_strength": [0.15, 0.35],
+      "shadow_width": [0.18, 0.34],
+      "vignette_strength": [0.10, 0.28],
+      "blur_radius": [0.15, 0.65],
+      "noise_sigma": [1.0, 4.0],
+      "jpeg_quality": [82, 93]
+    },
+    "specular_sensor": {
+      "exposure_ev": [-0.08, 0.16],
+      "gamma": [0.92, 1.05],
+      "contrast": [0.96, 1.14],
+      "hotspot_strength": [0.12, 0.32],
+      "hotspot_sigma": [0.13, 0.24],
+      "blur_radius": [0.35, 0.95],
+      "noise_sigma": [2.5, 6.0],
+      "jpeg_quality": [76, 88]
+    }
+  },
+  "class_overrides": {
+    "discoloration": {
+      "channel_gain_floor": 0.93,
+      "channel_gain_ceiling": 1.07,
+      "hotspot_strength_ceiling": 0.20
+    },
+    "lead_breakage": {
+      "exposure_ev_floor": -0.10,
+      "gamma_ceiling": 1.00,
+      "contrast_floor": 1.10,
+      "blur_radius_ceiling": 0.15,
+      "noise_sigma_ceiling": 1.50,
+      "jpeg_quality_floor": 92
+    }
+  },
+  "qc": {
+    "min_mean_luma": 24.0,
+    "max_mean_luma": 232.0,
+    "min_luma_std": 20.0,
+    "max_black_clip_fraction": 0.32,
+    "max_white_clip_fraction": 0.20,
+    "black_clip_value": 2,
+    "white_clip_value": 253,
+    "require_parent_visibility_gate": true
+  }
+}

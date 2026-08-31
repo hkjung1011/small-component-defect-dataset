@@ -1,5 +1,15 @@
 # Changelog
 
+## v6 / synthetic-v3-conditions - 2026-08-31
+
+- v2 고정 split의 `gradient_train` parent 168장만 source로 사용
+- parent별 6개 조명·촬영조건, 총 1,008장의 train-only image/mask 추가
+- under/over exposure, warm/cool directional light, shadow/vignette, specular/sensor condition 균형 적용
+- parent image/mask SHA-256, lineage/family ID, profile/seed/parameter manifest 추가
+- validation/test parent 파생 0 및 parent-family leakage gate 추가
+- post-JPEG 512/224 defect visibility와 luma/clipping deterministic replay 검증
+- ImageGen 조명 편집 시험본은 geometry/표면 invariant 미충족으로 release에서 제외
+
 ## v5.1 / synthetic-v1-450 - 2026-08-31
 
 - 기존 synthetic-v1을 변경하지 않고 별도 random seed `7809250` release 추가

@@ -16,6 +16,7 @@ import json
 import os
 import platform
 import sys
+from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -27,6 +28,7 @@ from classification_common import (
     deterministic_split,
     evaluate_model,
     load_and_validate_manifest,
+    load_and_validate_auxiliary_condition_manifest,
     load_config,
     load_ml_dependencies,
     seed_everything,
@@ -60,6 +62,14 @@ def parse_args() -> argparse.Namespace:
         "--write-split",
         type=Path,
         help="With --check-only, optionally write manifest/split audit artifacts here.",
+    )
+    parser.add_argument(
+        "--auxiliary-condition-manifest",
+        type=Path,
+        help=(
+            "Optional v3 condition manifest. It must contain exactly six train-only "
+            "variants for each of the 168 base gradient-train parents."
+        ),
     )
     parser.add_argument(
         "--output",
@@ -188,6 +198,20 @@ def main() -> int:
     config, config_path, repository_root = load_config(args.config)
     samples, manifest_audit = load_and_validate_manifest(config, repository_root)
     records, split_audit = deterministic_split(samples, config)
+    auxiliary_samples = []
+    auxiliary_audit = None
+    if args.auxiliary_condition_manifest is not None:
+        auxiliary_samples, auxiliary_audit = (
+            load_and_validate_auxiliary_condition_manifest(
+                args.auxiliary_condition_manifest,
+                config,
+                repository_root,
+                samples,
+                records,
+                manifest_audit,
+                split_audit,
+            )
+        )
 
     check_summary = {
         "status": "PASS",
@@ -221,10 +245,22 @@ def main() -> int:
             set(manifest_audit["warnings"] + split_audit["warnings"])
         ),
     }
+    if auxiliary_audit is not None:
+        check_summary["auxiliary_condition_manifest_audit"] = auxiliary_audit
+        check_summary["effective_gradient_train_sample_count"] = auxiliary_audit[
+            "effective_gradient_train_count"
+        ]
+        check_summary["warnings"] = sorted(
+            set(check_summary["warnings"] + auxiliary_audit["warnings"])
+        )
     if args.check_only:
         if args.write_split:
             write_split_artifacts(
-                args.write_split.resolve(), records, manifest_audit, split_audit
+                args.write_split.resolve(),
+                records,
+                manifest_audit,
+                split_audit,
+                auxiliary_audit,
             )
         print(json.dumps(check_summary, ensure_ascii=False, indent=2))
         return 0
@@ -267,7 +303,13 @@ def main() -> int:
     if output_directory.exists() and any(output_directory.iterdir()):
         raise PipelineError(f"output directory is not empty: {output_directory}")
     output_directory.mkdir(parents=True, exist_ok=True)
-    write_split_artifacts(output_directory, records, manifest_audit, split_audit)
+    write_split_artifacts(
+        output_directory,
+        records,
+        manifest_audit,
+        split_audit,
+        auxiliary_audit,
+    )
     write_json(output_directory / "config_snapshot.json", config)
 
     classes: list[str] = list(config["classes"])
@@ -287,10 +329,59 @@ def main() -> int:
     dataset_class = create_dataset_class(
         torch_module, image_module, image_ops_module
     )
-    train_samples = split_samples(records, "gradient_train")
+    base_train_samples = split_samples(records, "gradient_train")
+    train_samples = base_train_samples + auxiliary_samples
     validation_samples = split_samples(records, "validation")
     test_samples = split_samples(records, "test")
+    effective_model_counts = split_audit["model_counts"]
+    effective_model_class_counts = split_audit["model_class_counts"]
+    effective_model_severity_counts = split_audit["model_severity_counts"]
+    effective_model_class_severity_counts = split_audit[
+        "model_class_severity_counts"
+    ]
+    if auxiliary_audit is not None:
+        class_counter = Counter(sample.label for sample in train_samples)
+        severity_counter = Counter(sample.severity for sample in train_samples)
+        class_severity_counter = Counter(
+            (sample.label, sample.severity) for sample in train_samples
+        )
+        effective_model_counts = copy.deepcopy(split_audit["model_counts"])
+        effective_model_counts["gradient_train"] = len(train_samples)
+        effective_model_class_counts = copy.deepcopy(
+            split_audit["model_class_counts"]
+        )
+        effective_model_class_counts["gradient_train"] = {
+            class_name: class_counter[class_name] for class_name in classes
+        }
+        effective_model_severity_counts = copy.deepcopy(
+            split_audit["model_severity_counts"]
+        )
+        effective_model_severity_counts["gradient_train"] = {
+            severity_name: severity_counter[severity_name]
+            for severity_name in config["severities"]
+        }
+        effective_model_class_severity_counts = copy.deepcopy(
+            split_audit["model_class_severity_counts"]
+        )
+        effective_model_class_severity_counts["gradient_train"] = {
+            class_name: {
+                severity_name: class_severity_counter[
+                    (class_name, severity_name)
+                ]
+                for severity_name in config["severities"]
+            }
+            for class_name in classes
+        }
     augmentation = training_config["augmentation"]
+    augmentation_metadata = augmentation
+    if auxiliary_audit is not None:
+        augmentation_metadata = copy.deepcopy(augmentation)
+        augmentation_metadata["offline_condition_manifest_sha256"] = (
+            auxiliary_audit["manifest_sha256"]
+        )
+        augmentation_metadata["offline_condition_sample_count"] = (
+            auxiliary_audit["sample_count"]
+        )
     augmentation_seed = int(training_config["augmentation_seed"]) + (
         training_seed - int(training_config["seed"])
     )
@@ -497,6 +588,26 @@ def main() -> int:
         "selected_epoch": best_epoch,
         "selection_metric": "validation_loss",
     }
+    if auxiliary_audit is not None:
+        checkpoint.update(
+            {
+                "auxiliary_condition_manifest": auxiliary_audit["manifest"],
+                "auxiliary_condition_manifest_sha256": auxiliary_audit[
+                    "manifest_sha256"
+                ],
+                "auxiliary_condition_sample_count": auxiliary_audit[
+                    "sample_count"
+                ],
+                "auxiliary_condition_parent_count": auxiliary_audit[
+                    "parent_count"
+                ],
+                "auxiliary_condition_lineage_fingerprint_sha256": auxiliary_audit[
+                    "lineage_fingerprint_sha256"
+                ],
+                "base_gradient_train_sample_count": len(base_train_samples),
+                "effective_gradient_train_sample_count": len(train_samples),
+            }
+        )
     checkpoint_path = output_directory / "model_final.pt"
     torch_module.save(checkpoint, checkpoint_path)
 
@@ -543,21 +654,17 @@ def main() -> int:
             "epochs_completed": len(history),
             "freeze_backbone_epochs": freeze_backbone_epochs,
             "batch_size": batch_size,
-            "sample_counts": split_audit["model_counts"],
-            "samples_per_class": split_audit["model_class_counts"],
-            "sample_severity_counts": split_audit[
-                "model_severity_counts"
-            ],
-            "samples_per_class_severity": split_audit[
-                "model_class_severity_counts"
-            ],
+            "sample_counts": effective_model_counts,
+            "samples_per_class": effective_model_class_counts,
+            "sample_severity_counts": effective_model_severity_counts,
+            "samples_per_class_severity": effective_model_class_severity_counts,
             "head_learning_rate": training_config["head_learning_rate"],
             "fine_tune_learning_rate": training_config[
                 "fine_tune_learning_rate"
             ],
             "weight_decay": training_config["weight_decay"],
             "early_stopping": early_stopping,
-            "augmentation": augmentation,
+            "augmentation": augmentation_metadata,
             "augmentation_seed": augmentation_seed,
             "augmentation_scope": "gradient_train only",
             "color_jitter_used": False,
@@ -579,9 +686,39 @@ def main() -> int:
             "deterministic_algorithms": torch_module.are_deterministic_algorithms_enabled(),
         },
         "warnings": sorted(
-            set(manifest_audit["warnings"] + split_audit["warnings"])
+            set(
+                manifest_audit["warnings"]
+                + split_audit["warnings"]
+                + (auxiliary_audit["warnings"] if auxiliary_audit else [])
+            )
         ),
     }
+    if auxiliary_audit is not None:
+        metadata["auxiliary_condition_manifest"] = {
+            "path": auxiliary_audit["manifest"],
+            "sha256": auxiliary_audit["manifest_sha256"],
+            "sample_count": auxiliary_audit["sample_count"],
+            "parent_count": auxiliary_audit["parent_count"],
+            "variants_per_parent": auxiliary_audit["variants_per_parent"],
+            "lineage_fingerprint_sha256": auxiliary_audit[
+                "lineage_fingerprint_sha256"
+            ],
+            "training_use": auxiliary_audit["training_use"],
+            "evaluation_eligible": auxiliary_audit["evaluation_eligible"],
+        }
+        metadata["training"].update(
+            {
+                "base_gradient_train_sample_count": len(base_train_samples),
+                "auxiliary_condition_sample_count": len(auxiliary_samples),
+                "auxiliary_condition_manifest_sha256": auxiliary_audit[
+                    "manifest_sha256"
+                ],
+                "effective_gradient_train_sample_count": len(train_samples),
+                "auxiliary_scope": "gradient_train only",
+                "validation_sample_count_unchanged": len(validation_samples),
+                "test_sample_count_unchanged": len(test_samples),
+            }
+        )
     write_evaluation_artifacts(
         output_directory,
         classes,

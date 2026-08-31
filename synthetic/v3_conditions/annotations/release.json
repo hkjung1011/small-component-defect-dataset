@@ -1,0 +1,117 @@
+{
+  "class_counts": {
+    "body_chip": 144,
+    "body_crack": 144,
+    "contamination": 144,
+    "discoloration": 144,
+    "lead_breakage": 144,
+    "scratch": 144,
+    "surface_spot": 144
+  },
+  "class_profile_counts": {
+    "body_chip": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "body_crack": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "contamination": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "discoloration": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "lead_breakage": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "scratch": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "surface_spot": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    }
+  },
+  "config_path": "configs/synthetic_v3_conditions.json",
+  "config_sha256": "847191ef979b01216a55df5669128d1894ae8477702ee0704813167268267bfd",
+  "evaluation_eligible": "NO",
+  "full_contact_sheet_sha256": {
+    "synthetic/v3_conditions/annotations/contact_sheets/body_chip_overlay_144_at_160.jpg": "0946572bdbca4d87e2258a89bdb429002da9de88d006e1d47e025e053a09660b",
+    "synthetic/v3_conditions/annotations/contact_sheets/body_chip_raw_144_at_160.jpg": "8dcd491fa227dc8f996feacf01f07a6946e28297501b9f6a8d0dacd68aecaac8",
+    "synthetic/v3_conditions/annotations/contact_sheets/body_crack_overlay_144_at_160.jpg": "f8f8f15cbb000011f924ac22425e19b5dfd8a896dc6fd0f7d9432eaa6f15e764",
+    "synthetic/v3_conditions/annotations/contact_sheets/body_crack_raw_144_at_160.jpg": "ce1074885f442cf2bbd41196070e8b6966d854f279a0fd67c9c92190976f5f0f",
+    "synthetic/v3_conditions/annotations/contact_sheets/contamination_overlay_144_at_160.jpg": "01a686d3012a2fe47978829f1915053a954b1cb9fd33a5acc3f1bbe8f12c1566",
+    "synthetic/v3_conditions/annotations/contact_sheets/contamination_raw_144_at_160.jpg": "c7c7d5767a2fa8c4356d6f9307713c0e983a5c1dadfcad647d38c77ad13e7b5d",
+    "synthetic/v3_conditions/annotations/contact_sheets/discoloration_overlay_144_at_160.jpg": "025f6f602b88a013a4e15c302d7f5bc770f59d7a6c474c7d670495a808fb7b48",
+    "synthetic/v3_conditions/annotations/contact_sheets/discoloration_raw_144_at_160.jpg": "b69b2e8e6c1e9fcca95de252ae4a6a7286fb6a863bfe5fc9d6066e332e2309ae",
+    "synthetic/v3_conditions/annotations/contact_sheets/lead_breakage_overlay_144_at_160.jpg": "8ea7393c9eaa3440078ec764a2a33959fc995967f050750746a912c911b3a3bf",
+    "synthetic/v3_conditions/annotations/contact_sheets/lead_breakage_raw_144_at_160.jpg": "33bcc2aea3200892e3062cb274d305452327fb2cc9d284a0ad212e97de4f76aa",
+    "synthetic/v3_conditions/annotations/contact_sheets/scratch_overlay_144_at_160.jpg": "6053bb90f246d987200526bfa0b8c9b70037d628d34301f1a5a49f100be7955f",
+    "synthetic/v3_conditions/annotations/contact_sheets/scratch_raw_144_at_160.jpg": "6825b04fa5d37fd7bff70525feb0644cfe3fd2ed465b630bf02fb2db92bdd908",
+    "synthetic/v3_conditions/annotations/contact_sheets/surface_spot_overlay_144_at_160.jpg": "028de4c51ad591e715a30635d34250dc847790d4fb0a1ebf6e4b37b03a06142a",
+    "synthetic/v3_conditions/annotations/contact_sheets/surface_spot_raw_144_at_160.jpg": "0d1b8c8e18b45c1bdacc520802f92e02f21638e6403caa5e93de4289825aebcb"
+  },
+  "generator_script": "scripts/generate_synthetic_v3_conditions.py",
+  "generator_script_sha256": "21194506114004772e28987b82ac8531a0291141f2fc0e665d0532a510bd5098",
+  "generator_version": "3.0.0",
+  "instances_sha256": "334f558a4ea338ef42d022facd7334125c0b33b2aaeb4c07430ac016d9185e6a",
+  "limitations": [
+    "All variants derive only from the existing v2 gradient-train parents.",
+    "Condition variants improve camera/illumination robustness but add no new physical specimen or defect morphology.",
+    "Variants and their parents must remain in the same train family and are not valid evaluation samples."
+  ],
+  "manifest_sha256": "f7a8a54ba49c25130d70bebbef4fb2c1858c952baa0cd6913164220533f11f00",
+  "overview_contact_sheet_sha256": "e0c2837bc3abfa6d3baa20b8af0e268ac7d5b63880df091cec4626417d59abc6",
+  "parent_count": 168,
+  "profile_counts": {
+    "cool_directional": 168,
+    "overexposure": 168,
+    "soft_shadow_vignette": 168,
+    "specular_sensor": 168,
+    "underexposure": 168,
+    "warm_directional": 168
+  },
+  "release": "synthetic-v3-conditions",
+  "sample_count": 1008,
+  "source_config_sha256": "fdcbf940176700536c05a5f2e7aa1f3420334372adeb3f7969fb932b7ebfa6ee",
+  "source_manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+  "source_release": "synthetic-v2-700",
+  "source_split_assignments_sha256": "7382226b846133b8e3049ce48d61c25ddd8247cd582d6f066a63cbac839fec22",
+  "summary_sha256": "303102c7531301cc818f4c408ea96f13346d87bd23fcd9604e3690ceae5f2638",
+  "training_use": "TRAIN_ONLY_CONDITION_SYNTHETIC",
+  "variants_per_parent": 6
+}

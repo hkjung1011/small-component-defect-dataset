@@ -750,11 +750,841 @@ def deterministic_split(
     return records, split_audit
 
 
+def load_and_validate_auxiliary_condition_manifest(
+    manifest_value: Path | str,
+    config: dict[str, Any],
+    repository_root: Path,
+    base_samples: Sequence[Sample],
+    base_records: Sequence[SplitRecord],
+    base_manifest_audit: dict[str, Any],
+    base_split_audit: dict[str, Any],
+) -> tuple[list[Sample], dict[str, Any]]:
+    """Validate the optional v3 condition release without changing the base split.
+
+    The auxiliary rows are accepted only when they are six condition variants of
+    every base ``gradient_train`` parent.  Validation and test parents are therefore
+    structurally unable to enter the effective training set through this path.
+    """
+
+    manifest_path = resolve_repository_path(repository_root, str(manifest_value))
+    if not manifest_path.is_file():
+        raise PipelineError(f"auxiliary condition manifest not found: {manifest_path}")
+    auxiliary_release_root = manifest_path.parents[1]
+
+    required_columns = {
+        "sample_id",
+        "image_path",
+        "mask_path",
+        "domain",
+        "split",
+        "model_split",
+        "training_use",
+        "evaluation_eligible",
+        "primary_class",
+        "visible_multilabel",
+        "severity",
+        "base_image_id",
+        "source_release",
+        "parent_sample_id",
+        "parent_image_path",
+        "parent_mask_path",
+        "parent_image_sha256",
+        "parent_mask_sha256",
+        "parent_sample_seed",
+        "base_group_id",
+        "source_specimen_group",
+        "view",
+        "lineage_group_id",
+        "family_split_id",
+        "defect_instance_id",
+        "augmentation_family_id",
+        "derivation_depth",
+        "variant_index",
+        "condition_profile",
+        "sample_seed",
+        "condition_seed",
+        "generator_version",
+        "qc_gate_version",
+        "config_sha256",
+        "image_sha256",
+        "mask_sha256",
+        "width",
+        "height",
+        "qc_status",
+        "human_verified",
+    }
+    try:
+        with manifest_path.open("r", encoding="utf-8-sig", newline="") as stream:
+            reader = csv.DictReader(stream)
+            fieldnames = set(reader.fieldnames or [])
+            missing = sorted(required_columns - fieldnames)
+            if missing:
+                raise PipelineError(
+                    "auxiliary manifest missing required columns: "
+                    + ", ".join(missing)
+                )
+            raw_rows = list(reader)
+    except OSError as error:
+        raise PipelineError(
+            f"cannot read auxiliary condition manifest {manifest_path}: {error}"
+        ) from error
+
+    manifest_sha256 = sha256_file(manifest_path)
+    release_path = manifest_path.parent / "release.json"
+    if not release_path.is_file():
+        raise PipelineError(
+            f"auxiliary release metadata not found beside manifest: {release_path}"
+        )
+    try:
+        release_metadata = json.loads(release_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise PipelineError(
+            f"cannot read auxiliary release metadata {release_path}: {error}"
+        ) from error
+    if not isinstance(release_metadata, dict):
+        raise PipelineError("auxiliary release.json must contain an object")
+    release_expectations = {
+        "release": "synthetic-v3-conditions",
+        "source_release": config["release"],
+        "source_manifest_sha256": base_manifest_audit["manifest_sha256"],
+        "manifest_sha256": manifest_sha256,
+        "training_use": "TRAIN_ONLY_CONDITION_SYNTHETIC",
+        "evaluation_eligible": "NO",
+        "sample_count": 1008,
+        "parent_count": 168,
+        "variants_per_parent": 6,
+    }
+    release_errors = [
+        f"release.json {name} mismatch: "
+        f"{release_metadata.get(name)!r} != {expected!r}"
+        for name, expected in release_expectations.items()
+        if release_metadata.get(name) != expected
+    ]
+
+    auxiliary_config_value = release_metadata.get("config_path")
+    if not isinstance(auxiliary_config_value, str) or not auxiliary_config_value:
+        release_errors.append("release.json config_path must be non-empty")
+        auxiliary_config_path = repository_root
+        auxiliary_config: dict[str, Any] = {}
+        auxiliary_config_sha256 = ""
+    else:
+        try:
+            auxiliary_config_path = resolve_repository_path(
+                repository_root, auxiliary_config_value
+            )
+        except PipelineError as error:
+            release_errors.append(str(error))
+            auxiliary_config_path = repository_root
+        if not auxiliary_config_path.is_file():
+            release_errors.append(
+                f"auxiliary config not found: {auxiliary_config_value}"
+            )
+            auxiliary_config = {}
+            auxiliary_config_sha256 = ""
+        else:
+            auxiliary_config_sha256 = sha256_file(auxiliary_config_path)
+            try:
+                auxiliary_config = json.loads(
+                    auxiliary_config_path.read_text(encoding="utf-8")
+                )
+            except (OSError, json.JSONDecodeError) as error:
+                release_errors.append(
+                    f"cannot read auxiliary config {auxiliary_config_path}: {error}"
+                )
+                auxiliary_config = {}
+            if not isinstance(auxiliary_config, dict):
+                release_errors.append("auxiliary config must contain an object")
+                auxiliary_config = {}
+    if release_metadata.get("config_sha256") != auxiliary_config_sha256:
+        release_errors.append(
+            "release.json config_sha256 does not match the actual auxiliary config"
+        )
+
+    expected_generator_version = "3.0.0"
+    expected_qc_gate_version = "condition-replay-post-jpeg-512-224-v1"
+    expected_profile_order = (
+        "underexposure",
+        "overexposure",
+        "warm_directional",
+        "cool_directional",
+        "soft_shadow_vignette",
+        "specular_sensor",
+    )
+    auxiliary_config_expectations = {
+        "release": "synthetic-v3-conditions",
+        "generator_version": expected_generator_version,
+        "qc_gate_version": expected_qc_gate_version,
+        "split": "train",
+        "model_split": "gradient_train_auxiliary",
+        "training_use": "TRAIN_ONLY_CONDITION_SYNTHETIC",
+        "evaluation_eligible": "NO",
+        "profiles": list(expected_profile_order),
+    }
+    for name, expected in auxiliary_config_expectations.items():
+        if auxiliary_config.get(name) != expected:
+            release_errors.append(
+                f"auxiliary config {name} mismatch: "
+                f"{auxiliary_config.get(name)!r} != {expected!r}"
+            )
+    if release_metadata.get("generator_version") != expected_generator_version:
+        release_errors.append(
+            "release.json generator_version does not match the required version"
+        )
+
+    auxiliary_source = auxiliary_config.get("source")
+    if not isinstance(auxiliary_source, dict):
+        release_errors.append("auxiliary config source must be an object")
+        auxiliary_source = {}
+    source_expectations = {
+        "release": config["release"],
+        "manifest_path": config["manifest"],
+        "manifest_sha256": base_manifest_audit["manifest_sha256"],
+        "required_parent_model_split": "gradient_train",
+        "expected_parent_count": 168,
+        "expected_parent_count_per_class": 24,
+    }
+    for name, expected in source_expectations.items():
+        if auxiliary_source.get(name) != expected:
+            release_errors.append(
+                f"auxiliary config source.{name} mismatch: "
+                f"{auxiliary_source.get(name)!r} != {expected!r}"
+            )
+
+    source_config_value = auxiliary_source.get("config_path")
+    source_config_sha = auxiliary_source.get("config_sha256")
+    if not isinstance(source_config_value, str) or not source_config_value:
+        release_errors.append("auxiliary config source.config_path must be non-empty")
+    else:
+        try:
+            source_config_path = resolve_repository_path(
+                repository_root, source_config_value
+            )
+            actual_source_config_sha = sha256_file(source_config_path)
+        except (PipelineError, OSError) as error:
+            release_errors.append(f"cannot verify source config: {error}")
+        else:
+            if source_config_sha != actual_source_config_sha:
+                release_errors.append(
+                    "auxiliary source config SHA does not match the actual file"
+                )
+            if release_metadata.get("source_config_sha256") != actual_source_config_sha:
+                release_errors.append(
+                    "release.json source_config_sha256 does not match the actual file"
+                )
+
+    split_assignments_value = auxiliary_source.get("split_assignments_path")
+    split_assignments_sha = auxiliary_source.get("split_assignments_sha256")
+    if not isinstance(split_assignments_value, str) or not split_assignments_value:
+        release_errors.append(
+            "auxiliary config source.split_assignments_path must be non-empty"
+        )
+    else:
+        try:
+            split_assignments_path = resolve_repository_path(
+                repository_root, split_assignments_value
+            )
+            actual_split_assignments_sha = sha256_file(split_assignments_path)
+        except (PipelineError, OSError) as error:
+            release_errors.append(f"cannot verify source split assignments: {error}")
+        else:
+            if split_assignments_sha != actual_split_assignments_sha:
+                release_errors.append(
+                    "auxiliary source split assignment SHA does not match the actual file"
+                )
+            if (
+                release_metadata.get("source_split_assignments_sha256")
+                != actual_split_assignments_sha
+            ):
+                release_errors.append(
+                    "release.json source_split_assignments_sha256 does not match the actual file"
+                )
+    if release_errors:
+        raise PipelineError(
+            "auxiliary release metadata gate failed:\n" + "\n".join(release_errors)
+        )
+
+    expected_profiles = set(expected_profile_order)
+    expected_variants_per_parent = len(expected_profiles)
+    expected_parent_count = 168
+    expected_parent_count_per_class = 24
+    expected_auxiliary_per_class = 144
+    expected_total = expected_parent_count * expected_variants_per_parent
+    if len(raw_rows) != expected_total:
+        raise PipelineError(
+            "auxiliary manifest row count mismatch: "
+            f"expected {expected_total}, got {len(raw_rows)}"
+        )
+
+    gradient_parents = {
+        record.sample.sample_id: record.sample
+        for record in base_records
+        if record.model_split == "gradient_train"
+    }
+    non_gradient_parent_ids = {
+        record.sample.sample_id
+        for record in base_records
+        if record.model_split != "gradient_train"
+    }
+    if len(gradient_parents) != expected_parent_count:
+        raise PipelineError(
+            "base gradient_train parent count changed: "
+            f"expected {expected_parent_count}, got {len(gradient_parents)}"
+        )
+    classes: list[str] = list(config["classes"])
+    severities: list[str] = list(config["severities"])
+    configured_profiles = auxiliary_config.get("profiles")
+    if (
+        not isinstance(configured_profiles, list)
+        or len(configured_profiles) != len(expected_profiles)
+        or set(configured_profiles) != expected_profiles
+    ):
+        raise PipelineError(
+            "auxiliary config profiles must contain the six required profiles exactly once"
+        )
+    expected_release_class_counts = {
+        class_name: expected_auxiliary_per_class for class_name in classes
+    }
+    expected_release_profile_counts = {
+        profile: expected_parent_count for profile in expected_profiles
+    }
+    expected_release_class_profile_counts = {
+        class_name: {
+            profile: expected_parent_count_per_class
+            for profile in expected_profiles
+        }
+        for class_name in classes
+    }
+    for name, expected in (
+        ("class_counts", expected_release_class_counts),
+        ("profile_counts", expected_release_profile_counts),
+        ("class_profile_counts", expected_release_class_profile_counts),
+    ):
+        if release_metadata.get(name) != expected:
+            raise PipelineError(
+                f"auxiliary release metadata count mismatch for {name}"
+            )
+    parent_class_counts = Counter(parent.label for parent in gradient_parents.values())
+    for class_name in classes:
+        if parent_class_counts[class_name] != expected_parent_count_per_class:
+            raise PipelineError(
+                f"base gradient_train parent count for {class_name} changed: "
+                f"expected {expected_parent_count_per_class}, "
+                f"got {parent_class_counts[class_name]}"
+            )
+
+    base_manifest_value = config.get("manifest")
+    if not isinstance(base_manifest_value, str) or not base_manifest_value:
+        raise PipelineError("config manifest must be a non-empty relative path")
+    base_manifest_path = resolve_repository_path(repository_root, base_manifest_value)
+    try:
+        with base_manifest_path.open(
+            "r", encoding="utf-8-sig", newline=""
+        ) as stream:
+            base_reader = csv.DictReader(stream)
+            base_fieldnames = set(base_reader.fieldnames or [])
+            required_base_columns = {
+                "sample_id",
+                "image_path",
+                "mask_path",
+                "image_sha256",
+                "mask_sha256",
+                "base_image_id",
+                "view",
+            }
+            missing_base = sorted(required_base_columns - base_fieldnames)
+            if missing_base:
+                raise PipelineError(
+                    "base manifest lacks auxiliary lineage columns: "
+                    + ", ".join(missing_base)
+                )
+            base_rows = {
+                (row.get("sample_id") or "").strip(): row for row in base_reader
+            }
+    except OSError as error:
+        raise PipelineError(f"cannot reread base manifest {base_manifest_path}: {error}") from error
+
+    base_ids = {sample.sample_id for sample in base_samples}
+    base_hashes = {sample.image_sha256 for sample in base_samples}
+    ids: set[str] = set()
+    image_paths: set[str] = set()
+    mask_paths: set[str] = set()
+    image_hashes: set[str] = set()
+    condition_seeds: set[str] = set()
+    config_hashes: set[str] = set()
+    samples: list[Sample] = []
+    errors: list[str] = []
+    class_counts: Counter[str] = Counter()
+    profile_counts: Counter[str] = Counter()
+    class_profile_counts: Counter[tuple[str, str]] = Counter()
+    qc_counts: Counter[str] = Counter()
+    human_verified_counts: Counter[str] = Counter()
+    parent_profiles: defaultdict[str, list[str]] = defaultdict(list)
+    parent_variant_indices: defaultdict[str, set[int]] = defaultdict(set)
+    parent_index_profiles: defaultdict[str, dict[int, str]] = defaultdict(dict)
+    parent_families: defaultdict[str, set[str]] = defaultdict(set)
+    family_to_parents: defaultdict[str, set[str]] = defaultdict(set)
+    verified_hashes: dict[Path, str] = {}
+
+    def valid_sha256(value: str) -> bool:
+        return len(value) == 64 and all(
+            character in "0123456789abcdef" for character in value
+        )
+
+    def cached_sha256(path: Path) -> str:
+        if path not in verified_hashes:
+            verified_hashes[path] = sha256_file(path)
+        return verified_hashes[path]
+
+    for row_index, row in enumerate(raw_rows, start=2):
+        value = lambda name: (row.get(name) or "").strip()  # noqa: E731
+        sample_id = value("sample_id")
+        image_relative = value("image_path")
+        mask_relative = value("mask_path")
+        label = value("primary_class")
+        severity = value("severity")
+        profile = value("condition_profile")
+        parent_id = value("parent_sample_id")
+        image_sha = value("image_sha256").lower()
+        mask_sha = value("mask_sha256").lower()
+        parent_image_sha = value("parent_image_sha256").lower()
+        parent_mask_sha = value("parent_mask_sha256").lower()
+        condition_seed = value("condition_seed")
+        config_sha = value("config_sha256").lower()
+        family_id = value("augmentation_family_id")
+        row_errors: list[str] = []
+
+        if not sample_id:
+            row_errors.append("empty sample_id")
+        elif sample_id in ids:
+            row_errors.append(f"duplicate sample_id {sample_id}")
+        elif sample_id in base_ids:
+            row_errors.append(f"sample_id overlaps base manifest: {sample_id}")
+
+        image_absolute = repository_root
+        if not image_relative:
+            row_errors.append("empty image_path")
+        else:
+            try:
+                image_absolute = resolve_repository_path(
+                    repository_root, image_relative
+                )
+                image_absolute.relative_to(auxiliary_release_root)
+            except (PipelineError, ValueError):
+                row_errors.append(
+                    f"image path outside auxiliary release: {image_relative}"
+                )
+                image_absolute = repository_root
+            if image_relative in image_paths:
+                row_errors.append(f"duplicate image_path {image_relative}")
+            if not image_absolute.is_file():
+                row_errors.append(f"missing image {image_relative}")
+
+        mask_absolute = repository_root
+        if not mask_relative:
+            row_errors.append("empty mask_path")
+        else:
+            try:
+                mask_absolute = resolve_repository_path(repository_root, mask_relative)
+                mask_absolute.relative_to(auxiliary_release_root)
+            except (PipelineError, ValueError):
+                row_errors.append(
+                    f"mask path outside auxiliary release: {mask_relative}"
+                )
+                mask_absolute = repository_root
+            if mask_relative in mask_paths:
+                row_errors.append(f"duplicate mask_path {mask_relative}")
+            if not mask_absolute.is_file():
+                row_errors.append(f"missing mask {mask_relative}")
+
+        if label not in classes:
+            row_errors.append(f"unexpected class {label!r}")
+        if value("visible_multilabel") != label:
+            row_errors.append("visible_multilabel must equal primary_class")
+        if severity not in severities:
+            row_errors.append(f"unexpected severity {severity!r}")
+        if profile not in expected_profiles:
+            row_errors.append(f"unexpected condition_profile {profile!r}")
+        if value("domain") != "synthetic_conditioned_from_v2":
+            row_errors.append("domain must be synthetic_conditioned_from_v2")
+        if value("split") != "train":
+            row_errors.append("split must be train")
+        if value("model_split") != "gradient_train_auxiliary":
+            row_errors.append("model_split must be gradient_train_auxiliary")
+        if value("training_use") != "TRAIN_ONLY_CONDITION_SYNTHETIC":
+            row_errors.append(
+                "training_use must be TRAIN_ONLY_CONDITION_SYNTHETIC"
+            )
+        if value("evaluation_eligible") != "NO":
+            row_errors.append("evaluation_eligible must be NO")
+        if value("source_release") != str(config["release"]):
+            row_errors.append(
+                f"source_release must be {config['release']}"
+            )
+        if value("qc_status") != "AUTO_PASS_CONDITION_POST_JPEG_512_224":
+            row_errors.append(
+                "qc_status must be AUTO_PASS_CONDITION_POST_JPEG_512_224"
+            )
+        if value("human_verified") not in {"YES", "NO"}:
+            row_errors.append("human_verified must be YES or NO")
+        if value("generator_version") != expected_generator_version:
+            row_errors.append(
+                f"generator_version must be {expected_generator_version}"
+            )
+        if value("qc_gate_version") != expected_qc_gate_version:
+            row_errors.append(
+                f"qc_gate_version must be {expected_qc_gate_version}"
+            )
+
+        try:
+            width = int(value("width"))
+            height = int(value("height"))
+        except ValueError:
+            width = -1
+            height = -1
+        if (width, height) != (512, 512):
+            row_errors.append(
+                f"image dimensions are {width}x{height}, expected 512x512"
+            )
+        try:
+            derivation_depth = int(value("derivation_depth"))
+        except ValueError:
+            derivation_depth = -1
+        if derivation_depth != 1:
+            row_errors.append("derivation_depth must be 1")
+        try:
+            variant_index = int(value("variant_index"))
+        except ValueError:
+            variant_index = -1
+        if not 0 <= variant_index < expected_variants_per_parent:
+            row_errors.append(
+                f"variant_index must be 0..{expected_variants_per_parent - 1}"
+            )
+
+        for name, sha_value in (
+            ("image_sha256", image_sha),
+            ("mask_sha256", mask_sha),
+            ("parent_image_sha256", parent_image_sha),
+            ("parent_mask_sha256", parent_mask_sha),
+            ("config_sha256", config_sha),
+        ):
+            if not valid_sha256(sha_value):
+                row_errors.append(f"invalid {name}")
+        if valid_sha256(image_sha):
+            if image_sha in image_hashes:
+                row_errors.append(f"duplicate image_sha256 {image_sha}")
+            if image_sha in base_hashes:
+                row_errors.append(f"image SHA overlaps base manifest: {image_sha}")
+        if not condition_seed:
+            row_errors.append("empty condition_seed")
+        elif condition_seed in condition_seeds:
+            row_errors.append(f"duplicate condition_seed {condition_seed}")
+        if not value("sample_seed"):
+            row_errors.append("empty sample_seed")
+        elif value("sample_seed") != condition_seed:
+            row_errors.append("sample_seed must equal condition_seed")
+        if not family_id:
+            row_errors.append("empty augmentation_family_id")
+
+        parent = gradient_parents.get(parent_id)
+        if parent is None:
+            if parent_id in non_gradient_parent_ids:
+                row_errors.append(
+                    f"parent belongs to validation/test, not gradient_train: {parent_id}"
+                )
+            else:
+                row_errors.append(f"unknown parent_sample_id {parent_id!r}")
+        else:
+            base_row = base_rows.get(parent_id)
+            if base_row is None:
+                row_errors.append(f"parent absent from base manifest: {parent_id}")
+            else:
+                expected_parent_mask_path = (
+                    base_row.get("mask_path") or ""
+                ).strip()
+                expected_parent_mask_sha = (
+                    base_row.get("mask_sha256") or ""
+                ).strip().lower()
+                expected_parent_mask_absolute = repository_root
+                try:
+                    expected_parent_mask_absolute = resolve_repository_path(
+                        repository_root, expected_parent_mask_path
+                    )
+                    expected_parent_mask_absolute.relative_to(
+                        base_manifest_path.parents[1]
+                    )
+                except (PipelineError, ValueError):
+                    row_errors.append(
+                        "parent mask path escapes the base release"
+                    )
+                    expected_parent_mask_absolute = repository_root
+                if not expected_parent_mask_absolute.is_file():
+                    row_errors.append(
+                        f"missing parent mask {expected_parent_mask_path}"
+                    )
+                elif valid_sha256(expected_parent_mask_sha):
+                    actual_parent_mask_sha = cached_sha256(
+                        expected_parent_mask_absolute
+                    )
+                    if actual_parent_mask_sha != expected_parent_mask_sha:
+                        row_errors.append(
+                            "parent mask SHA mismatch "
+                            f"expected={expected_parent_mask_sha} "
+                            f"actual={actual_parent_mask_sha}"
+                        )
+                lineage_checks = {
+                    "primary_class": (label, parent.label),
+                    "severity": (severity, parent.severity),
+                    "parent_image_path": (
+                        value("parent_image_path"),
+                        parent.image_path,
+                    ),
+                    "parent_image_sha256": (
+                        parent_image_sha,
+                        parent.image_sha256,
+                    ),
+                    "parent_mask_path": (
+                        value("parent_mask_path"),
+                        expected_parent_mask_path,
+                    ),
+                    "parent_mask_sha256": (
+                        parent_mask_sha,
+                        expected_parent_mask_sha,
+                    ),
+                    "parent_sample_seed": (
+                        value("parent_sample_seed"),
+                        parent.sample_seed,
+                    ),
+                    "base_group_id": (
+                        value("base_group_id"),
+                        parent.base_group_id,
+                    ),
+                    "source_specimen_group": (
+                        value("source_specimen_group"),
+                        parent.source_specimen_group,
+                    ),
+                    "base_image_id": (
+                        value("base_image_id"),
+                        (base_row.get("base_image_id") or "").strip(),
+                    ),
+                    "view": (
+                        value("view"),
+                        (base_row.get("view") or "").strip(),
+                    ),
+                }
+                for name, (actual, expected) in lineage_checks.items():
+                    if actual != expected:
+                        row_errors.append(
+                            f"{name} does not match parent: {actual!r} != {expected!r}"
+                        )
+                for name in (
+                    "lineage_group_id",
+                    "family_split_id",
+                    "defect_instance_id",
+                ):
+                    if value(name) != parent_id:
+                        row_errors.append(f"{name} must equal parent_sample_id")
+                if valid_sha256(mask_sha) and mask_sha != expected_parent_mask_sha:
+                    row_errors.append("condition mask SHA must equal parent mask SHA")
+
+        if image_absolute.is_file() and valid_sha256(image_sha):
+            actual_image_sha = cached_sha256(image_absolute)
+            if actual_image_sha != image_sha:
+                row_errors.append(
+                    "image SHA mismatch "
+                    f"expected={image_sha} actual={actual_image_sha}"
+                )
+        if mask_absolute.is_file() and valid_sha256(mask_sha):
+            actual_mask_sha = cached_sha256(mask_absolute)
+            if actual_mask_sha != mask_sha:
+                row_errors.append(
+                    "mask SHA mismatch "
+                    f"expected={mask_sha} actual={actual_mask_sha}"
+                )
+
+        if row_errors:
+            errors.extend(
+                f"row {row_index} ({sample_id or 'UNKNOWN'}): {item}"
+                for item in row_errors
+            )
+            continue
+
+        ids.add(sample_id)
+        image_paths.add(image_relative)
+        mask_paths.add(mask_relative)
+        image_hashes.add(image_sha)
+        condition_seeds.add(condition_seed)
+        config_hashes.add(config_sha)
+        class_counts[label] += 1
+        profile_counts[profile] += 1
+        class_profile_counts[(label, profile)] += 1
+        qc_counts[value("qc_status")] += 1
+        human_verified_counts[value("human_verified")] += 1
+        parent_profiles[parent_id].append(profile)
+        parent_variant_indices[parent_id].add(variant_index)
+        parent_index_profiles[parent_id][variant_index] = profile
+        parent_families[parent_id].add(family_id)
+        family_to_parents[family_id].add(parent_id)
+        samples.append(
+            Sample(
+                sample_id=sample_id,
+                image_path=image_relative,
+                image_absolute_path=image_absolute,
+                label=label,
+                severity=severity,
+                image_sha256=image_sha,
+                sample_seed=value("sample_seed"),
+                base_group_id=value("base_group_id"),
+                source_specimen_group=value("source_specimen_group"),
+                domain=value("domain"),
+                qc_status=value("qc_status"),
+                human_verified=value("human_verified"),
+                evaluation_eligible=value("evaluation_eligible"),
+                width=width,
+                height=height,
+            )
+        )
+
+    if errors:
+        preview = "\n".join(errors[:30])
+        suffix = "" if len(errors) <= 30 else f"\n... {len(errors) - 30} more errors"
+        raise PipelineError(
+            f"auxiliary manifest integrity gate failed:\n{preview}{suffix}"
+        )
+
+    expected_parent_ids = set(gradient_parents)
+    actual_parent_ids = set(parent_profiles)
+    if actual_parent_ids != expected_parent_ids:
+        missing = sorted(expected_parent_ids - actual_parent_ids)
+        unexpected = sorted(actual_parent_ids - expected_parent_ids)
+        errors.append(
+            "auxiliary parent set does not exactly match base gradient_train; "
+            f"missing={missing[:10]} unexpected={unexpected[:10]}"
+        )
+    for parent_id in sorted(expected_parent_ids):
+        profiles = parent_profiles[parent_id]
+        if len(profiles) != expected_variants_per_parent or set(profiles) != expected_profiles:
+            errors.append(
+                f"parent {parent_id} must have each of the six profiles exactly once"
+            )
+        if parent_variant_indices[parent_id] != set(
+            range(expected_variants_per_parent)
+        ):
+            errors.append(
+                f"parent {parent_id} variant_index set must be 0..5"
+            )
+        for variant_index, expected_profile in enumerate(expected_profile_order):
+            actual_profile = parent_index_profiles[parent_id].get(variant_index)
+            if actual_profile != expected_profile:
+                errors.append(
+                    f"parent {parent_id} variant_index {variant_index} must map to "
+                    f"{expected_profile}, got {actual_profile!r}"
+                )
+        if len(parent_families[parent_id]) != 1:
+            errors.append(
+                f"parent {parent_id} must map to exactly one augmentation family"
+            )
+    reused_families = {
+        family: parents
+        for family, parents in family_to_parents.items()
+        if len(parents) != 1
+    }
+    if reused_families:
+        errors.append(
+            "augmentation_family_id reused across parents: "
+            + ", ".join(sorted(reused_families)[:10])
+        )
+    for class_name in classes:
+        if class_counts[class_name] != expected_auxiliary_per_class:
+            errors.append(
+                f"auxiliary class count mismatch {class_name}: "
+                f"expected {expected_auxiliary_per_class}, got {class_counts[class_name]}"
+            )
+        for profile in sorted(expected_profiles):
+            if class_profile_counts[(class_name, profile)] != expected_parent_count_per_class:
+                errors.append(
+                    f"auxiliary class×profile count mismatch {class_name}/{profile}: "
+                    f"expected {expected_parent_count_per_class}, "
+                    f"got {class_profile_counts[(class_name, profile)]}"
+                )
+    for profile in expected_profiles:
+        if profile_counts[profile] != expected_parent_count:
+            errors.append(
+                f"auxiliary profile count mismatch {profile}: "
+                f"expected {expected_parent_count}, got {profile_counts[profile]}"
+            )
+    if config_hashes != {auxiliary_config_sha256}:
+        errors.append(
+            "auxiliary row config_sha256 values must equal the release-pinned "
+            f"config SHA {auxiliary_config_sha256}"
+        )
+    if errors:
+        raise PipelineError("auxiliary manifest count/lineage gate failed:\n" + "\n".join(errors))
+
+    canonical_lineage = "".join(
+        f"{value_row['sample_id']},{value_row['parent_sample_id']},"
+        f"{value_row['condition_profile']},{value_row['image_sha256']}\n"
+        for value_row in sorted(raw_rows, key=lambda item: item["sample_id"])
+    )
+    manifest_relative = manifest_path.relative_to(repository_root).as_posix()
+    audit = {
+        "manifest": manifest_relative,
+        "manifest_sha256": manifest_sha256,
+        "release_metadata": release_path.relative_to(repository_root).as_posix(),
+        "release_metadata_sha256": sha256_file(release_path),
+        "source_release": config["release"],
+        "source_manifest_sha256": base_manifest_audit["manifest_sha256"],
+        "source_split_fingerprint_sha256": base_split_audit["fingerprint_sha256"],
+        "required_parent_model_split": "gradient_train",
+        "sample_count": len(samples),
+        "parent_count": len(parent_profiles),
+        "augmentation_family_count": len(family_to_parents),
+        "variants_per_parent": expected_variants_per_parent,
+        "effective_gradient_train_count": len(gradient_parents) + len(samples),
+        "class_counts": {name: class_counts[name] for name in classes},
+        "parent_class_counts": {
+            name: parent_class_counts[name] for name in classes
+        },
+        "profile_counts": {
+            name: profile_counts[name] for name in sorted(expected_profiles)
+        },
+        "class_profile_counts": {
+            class_name: {
+                profile: class_profile_counts[(class_name, profile)]
+                for profile in sorted(expected_profiles)
+            }
+            for class_name in classes
+        },
+        "qc_status_counts": dict(sorted(qc_counts.items())),
+        "human_verified_counts": dict(sorted(human_verified_counts.items())),
+        "unique_image_sha256_count": len(image_hashes),
+        "image_and_mask_hashes_verified": True,
+        "parent_image_and_mask_lineage_verified": True,
+        "sample_id_overlap_with_base_count": len(ids & base_ids),
+        "image_sha256_overlap_with_base_count": len(image_hashes & base_hashes),
+        "validation_or_test_parent_count": len(actual_parent_ids & non_gradient_parent_ids),
+        "config": auxiliary_config_path.relative_to(repository_root).as_posix(),
+        "config_sha256": auxiliary_config_sha256,
+        "generator_version": expected_generator_version,
+        "qc_gate_version": expected_qc_gate_version,
+        "lineage_fingerprint_sha256": hashlib.sha256(
+            canonical_lineage.encode("utf-8")
+        ).hexdigest(),
+        "evaluation_eligible": "NO",
+        "training_use": "TRAIN_ONLY_CONDITION_SYNTHETIC",
+        "warnings": [
+            "Auxiliary condition variants add no independent physical specimen or defect morphology.",
+            "The auxiliary release is gradient-train-only and is excluded from validation/test metrics.",
+        ],
+    }
+    return samples, audit
+
+
 def write_split_artifacts(
     output_directory: Path,
     records: Sequence[SplitRecord],
     manifest_audit: dict[str, Any],
     split_audit: dict[str, Any],
+    auxiliary_manifest_audit: dict[str, Any] | None = None,
 ) -> None:
     output_directory.mkdir(parents=True, exist_ok=True)
     assignment_path = output_directory / "split_assignments.csv"
@@ -806,6 +1636,11 @@ def write_split_artifacts(
             )
     write_json(output_directory / "manifest_audit.json", manifest_audit)
     write_json(output_directory / "split_audit.json", split_audit)
+    if auxiliary_manifest_audit is not None:
+        write_json(
+            output_directory / "auxiliary_manifest_audit.json",
+            auxiliary_manifest_audit,
+        )
 
 
 def split_samples(

@@ -20,6 +20,36 @@ torchvision cache; it never downloads model weights:
 & $py -B training\scripts\train_eval_classifier.py --device cuda
 ```
 
+Optional v3 condition training first validates the auxiliary manifest and then
+appends it only to the base `gradient_train` partition:
+
+```powershell
+$aux = 'synthetic\v3_conditions\annotations\manifest.csv'
+
+& $py -B training\scripts\train_eval_classifier.py --check-only `
+  --auxiliary-condition-manifest $aux `
+  --write-split training\results\preflight-v3-conditions
+
+& $py -B training\scripts\train_eval_classifier.py --device cuda `
+  --auxiliary-condition-manifest $aux `
+  --output training\results\v3-conditions-seed-2700701
+```
+
+The auxiliary gate requires exactly 1,008 rows: the same 168 base
+`gradient_train` parents, six condition profiles per parent, 144 variants per
+class, and 24 rows per class×profile. It verifies parent/family/lineage fields,
+image and mask SHA-256 values, QC status, train-only use, and zero sample/image
+hash overlap with the 700-row base manifest. The sibling `release.json` pins the
+actual manifest, v3 config, source manifest/config/split assignments, generator,
+and QC versions before any auxiliary row is accepted. With the option enabled, the
+effective gradient-training count is 1,176 (`168 + 1,008`); validation remains
+28 and test remains 504. The original base split fingerprint is unchanged.
+`--write-split` additionally writes `auxiliary_manifest_audit.json`.
+
+Omitting `--auxiliary-condition-manifest` preserves the original 168/28/504
+behavior. The condition variants are never evaluation samples and do not add an
+independent specimen or new defect morphology.
+
 Three stochastic training repeats use the identical immutable dataset split:
 
 ```powershell

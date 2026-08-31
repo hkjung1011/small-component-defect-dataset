@@ -2,7 +2,7 @@
 
 KEC `KIA7809AF`로 식별된 소형 전원 반도체 사진 17장을 직접 수동 검수해, specimen 상태와 사진에서 보이는 결함을 분리한 dataset입니다. 최신 라벨은 `annotations/image_labels_v4.csv`입니다.
 
-실데이터와 별도로, clean-back 복원본에서 자동 생성한 train-only synthetic 이미지 2,050장과 pixel mask 2,050장을 포함합니다.
+실데이터와 별도로, clean-back 복원본에서 자동 생성한 train-only synthetic 이미지 3,058장과 pixel mask 3,058장을 포함합니다.
 
 ## 저작권 및 이용 제한 / Copyright and use restrictions
 
@@ -36,6 +36,12 @@ KEC `KIA7809AF`로 식별된 소형 전원 반도체 사진 17장을 직접 수�
   </tr>
 </table>
 
+### 조명·촬영조건 증강 미리보기
+
+`synthetic-v3-conditions`는 기존 `gradient_train` 결함 parent 168장의 형상과 mask를 고정하고 6가지 조명·카메라 조건을 적용한 1,008장 auxiliary release입니다. 아래 overview는 class×condition 예시이며, 평가 데이터로 사용할 수 없습니다.
+
+[![Synthetic v3 lighting and camera condition variants](synthetic/v3_conditions/contact_sheet.jpg)](synthetic/v3_conditions/contact_sheet.jpg)
+
 ## 최종 판정
 
 | 구분 | 사진 수 | 의미 |
@@ -53,12 +59,17 @@ KEC `KIA7809AF`로 식별된 소형 전원 반도체 사진 17장을 직접 수�
 | `synthetic-v1` | 100장 | 900 / 900 | seed `7809208`, ID `syn-v1-*` |
 | `synthetic-v1-450` | 50장 | 450 / 450 | 신규 random condition, seed `7809250`, ID `syn-v1-450-*` |
 | `synthetic-v2-700` | 100장 | 700 / 700 | 7개 결함 class, post-JPEG 512/224 QC, ID `syn-v2-700-*` |
+| `synthetic-v3-conditions` | 144장 | 1,008 / 1,008 | v2 gradient-train parent 24/class × 조명·카메라 6조건, ID `syn-v3-cond-*` |
 
 `synthetic-v1`과 `synthetic-v1-450`은 `normal_proxy`, scratch, surface spot, discoloration, contamination, lead breakage, body chip, body crack, multi-defect의 9개 primary class로 구성됩니다. `synthetic-v1-450`은 기존 900장의 subset이나 복사본이 아니라 다른 seed로 새로 생성한 450장입니다.
 
 `synthetic-v2-700`은 scratch, surface spot, discoloration, contamination, lead breakage, body chip, body crack의 7개 결함 class만 포함합니다. 각 class는 `mild 40 / moderate 40 / severe 20`이고, paired-clean 비교로 JPEG 저장 후 512 px와 학습 입력 224 px에서 모두 가시성 gate를 통과했습니다. 정상 class는 포함하지 않으므로 이 release만 학습한 모델은 OK/NG 판정을 할 수 없습니다.
 
-Synthetic 자료는 모두 `synthetic_restored / TRAIN_ONLY / evaluation_eligible=NO`입니다. 실제 정상품이나 독립 실물 specimen 수로 집계하면 안 됩니다. 자세한 생성 조건·라벨·QA는 [synthetic-v1 문서](docs/SYNTHETIC_DATA.md), [synthetic-v1-450 문서](docs/SYNTHETIC_DATA_V1_450.md), [synthetic-v2-700 실험 보고서](docs/SYNTHETIC_DATA_V2_700.md)에 있습니다.
+`synthetic-v3-conditions`는 v2의 `gradient_train` parent에만 연결되며 validation/test parent는 파생하지 않습니다. 기존 validation/test는 그대로 유지해야 하고 v3 variant를 평가에 넣으면 안 됩니다.
+
+현재 저장된 `model_final.pt` 3개는 기존 `synthetic-v2-700` 학습 결과이며 v3 condition data로 재학습한 checkpoint가 아닙니다.
+
+Synthetic 자료는 모두 `TRAIN_ONLY / evaluation_eligible=NO`입니다. 실제 정상품이나 독립 실물 specimen 수로 집계하면 안 됩니다. 자세한 생성 조건·라벨·QA는 [synthetic-v1 문서](docs/SYNTHETIC_DATA.md), [synthetic-v1-450 문서](docs/SYNTHETIC_DATA_V1_450.md), [synthetic-v2-700 실험 보고서](docs/SYNTHETIC_DATA_V2_700.md), [synthetic-v3 조건 증강 문서](docs/SYNTHETIC_DATA_V3_CONDITIONS.md)에 있습니다.
 
 ## 재감사에서 바뀐 항목
 
@@ -74,6 +85,7 @@ annotations/                    사진별 라벨과 source hash
 configs/synthetic_v1.json       합성 class, ROI, seed, domain-randomization 설정
 configs/synthetic_v1_450.json   클래스당 50장 신규 release 설정
 configs/synthetic_v2_700.json   7개 결함 class, severity, dual-resolution QC 설정
+configs/synthetic_v3_conditions.json  train parent 전용 조명·촬영조건 설정
 data/by_specimen_status/        OK / NG / HOLD 상호배타 분류
 data/by_visible_class/          사진에서 보이는 결함의 multi-label export
 data/crops_by_specimen_status/  단일 부품 crop 보조본
@@ -84,10 +96,13 @@ scripts/generate_synthetic_v1_450.py  신규 450장 release 생성
 scripts/validate_synthetic.py   synthetic image/mask/label/hash 검사
 scripts/generate_synthetic_v2_700.py  700장 paired-clean post-JPEG QC 생성
 scripts/validate_synthetic_v2_700.py  700장 512/224 QC 독립 replay 검증
+scripts/generate_synthetic_v3_conditions.py  168 parent × 6조건 auxiliary 생성
+scripts/validate_synthetic_v3_conditions.py  계보·누수·조건·512/224 replay 검증
 synthetic/sources/              clean base와 생성 provenance
 synthetic/v1/                   900 images, 900 masks, 자동 라벨과 QA
 synthetic/v1_450/               450 images, 450 masks, 자동 라벨과 QA
 synthetic/v2_700/               700 images, 700 masks, full contact sheets
+synthetic/v3_conditions/        1,008 train-only condition images/masks
 training/                       고정 split, ResNet-18 학습·평가·3-seed 집계
 ```
 
@@ -106,10 +121,12 @@ python scripts/validate_dataset.py
 python scripts/validate_synthetic.py
 python scripts/validate_synthetic.py --config configs/synthetic_v1_450.json --release synthetic/v1_450
 python scripts/validate_synthetic_v2_700.py
+py -3.14 -B scripts\validate_synthetic_v3_conditions.py
 python training/scripts/train_eval_classifier.py --check-only
+python training/scripts/train_eval_classifier.py --check-only --auxiliary-condition-manifest synthetic/v3_conditions/annotations/manifest.csv
 ```
 
-성공 시 real v4는 `OK=0, NG=13, HOLD=4`, synthetic release는 각각 `synthetic=900`, `synthetic=450`, `synthetic=700` PASS를 출력합니다.
+성공 시 real v4는 `OK=0, NG=13, HOLD=4`, synthetic release는 각각 `synthetic=900`, `synthetic=450`, `synthetic=700`, `synthetic=1008` PASS를 출력합니다. 마지막 preflight는 기존 validation/test를 바꾸지 않고 `effective_gradient_train_sample_count=1176`인지 확인합니다.
 
 ## 사용 제한
 
