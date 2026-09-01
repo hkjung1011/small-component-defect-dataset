@@ -107,7 +107,11 @@ py -3.14 -B scripts\validate_synthetic_v4_conveyor.py
 
 ## 모델 사용 한계
 
-Repository의 `model_final.pt` 3개는 `synthetic-v2-700` 단일 부품 crop으로 학습한 7-class ResNet-18 classifier입니다. 전체 장면에서 여러 component를 찾지 못하고 `normal_proxy` class도 학습하지 않았으므로 v4 장면 detector로 사용할 수 없습니다.
+Repository의 C0/C2 `model_final.pt` 6개는 `synthetic-v2-700` 단일 부품
+crop을 판정하는 7-class ResNet-18 classifier입니다. C2 세 모델은 v3
+조명·카메라 variant를 학습에 추가했지만, 어느 모델도 전체 장면에서
+여러 component를 찾거나 `normal_proxy`를 판정하도록 학습되지 않았으므로
+v4 장면 detector로 사용할 수 없습니다.
 
 권장 구조는 전체 장면에서 component/defect를 찾는 detector 또는 segmenter를 먼저 학습하고, 필요하면 검출 crop에 별도 classifier를 적용하는 2-stage pipeline입니다. 기존 checkpoint를 crop 보조 분류기로 재사용하는 경우에도 v4 domain과 실제 컨베이어 사진에서 별도 검증해야 합니다.
 

@@ -1,0 +1,2733 @@
+{
+  "class_counts": {
+    "body_chip": 720,
+    "body_crack": 720,
+    "contamination": 720,
+    "discoloration": 720,
+    "lead_breakage": 720,
+    "scratch": 720,
+    "surface_spot": 720
+  },
+  "draw_count": 5040,
+  "epochs_completed": 30,
+  "every_parent_drawn_once_per_epoch_verified": true,
+  "mode": "family_balanced_parent_variant",
+  "optimizer_update_budget": 180,
+  "optimizer_updates_completed": 180,
+  "per_epoch": [
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "4e5f8afc5db23fdd7f154f517214b2984f084e6734ea46c666c0a7512ce511eb",
+      "epoch": 1,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "807e0fef1d04e24d5d1cb0adf00e1bf56b080667531022bdb2d54908a8b1d22a",
+      "epoch": 2,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "9b64dea066470f3c59b602379f7926493668ac7666950d9f763d448d2d8b243a",
+      "epoch": 3,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "67a14b5a1b0ab2ffe0175dd2369aa28b472bb5afe9fd1d520592611324810692",
+      "epoch": 4,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "f5fa528a6e9b26d5b50c43a87ba331516f0b29a45edde159af247fd9a6ed5603",
+      "epoch": 5,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "2c28cdb3d9fa56b42c1ccc5c55bb8692f64bb69f083db4dbf52a1863bd2f4353",
+      "epoch": 6,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "346be5a083d6d84178b796072395c5589746fcdbbd4ba5f6ea97794c1f3b3f20",
+      "epoch": 7,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "bf570c34b8476e1f9dc29a3a116ebad43d07646ac01411c417cea4efb58c6115",
+      "epoch": 8,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "dfbdc737eb2404f8f72433c6d83c5274215e55c0b0b0cfc65db1f66183b089c2",
+      "epoch": 9,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "3ae4db1778e26a6559ca31a4ac58ba7a3349aff00e1903c8842d5d1542385f6e",
+      "epoch": 10,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "337393006d9a576f2af461049403e88d3f5d53fafca92e1b2e1f35a1093c6b06",
+      "epoch": 11,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "99e23fdd495ce82c05bfeebd4524ec064e08dbef1728302d172fc13fdfb0b4b8",
+      "epoch": 12,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "b9d73cc3ec1451009b6c602810ed6b330dc0f824148e8d41deaa4ca1a6684369",
+      "epoch": 13,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "2a964512b0761e7be536e753d2ff8d72e18d54a933005dae741314a0bc21d7ca",
+      "epoch": 14,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "25d331cee455407747cc39fd9c3b934c2be262e64743fd4605c627e263b1707a",
+      "epoch": 15,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "be4d6029edeec419db69953e9ff765460505cb18e9a877f5ec1cfebd8fb9eb6f",
+      "epoch": 16,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "8a31ccaa9aaf6af5bcf76cec40b225dd3fc948b6446696f56a646f105e5504d7",
+      "epoch": 17,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "15ccdd1b5f737c161d4dcd6117c1d2c3dd8418daaf8741be14548addb8455a67",
+      "epoch": 18,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "d51b05cf7e8d3150869de1c2efcdabbdd5621be506e551f08f51577adc846b10",
+      "epoch": 19,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "74b164898e9c9ee1c5596f27fda71105d57a34aae77703ed09d44e0f4d7bc109",
+      "epoch": 20,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "195e3c9276a58cf62c6b7129ac9a9681f74080aa1e8552595b5c29f86642b1a7",
+      "epoch": 21,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "9754f977489094d81635dbe9fd38f6cf43373fb81b83b3e6969c47f1ae5e3ffd",
+      "epoch": 22,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "3d70da5219a2e490f372cfc8d3dc63595914ef232b919b3375dd16b3aa1611c8",
+      "epoch": 23,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "56956aac3d6c42ecc2c5d84fc3eb983bf4201a84f7c5711831c88f6584f14285",
+      "epoch": 24,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "c86cc696357dae0613eb755b37456e847be38f29ca3f68071916f5090c61bbff",
+      "epoch": 25,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "contamination": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "e0cf64e9930e8544825b4ad1c85861a05c8562335c778e839921e85a3c7583f4",
+      "epoch": 26,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "body_crack": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "d1a29b5c7cc9e0f4dae363741e0fe6da73d878063b1cf67876d0b532e6914fa8",
+      "epoch": 27,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "b4cf63965f8f8330bdb58ec4c793aa90be175056213e7811d5dcee9a48c2277c",
+      "epoch": 28,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "4a06249141a95d30a2f61bad6c054750b0fa0e58414fa5028101333ba07285a9",
+      "epoch": 29,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    },
+    {
+      "class_counts": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "class_profile_counts": {
+        "body_chip": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 4,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "body_crack": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 3
+        },
+        "contamination": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "discoloration": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        },
+        "lead_breakage": {
+          "base": 4,
+          "cool_directional": 3,
+          "overexposure": 3,
+          "soft_shadow_vignette": 4,
+          "specular_sensor": 4,
+          "underexposure": 3,
+          "warm_directional": 3
+        },
+        "scratch": {
+          "base": 3,
+          "cool_directional": 3,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 4,
+          "warm_directional": 4
+        },
+        "surface_spot": {
+          "base": 3,
+          "cool_directional": 4,
+          "overexposure": 4,
+          "soft_shadow_vignette": 3,
+          "specular_sensor": 3,
+          "underexposure": 3,
+          "warm_directional": 4
+        }
+      },
+      "draw_count": 168,
+      "draw_set_fingerprint_sha256": "b82067ccb6b022db7b00a08167e88eb078547c5f20706a91d7d39d8af3f5e7c4",
+      "epoch": 30,
+      "optimizer_update_count": 6,
+      "profile_counts": {
+        "base": 24,
+        "cool_directional": 24,
+        "overexposure": 24,
+        "soft_shadow_vignette": 24,
+        "specular_sensor": 24,
+        "underexposure": 24,
+        "warm_directional": 24
+      },
+      "unique_parent_count": 168
+    }
+  ],
+  "planned_draw_sets_verified": true,
+  "profile_counts": {
+    "base": 720,
+    "cool_directional": 720,
+    "overexposure": 720,
+    "soft_shadow_vignette": 720,
+    "specular_sensor": 720,
+    "underexposure": 720,
+    "warm_directional": 720
+  },
+  "sampling_plan_fingerprint_sha256": "e5f27cd83a3c63e10d5ed62b9ed39f28674c98fa1c0c8b8d4f3c99433f013ee0",
+  "schema_version": "1.0",
+  "status": "PASS",
+  "unique_family_count_per_epoch": 168
+}

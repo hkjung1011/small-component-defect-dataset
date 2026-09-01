@@ -1,0 +1,5 @@
+{
+  "note": "Verify this SHA-256 before use; only explicitly allowlisted release checkpoints are tracked.",
+  "path": "model_final.pt",
+  "sha256": "6abf6a0131471d5b56eaafc467a1046ddcda3c897e7763723f13274fb3c1b2fd"
+}

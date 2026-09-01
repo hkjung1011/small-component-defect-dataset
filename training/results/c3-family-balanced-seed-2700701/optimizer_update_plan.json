@@ -1,0 +1,10 @@
+{
+  "budget_gate": "PASS",
+  "early_stopping_effective": false,
+  "epochs": 30,
+  "mode": "fixed_family_balanced_budget",
+  "optimizer_update_budget": 180,
+  "optimizer_updates_per_epoch": 6,
+  "planned_optimizer_updates": 180,
+  "samples_per_epoch": 168
+}

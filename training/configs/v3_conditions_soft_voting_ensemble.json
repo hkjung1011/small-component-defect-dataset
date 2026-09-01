@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "method": "equal_weight_per_class_probability_soft_voting",
+  "data_config": {
+    "path": "training/configs/synthetic_v2_700_classifier.json",
+    "sha256": "36c988d234825c24aec674b80b9ab291c46562cbccf1fabcc32132c86811925f"
+  },
+  "expected_identity": {
+    "release": "synthetic-v2-700",
+    "classes": [
+      "scratch",
+      "surface_spot",
+      "discoloration",
+      "contamination",
+      "lead_breakage",
+      "body_chip",
+      "body_crack"
+    ],
+    "manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+    "split_fingerprint_sha256": "38edccbcdd706764a63e7d48a90a657f512712d5b28faeef788d5fd5009479c8",
+    "test_target_fingerprint_sha256": "0c4e554c39fca3afd6a65a241a8290c898bd7c298e446bc906b51537b63da132",
+    "test_sample_count": 504,
+    "model_architecture": "resnet18",
+    "pretrained_weights_sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec",
+    "auxiliary_condition_manifest_sha256": "f7a8a54ba49c25130d70bebbef4fb2c1858c952baa0cd6913164220533f11f00",
+    "auxiliary_condition_lineage_fingerprint_sha256": "56b59241e6c35a055202aad0031090860879bae85c3409105dcef5758db070db"
+  },
+  "members": [
+    {
+      "member_id": "seed_2700701",
+      "run_directory": "training/results/v3-conditions-seed-2700701",
+      "checkpoint": "model_final.pt",
+      "checkpoint_sha256": "89b4739a52376dc2f5cda661a76ff40191cc8c45bfb0723945b3170ecc54038c",
+      "training_seed": 2700701
+    },
+    {
+      "member_id": "seed_2700711",
+      "run_directory": "training/results/v3-conditions-seed-2700711",
+      "checkpoint": "model_final.pt",
+      "checkpoint_sha256": "44d08dfc278300688c91ee3a6082db4f4760378c4a036b217f7ff1e1c47f278a",
+      "training_seed": 2700711
+    },
+    {
+      "member_id": "seed_2700721",
+      "run_directory": "training/results/v3-conditions-seed-2700721",
+      "checkpoint": "model_final.pt",
+      "checkpoint_sha256": "b7d62c5ec9586c417191e048d0815630ed0bad8fa583e0880e875915b3a11751",
+      "training_seed": 2700721
+    }
+  ],
+  "decision_policy": {
+    "prediction": "argmax_of_equal_weight_mean_probability",
+    "member_weights": "equal",
+    "threshold_calibration": "NOT VERIFIED",
+    "hold_policy": "NOT VERIFIED",
+    "reason": "No independent validation set containing real OK and real defect specimens is available."
+  }
+}

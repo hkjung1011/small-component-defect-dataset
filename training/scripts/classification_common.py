@@ -39,6 +39,12 @@ class Sample:
     evaluation_eligible: str
     width: int
     height: int
+    parent_sample_id: str = ""
+    family_split_id: str = ""
+    augmentation_family_id: str = ""
+    condition_profile: str = ""
+    variant_index: int = -1
+    derivation_depth: int = 0
 
 
 @dataclass(frozen=True)
@@ -49,6 +55,17 @@ class SplitRecord:
     class_severity_rank: int
     split_key_sha256: str
     validation_key_sha256: str
+
+
+CONDITION_PROFILE_ORDER = (
+    "underexposure",
+    "overexposure",
+    "warm_directional",
+    "cool_directional",
+    "soft_shadow_vignette",
+    "specular_sensor",
+)
+FAMILY_BALANCED_PROFILE_ORDER = ("base",) + CONDITION_PROFILE_ORDER
 
 
 def sha256_file(path: Path) -> str:
@@ -62,7 +79,14 @@ def sha256_file(path: Path) -> str:
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
-        json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+        json.dumps(
+            value,
+            ensure_ascii=False,
+            indent=2,
+            sort_keys=True,
+            allow_nan=False,
+        )
+        + "\n",
         encoding="utf-8",
     )
 
@@ -902,14 +926,7 @@ def load_and_validate_auxiliary_condition_manifest(
 
     expected_generator_version = "3.0.0"
     expected_qc_gate_version = "condition-replay-post-jpeg-512-224-v1"
-    expected_profile_order = (
-        "underexposure",
-        "overexposure",
-        "warm_directional",
-        "cool_directional",
-        "soft_shadow_vignette",
-        "specular_sensor",
-    )
+    expected_profile_order = CONDITION_PROFILE_ORDER
     auxiliary_config_expectations = {
         "release": "synthetic-v3-conditions",
         "generator_version": expected_generator_version,
@@ -1441,6 +1458,12 @@ def load_and_validate_auxiliary_condition_manifest(
                 evaluation_eligible=value("evaluation_eligible"),
                 width=width,
                 height=height,
+                parent_sample_id=parent_id,
+                family_split_id=value("family_split_id"),
+                augmentation_family_id=family_id,
+                condition_profile=profile,
+                variant_index=variant_index,
+                derivation_depth=derivation_depth,
             )
         )
 
@@ -1577,6 +1600,402 @@ def load_and_validate_auxiliary_condition_manifest(
         ],
     }
     return samples, audit
+
+
+def build_family_balanced_sampling_plan(
+    base_train_samples: Sequence[Sample],
+    auxiliary_samples: Sequence[Sample],
+    classes: Sequence[str],
+    validation_test_samples: Sequence[Sample],
+    epoch_count: int,
+    batch_size: int,
+    sampling_seed: int,
+    optimizer_update_budget: int,
+) -> tuple[list[list[Sample]], dict[str, Any]]:
+    """Build and audit deterministic one-draw-per-parent epoch plans.
+
+    Every base training parent contributes exactly one image per epoch: either the
+    base image or one of its six v3 condition variants. The seven profile choices
+    rotate across parents and classes so each epoch has exactly 24 draws per
+    profile and 24 draws per class. A seven-epoch cycle exposes every parent to
+    every profile exactly once without treating derivatives as new specimens.
+
+    This function intentionally depends only on the standard library so the full
+    family/leakage/update-budget gate also runs under ``--check-only``.
+    """
+
+    if epoch_count <= 0:
+        raise PipelineError("family-balanced epoch_count must be positive")
+    if batch_size <= 0:
+        raise PipelineError("family-balanced batch_size must be positive")
+    if optimizer_update_budget <= 0:
+        raise PipelineError(
+            "family-balanced optimizer_update_budget must be positive"
+        )
+    expected_classes = list(classes)
+    if len(expected_classes) != 7 or len(set(expected_classes)) != 7:
+        raise PipelineError(
+            "family-balanced sampling requires the configured seven unique classes"
+        )
+
+    base_by_id: dict[str, Sample] = {}
+    for sample in base_train_samples:
+        if sample.sample_id in base_by_id:
+            raise PipelineError(
+                f"duplicate base gradient-train parent: {sample.sample_id}"
+            )
+        base_by_id[sample.sample_id] = sample
+    if len(base_by_id) != 168:
+        raise PipelineError(
+            "family-balanced sampling requires exactly 168 base gradient-train "
+            f"parents, got {len(base_by_id)}"
+        )
+
+    evaluation_ids = {sample.sample_id for sample in validation_test_samples}
+    evaluation_hashes = {
+        sample.image_sha256 for sample in validation_test_samples
+    }
+    base_parent_overlap = set(base_by_id) & evaluation_ids
+    if base_parent_overlap:
+        raise PipelineError(
+            "family-balanced base parents overlap validation/test: "
+            + ", ".join(sorted(base_parent_overlap)[:10])
+        )
+
+    base_class_counts = Counter(sample.label for sample in base_by_id.values())
+    unexpected_base_classes = sorted(set(base_class_counts) - set(expected_classes))
+    if unexpected_base_classes:
+        raise PipelineError(
+            "family-balanced base parents contain unexpected classes: "
+            + ", ".join(unexpected_base_classes)
+        )
+    for class_name in expected_classes:
+        if base_class_counts[class_name] != 24:
+            raise PipelineError(
+                f"family-balanced parent count for {class_name} must be 24, "
+                f"got {base_class_counts[class_name]}"
+            )
+
+    variants_by_parent: defaultdict[str, dict[str, Sample]] = defaultdict(dict)
+    family_ids_by_parent: defaultdict[str, set[str]] = defaultdict(set)
+    auxiliary_ids: set[str] = set()
+    auxiliary_hashes: set[str] = set()
+    expected_variant_index = {
+        profile: index for index, profile in enumerate(CONDITION_PROFILE_ORDER)
+    }
+    for sample in auxiliary_samples:
+        if sample.sample_id in auxiliary_ids:
+            raise PipelineError(
+                f"duplicate auxiliary sample in family plan: {sample.sample_id}"
+            )
+        auxiliary_ids.add(sample.sample_id)
+        auxiliary_hashes.add(sample.image_sha256)
+        parent_id = sample.parent_sample_id
+        parent = base_by_id.get(parent_id)
+        if parent is None:
+            if parent_id in evaluation_ids:
+                raise PipelineError(
+                    "family-balanced auxiliary parent belongs to validation/test: "
+                    f"{parent_id}"
+                )
+            raise PipelineError(
+                f"family-balanced auxiliary sample has unknown parent: {parent_id!r}"
+            )
+        if sample.family_split_id != parent_id:
+            raise PipelineError(
+                f"family_split_id must equal parent for {sample.sample_id}"
+            )
+        if sample.condition_profile not in CONDITION_PROFILE_ORDER:
+            raise PipelineError(
+                f"unexpected family condition profile for {sample.sample_id}: "
+                f"{sample.condition_profile!r}"
+            )
+        if sample.condition_profile in variants_by_parent[parent_id]:
+            raise PipelineError(
+                f"duplicate parent/profile candidate: {parent_id}/"
+                f"{sample.condition_profile}"
+            )
+        if sample.variant_index != expected_variant_index[sample.condition_profile]:
+            raise PipelineError(
+                f"variant index/profile mismatch for {sample.sample_id}"
+            )
+        if sample.derivation_depth != 1:
+            raise PipelineError(
+                f"auxiliary derivation depth must be 1 for {sample.sample_id}"
+            )
+        lineage_values = (
+            ("label", sample.label, parent.label),
+            ("severity", sample.severity, parent.severity),
+            ("base_group_id", sample.base_group_id, parent.base_group_id),
+            (
+                "source_specimen_group",
+                sample.source_specimen_group,
+                parent.source_specimen_group,
+            ),
+        )
+        for name, actual, expected in lineage_values:
+            if actual != expected:
+                raise PipelineError(
+                    f"family-balanced {name} lineage mismatch for "
+                    f"{sample.sample_id}: {actual!r} != {expected!r}"
+                )
+        variants_by_parent[parent_id][sample.condition_profile] = sample
+        family_ids_by_parent[parent_id].add(sample.augmentation_family_id)
+
+    if len(auxiliary_samples) != 1008:
+        raise PipelineError(
+            "family-balanced sampling requires exactly 1,008 auxiliary variants, "
+            f"got {len(auxiliary_samples)}"
+        )
+    if auxiliary_ids & evaluation_ids:
+        raise PipelineError(
+            "family-balanced auxiliary sample IDs overlap validation/test"
+        )
+    if auxiliary_hashes & evaluation_hashes:
+        raise PipelineError(
+            "family-balanced auxiliary image hashes overlap validation/test"
+        )
+
+    candidates_by_parent: dict[str, dict[str, Sample]] = {}
+    augmentation_family_ids: set[str] = set()
+    expected_profiles = set(CONDITION_PROFILE_ORDER)
+    for parent_id, parent in sorted(base_by_id.items()):
+        variants = variants_by_parent.get(parent_id, {})
+        if set(variants) != expected_profiles:
+            missing = sorted(expected_profiles - set(variants))
+            unexpected = sorted(set(variants) - expected_profiles)
+            raise PipelineError(
+                f"parent {parent_id} does not have the exact six variants; "
+                f"missing={missing} unexpected={unexpected}"
+            )
+        family_ids = family_ids_by_parent[parent_id]
+        if len(family_ids) != 1 or "" in family_ids:
+            raise PipelineError(
+                f"parent {parent_id} must have one non-empty augmentation family"
+            )
+        family_id = next(iter(family_ids))
+        if family_id in augmentation_family_ids:
+            raise PipelineError(
+                f"augmentation family reused across parents: {family_id}"
+            )
+        augmentation_family_ids.add(family_id)
+        candidates_by_parent[parent_id] = {"base": parent, **variants}
+
+    ordered_parents_by_class: dict[str, list[Sample]] = {}
+    for class_name in expected_classes:
+        class_parents = [
+            sample
+            for sample in base_by_id.values()
+            if sample.label == class_name
+        ]
+        ordered_parents_by_class[class_name] = sorted(
+            class_parents,
+            key=lambda sample: hashlib.sha256(
+                (
+                    f"{sampling_seed}\0family-balanced\0{class_name}\0"
+                    f"{sample.sample_id}"
+                ).encode("utf-8")
+            ).hexdigest(),
+        )
+
+    profile_order = list(FAMILY_BALANCED_PROFILE_ORDER)
+    updates_per_epoch = math.ceil(len(base_by_id) / batch_size)
+    planned_optimizer_updates = epoch_count * updates_per_epoch
+    if optimizer_update_budget != planned_optimizer_updates:
+        raise PipelineError(
+            "family-balanced optimizer update budget must equal "
+            "epoch_count * ceil(family_count / batch_size): "
+            f"expected {planned_optimizer_updates}, got {optimizer_update_budget}"
+        )
+
+    epoch_samples: list[list[Sample]] = []
+    per_epoch: list[dict[str, Any]] = []
+    plan_lines: list[str] = []
+    total_profile_counts: Counter[str] = Counter()
+    total_class_counts: Counter[str] = Counter()
+    total_class_profile_counts: Counter[tuple[str, str]] = Counter()
+    for epoch_index in range(epoch_count):
+        selected: list[Sample] = []
+        parent_ids: set[str] = set()
+        profile_counts: Counter[str] = Counter()
+        class_counts: Counter[str] = Counter()
+        class_profile_counts: Counter[tuple[str, str]] = Counter()
+        for class_index, class_name in enumerate(expected_classes):
+            parents = ordered_parents_by_class[class_name]
+            for position, parent in enumerate(parents):
+                # Each class has 24 parents: three complete seven-profile blocks
+                # plus three draws. Offsetting the seven classes makes those
+                # three extras cancel globally, yielding 24 draws/profile/epoch.
+                profile = profile_order[
+                    (position + class_index + epoch_index) % len(profile_order)
+                ]
+                sample = candidates_by_parent[parent.sample_id][profile]
+                if parent.sample_id in parent_ids:
+                    raise PipelineError(
+                        f"parent drawn more than once in epoch {epoch_index + 1}: "
+                        f"{parent.sample_id}"
+                    )
+                parent_ids.add(parent.sample_id)
+                selected.append(sample)
+                profile_counts[profile] += 1
+                class_counts[class_name] += 1
+                class_profile_counts[(class_name, profile)] += 1
+                plan_lines.append(
+                    f"{epoch_index + 1}\0{parent.sample_id}\0{sample.sample_id}\0"
+                    f"{class_name}\0{profile}\n"
+                )
+        if parent_ids != set(base_by_id):
+            raise PipelineError(
+                f"epoch {epoch_index + 1} does not draw every parent exactly once"
+            )
+        if len(selected) != 168:
+            raise PipelineError(
+                f"epoch {epoch_index + 1} draw count must be 168, got {len(selected)}"
+            )
+        expected_per_profile = len(selected) // len(profile_order)
+        if any(profile_counts[name] != expected_per_profile for name in profile_order):
+            raise PipelineError(
+                f"epoch {epoch_index + 1} profile draws are not balanced: "
+                f"{dict(profile_counts)}"
+            )
+        if any(class_counts[name] != 24 for name in expected_classes):
+            raise PipelineError(
+                f"epoch {epoch_index + 1} class draws are not balanced: "
+                f"{dict(class_counts)}"
+            )
+        epoch_samples.append(selected)
+        total_profile_counts.update(profile_counts)
+        total_class_counts.update(class_counts)
+        total_class_profile_counts.update(class_profile_counts)
+        per_epoch.append(
+            {
+                "epoch": epoch_index + 1,
+                "draw_count": len(selected),
+                "unique_parent_count": len(parent_ids),
+                "optimizer_update_count": updates_per_epoch,
+                "class_counts": {
+                    name: class_counts[name] for name in expected_classes
+                },
+                "profile_counts": {
+                    name: profile_counts[name] for name in profile_order
+                },
+                "class_profile_counts": {
+                    class_name: {
+                        profile: class_profile_counts[(class_name, profile)]
+                        for profile in profile_order
+                    }
+                    for class_name in expected_classes
+                },
+            }
+        )
+
+    # Validate the rotation contract independently of the requested run length.
+    rotation_failures: list[str] = []
+    for class_index, class_name in enumerate(expected_classes):
+        for position, parent in enumerate(ordered_parents_by_class[class_name]):
+            cycle_profiles = {
+                profile_order[
+                    (position + class_index + cycle_epoch) % len(profile_order)
+                ]
+                for cycle_epoch in range(len(profile_order))
+            }
+            if cycle_profiles != set(profile_order):
+                rotation_failures.append(parent.sample_id)
+    if rotation_failures:
+        raise PipelineError(
+            "seven-epoch family rotation failed for parents: "
+            + ", ".join(rotation_failures[:10])
+        )
+
+    audit = {
+        "schema_version": "1.0",
+        "status": "PASS",
+        "mode": "family_balanced_parent_variant",
+        "sampling_seed": sampling_seed,
+        "family_key": "base sample_id == auxiliary parent_sample_id == family_split_id",
+        "family_count": len(base_by_id),
+        "family_counts_per_class": {
+            name: base_class_counts[name] for name in expected_classes
+        },
+        "augmentation_family_count": len(augmentation_family_ids),
+        "base_parent_count": len(base_by_id),
+        "auxiliary_variant_count": len(auxiliary_samples),
+        "candidate_pool_sample_count": len(base_by_id) + len(auxiliary_samples),
+        "candidates_per_family": len(profile_order),
+        "profile_order": profile_order,
+        "samples_per_epoch": len(base_by_id),
+        "batch_size": batch_size,
+        "optimizer_updates_per_epoch": updates_per_epoch,
+        "epoch_count": epoch_count,
+        "optimizer_update_budget": optimizer_update_budget,
+        "planned_optimizer_update_count": planned_optimizer_updates,
+        "comparison_update_reference": {
+            "c0_base_samples_per_epoch": len(base_by_id),
+            "c0_optimizer_updates_per_epoch": updates_per_epoch,
+            "c0_full_schedule_optimizer_updates": planned_optimizer_updates,
+            "c2_append_samples_per_epoch": len(base_by_id) + len(auxiliary_samples),
+            "c2_append_optimizer_updates_per_epoch": math.ceil(
+                (len(base_by_id) + len(auxiliary_samples)) / batch_size
+            ),
+            "c2_append_full_schedule_optimizer_updates": epoch_count
+            * math.ceil(
+                (len(base_by_id) + len(auxiliary_samples)) / batch_size
+            ),
+            "note": (
+                "C3 fixes the C0-sized update budget; C2 append has a larger "
+                "budget and must remain identified as a separate ablation."
+            ),
+        },
+        "planned_draw_count": epoch_count * len(base_by_id),
+        "planned_profile_counts": {
+            name: total_profile_counts[name] for name in profile_order
+        },
+        "planned_class_counts": {
+            name: total_class_counts[name] for name in expected_classes
+        },
+        "planned_class_profile_counts": {
+            class_name: {
+                profile: total_class_profile_counts[(class_name, profile)]
+                for profile in profile_order
+            }
+            for class_name in expected_classes
+        },
+        "per_epoch": per_epoch,
+        "leakage_gate": {
+            "status": "PASS",
+            "scope": (
+                "exact auxiliary parent/sample/image-hash exclusion from the "
+                "immutable v2 validation and test partitions"
+            ),
+            "base_parent_overlap_with_validation_test_count": len(
+                set(base_by_id) & evaluation_ids
+            ),
+            "auxiliary_parent_overlap_with_validation_test_count": len(
+                set(variants_by_parent) & evaluation_ids
+            ),
+            "auxiliary_sample_id_overlap_with_validation_test_count": len(
+                auxiliary_ids & evaluation_ids
+            ),
+            "auxiliary_image_sha256_overlap_with_validation_test_count": len(
+                auxiliary_hashes & evaluation_hashes
+            ),
+            "validation_and_test_are_base_v2_only": True,
+            "does_not_claim_independent_specimen_or_base_group_split": True,
+        },
+        "rotation_gate": {
+            "status": "PASS",
+            "cycle_length_epochs": len(profile_order),
+            "every_parent_draws_every_profile_once_per_cycle": True,
+        },
+        "sampling_plan_fingerprint_sha256": hashlib.sha256(
+            "".join(plan_lines).encode("utf-8")
+        ).hexdigest(),
+        "warnings": [
+            "The six condition variants are derivatives of each base parent, not independent specimens.",
+            "Validation and test remain the immutable synthetic-v2 base split; these metrics remain same-base synthetic sanity checks.",
+        ],
+    }
+    return epoch_samples, audit
 
 
 def write_split_artifacts(
@@ -1955,6 +2374,11 @@ def create_dataset_class(torch_module: Any, image_module: Any, image_ops_module:
         def set_epoch(self, epoch: int) -> None:
             self.epoch = int(epoch)
 
+        def set_samples(self, samples: Sequence[Sample]) -> None:
+            if not samples:
+                raise PipelineError("classification dataset sample list cannot be empty")
+            self.samples = list(samples)
+
         def __len__(self) -> int:
             return len(self.samples)
 
@@ -2164,7 +2588,26 @@ def evaluate_model(
             inputs = inputs.to(device)
             targets = targets.to(device)
             logits = model(inputs)
+            if logits.ndim != 2 or logits.shape[1] != len(classes):
+                raise PipelineError(
+                    f"model output shape must be [N,{len(classes)}], "
+                    f"got {tuple(logits.shape)}"
+                )
+            if not bool(torch_module.isfinite(logits).all().item()):
+                raise PipelineError("model emitted non-finite logits")
             probabilities = torch_module.softmax(logits, dim=1)
+            if not bool(torch_module.isfinite(probabilities).all().item()):
+                raise PipelineError("model emitted non-finite probabilities")
+            probability_sums = probabilities.sum(dim=1)
+            if not bool(
+                torch_module.allclose(
+                    probability_sums,
+                    torch_module.ones_like(probability_sums),
+                    rtol=1e-5,
+                    atol=1e-6,
+                )
+            ):
+                raise PipelineError("model probability rows do not sum to one")
             confidence, predicted = probabilities.max(dim=1)
             target_values = targets.cpu().tolist()
             predicted_values = predicted.cpu().tolist()

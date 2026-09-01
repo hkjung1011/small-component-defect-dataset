@@ -1,5 +1,17 @@
 # Changelog
 
+## v9 / transfer-learning-methods - 2026-09-01
+
+- v3 조명·카메라 condition을 v2 gradient-train parent에만 append한 C2 ResNet-18 transfer-learning을 seed 3개로 실행하고 aggregate·checkpoint 재평가 추가
+- C2 synthetic same-base macro-F1 `0.984178`, mild recall `0.962233` 기록; C0 대비 각각 `+0.013087`, `+0.024631`이나 optimizer update 증가 confound 명시
+- parent마다 base 또는 6개 condition variant 중 하나만 선택하는 C3 family-balanced sampler와 7-epoch rotation, class/profile 균형, validation/test leakage gate, fixed 180-update budget 추가
+- C3 seed 3개 실제 학습 결과 macro-F1 `0.964601`, mild recall `0.919540`으로 현재 recipe를 유지 후보에서 제외하고 C0/C2와 동일 합성 base 한계를 기록
+- C2 seed 3개의 per-class probability를 평균하는 SHA-pinned soft-voting ensemble 추가; macro-F1 `0.986186`, body-crack·discoloration recall tradeoff와 threshold/`HOLD` `NOT VERIFIED` 명시
+- v4/v5 384 composition family에서 epoch당 variant 하나만 순환하는 COCO-pretrained `FasterRCNN-MobileNetV3-Large-FPN` component detector pipeline 추가
+- detector preflight에서 1,152 scenes, 5,760 component instances, 384 families, 단일 source-parent connected component와 synthetic validation/test 미생성을 hard gate로 검사
+- bbox-aware 약한 증강, offline pretrained-weight hash, data/code/config fingerprint, finite loss·gradient·model-state gate와 CUDA 8-update smoke 검증 추가
+- detector smoke는 `TRAIN_DIAGNOSTIC_ONLY`이며 full training checkpoint나 독립 검출 성능이 아님을 명시
+
 ## v8 / synthetic-v5-illumination - 2026-09-01
 
 - v4의 384개 multi-instance composition을 중립 replay하고 composition별 서로 다른 조명 variant 2개, 총 768개 train-only 장면 추가

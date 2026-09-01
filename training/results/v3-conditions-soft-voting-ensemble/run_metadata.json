@@ -1,0 +1,138 @@
+{
+  "calibration": {
+    "decision_used_for_this_result": "argmax only",
+    "hold_policy_enabled": false,
+    "reason": "No independent validation set containing real OK and real defect specimens is available.",
+    "required_next_evidence": "A separately reserved validation set with representative real OK, real defect, lighting, camera, lot, and specimen groups.",
+    "status": "NOT VERIFIED",
+    "threshold_calibration_performed": false
+  },
+  "checkpoint_hard_gate": "PASS",
+  "class_order": [
+    "scratch",
+    "surface_spot",
+    "discoloration",
+    "contamination",
+    "lead_breakage",
+    "body_chip",
+    "body_crack"
+  ],
+  "data_config": {
+    "path": "training/configs/synthetic_v2_700_classifier.json",
+    "sha256": "36c988d234825c24aec674b80b9ab291c46562cbccf1fabcc32132c86811925f"
+  },
+  "ensemble_config": "v3_conditions_soft_voting_ensemble.json",
+  "environment": {
+    "device": "cuda",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+    "torch": "2.11.0+cu128"
+  },
+  "evaluation_scope": "synthetic_same_base_sanity_only",
+  "fixed_component_roi_xyxy": [
+    96,
+    64,
+    384,
+    416
+  ],
+  "input_size": 224,
+  "manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+  "member_count": 3,
+  "members": [
+    {
+      "checkpoint": "model_final.pt",
+      "checkpoint_sha256": "89b4739a52376dc2f5cda661a76ff40191cc8c45bfb0723945b3170ecc54038c",
+      "member_id": "seed_2700701",
+      "run_directory": "training/results/v3-conditions-seed-2700701",
+      "training_seed": 2700701
+    },
+    {
+      "checkpoint": "model_final.pt",
+      "checkpoint_sha256": "44d08dfc278300688c91ee3a6082db4f4760378c4a036b217f7ff1e1c47f278a",
+      "member_id": "seed_2700711",
+      "run_directory": "training/results/v3-conditions-seed-2700711",
+      "training_seed": 2700711
+    },
+    {
+      "checkpoint": "model_final.pt",
+      "checkpoint_sha256": "b7d62c5ec9586c417191e048d0815630ed0bad8fa583e0880e875915b3a11751",
+      "member_id": "seed_2700721",
+      "run_directory": "training/results/v3-conditions-seed-2700721",
+      "training_seed": 2700721
+    }
+  ],
+  "method": "equal_weight_per_class_probability_soft_voting",
+  "method_definition": "For each sample and class, take the arithmetic mean of the three member softmax probabilities, then apply one argmax.",
+  "normalization": {
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "release": "synthetic-v2-700",
+  "schema_version": "1.0",
+  "split_fingerprint_sha256": "38edccbcdd706764a63e7d48a90a657f512712d5b28faeef788d5fd5009479c8",
+  "test_set_used_for_model_selection": false,
+  "test_target_fingerprint_sha256": "0c4e554c39fca3afd6a65a241a8290c898bd7c298e446bc906b51537b63da132",
+  "test_target_gate": {
+    "sample_count": 504,
+    "status": "PASS",
+    "support_per_class_severity": {
+      "body_chip": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "body_crack": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "contamination": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "discoloration": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "lead_breakage": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "scratch": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "surface_spot": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      }
+    },
+    "target_fingerprint_sha256": "0c4e554c39fca3afd6a65a241a8290c898bd7c298e446bc906b51537b63da132"
+  },
+  "warnings": [
+    "AUTO_PASS and generator visibility values are synthetic self-QC, not human verification.",
+    "All ensemble members and test images originate from the same synthetic base component.",
+    "All partitions originate from the same restored synthetic component base.",
+    "All samples share one synthetic base_group_id; train/test are not independent-specimen splits.",
+    "Manifest rows are not marked evaluation-eligible; test metrics are synthetic same-base sanity metrics only.",
+    "Reported metrics do not estimate independent-specimen or real-domain generalization.",
+    "Soft voting on the shared synthetic test set is not real-domain or independent-specimen validation.",
+    "Some or all manifest rows are not human-verified; AUTO_PASS is generator self-QC.",
+    "The 504-image test set is never used for early stopping or model selection.",
+    "Threshold and HOLD calibration are NOT VERIFIED and were not performed.",
+    "base_group_id overlaps between train and test; metrics cannot estimate independent-specimen or real-domain generalization."
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "decision_used_for_this_result": "argmax only",
+  "hold_policy_enabled": false,
+  "reason": "No independent validation set containing real OK and real defect specimens is available.",
+  "required_next_evidence": "A separately reserved validation set with representative real OK, real defect, lighting, camera, lot, and specimen groups.",
+  "status": "NOT VERIFIED",
+  "threshold_calibration_performed": false
+}

@@ -67,4 +67,11 @@ py -3.14 -B training\scripts\train_eval_classifier.py --check-only --auxiliary-c
 
 이 release는 촬영조건 robustness를 늘리지만 새로운 결함 morphology, 새 부품, 새 생산 lot 또는 실물 normal을 추가하지 않습니다. 실물 성능은 독립 specimen의 실제 normal/결함 validation·test로 별도 검증해야 합니다.
 
-저장소의 기존 `model_final.pt` 3개는 v2-only 결과입니다. v3를 추가한 새 모델 성능은 아직 `NOT VERIFIED`이며, base validation/test를 그대로 잠근 상태에서 별도 재학습해야 합니다.
+저장소에는 v2-only C0 checkpoint 3개와 v3 condition을 gradient-train에
+append한 C2 checkpoint 3개가 있습니다. C2의 3-seed synthetic same-base
+macro-F1은 `0.984178`, mild recall은 `0.962233`이지만 C0보다 optimizer
+update가 많아 condition 자체의 순효과로 확정할 수 없습니다. Parent당
+variant 하나만 선택하고 C0와 같은 180 updates를 사용한 C3 control은
+macro-F1 `0.964601`, mild recall `0.919540`으로 현재 recipe를 기각했습니다.
+두 결과 모두 base validation/test를 그대로 사용한 합성 sanity 결과이며
+실물·독립 specimen 성능은 `NOT VERIFIED`입니다.

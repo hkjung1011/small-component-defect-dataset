@@ -1,0 +1,531 @@
+{
+  "accuracy": 0.9583333333333334,
+  "classes": [
+    "scratch",
+    "surface_spot",
+    "discoloration",
+    "contamination",
+    "lead_breakage",
+    "body_chip",
+    "body_crack"
+  ],
+  "confusion_matrix": [
+    [
+      69,
+      0,
+      0,
+      0,
+      3,
+      0,
+      0
+    ],
+    [
+      0,
+      70,
+      0,
+      2,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      71,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      4,
+      1,
+      65,
+      0,
+      1,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      72,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      5,
+      67,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      69
+    ]
+  ],
+  "evaluation_scope": "synthetic_same_base_sanity_only",
+  "macro_avg": {
+    "f1": 0.9585069023325766,
+    "precision": 0.9604446048761925,
+    "recall": 0.9583333333333334,
+    "support": 504
+  },
+  "metadata": {
+    "auxiliary_condition_manifest": {
+      "evaluation_eligible": "NO",
+      "lineage_fingerprint_sha256": "56b59241e6c35a055202aad0031090860879bae85c3409105dcef5758db070db",
+      "parent_count": 168,
+      "path": "synthetic/v3_conditions/annotations/manifest.csv",
+      "sample_count": 1008,
+      "sha256": "f7a8a54ba49c25130d70bebbef4fb2c1858c952baa0cd6913164220533f11f00",
+      "training_use": "TRAIN_ONLY_CONDITION_SYNTHETIC",
+      "variants_per_parent": 6
+    },
+    "base_group_overlap": [
+      "SYNTH-BASE-KIA7809AF-BACK-001"
+    ],
+    "early_stopping_configured": true,
+    "early_stopping_enabled": false,
+    "environment": {
+      "cublas_workspace_config": ":4096:8",
+      "cuda_available": true,
+      "cuda_device_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+      "deterministic_algorithms": true,
+      "device": "cuda",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "python": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+      "torch": "2.11.0+cu128",
+      "torchvision": "0.26.0+cu128"
+    },
+    "evaluation_scope": "synthetic_same_base_sanity_only",
+    "family_balanced_sampling": {
+      "actual_draw_artifact": "family_balanced_actual_draws.json",
+      "candidates_per_family": 7,
+      "family_count": 168,
+      "family_counts_per_class": {
+        "body_chip": 24,
+        "body_crack": 24,
+        "contamination": 24,
+        "discoloration": 24,
+        "lead_breakage": 24,
+        "scratch": 24,
+        "surface_spot": 24
+      },
+      "leakage_gate": {
+        "auxiliary_image_sha256_overlap_with_validation_test_count": 0,
+        "auxiliary_parent_overlap_with_validation_test_count": 0,
+        "auxiliary_sample_id_overlap_with_validation_test_count": 0,
+        "base_parent_overlap_with_validation_test_count": 0,
+        "does_not_claim_independent_specimen_or_base_group_split": true,
+        "scope": "exact auxiliary parent/sample/image-hash exclusion from the immutable v2 validation and test partitions",
+        "status": "PASS",
+        "validation_and_test_are_base_v2_only": true
+      },
+      "mode": "family_balanced_parent_variant",
+      "optimizer_update_budget": 180,
+      "optimizer_updates_completed": 180,
+      "optimizer_updates_per_epoch": 6,
+      "plan_artifact": "family_balanced_sampling_plan.json",
+      "profile_order": [
+        "base",
+        "underexposure",
+        "overexposure",
+        "warm_directional",
+        "cool_directional",
+        "soft_shadow_vignette",
+        "specular_sensor"
+      ],
+      "rotation_gate": {
+        "cycle_length_epochs": 7,
+        "every_parent_draws_every_profile_once_per_cycle": true,
+        "status": "PASS"
+      },
+      "samples_per_epoch": 168,
+      "sampling_plan_fingerprint_sha256": "e5f27cd83a3c63e10d5ed62b9ed39f28674c98fa1c0c8b8d4f3c99433f013ee0",
+      "sampling_seed": 2703830
+    },
+    "fixed_component_roi_xyxy": [
+      96,
+      64,
+      384,
+      416
+    ],
+    "input_size": 224,
+    "manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+    "model": {
+      "architecture": "resnet18",
+      "network_download_permitted": false,
+      "pretrained": true,
+      "weights_mode": "torchvision_cache",
+      "weights_path": "resnet18-f37072fd.pth",
+      "weights_sha256": "f37072fd47e89c5e827621c5baffa7500819f7896bbacec160b1a16c560e07ec"
+    },
+    "normalization": {
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    },
+    "release": "synthetic-v2-700",
+    "roi_source": "single class-independent config constant",
+    "roi_uses_label_mask_or_bbox": false,
+    "selected_epoch": 30,
+    "selection_metric": "validation_loss",
+    "selection_set": "validation (4/class carved from 28/class training pool)",
+    "source_specimen_group_overlap": [
+      "SPEC-A"
+    ],
+    "split_fingerprint_sha256": "38edccbcdd706764a63e7d48a90a657f512712d5b28faeef788d5fd5009479c8",
+    "stopped_early": false,
+    "test_set_used_for_model_selection": false,
+    "training": {
+      "augmentation": {
+        "condition_sampling_mode": "family_balanced_parent_variant",
+        "enabled": true,
+        "family_candidates_per_parent": 7,
+        "family_samples_per_epoch": 168,
+        "family_sampling_seed_strategy": "training_seed_plus_3109",
+        "fixed_optimizer_update_budget": 180,
+        "horizontal_flip_probability": 0.5,
+        "offline_condition_manifest_sha256": "f7a8a54ba49c25130d70bebbef4fb2c1858c952baa0cd6913164220533f11f00",
+        "offline_condition_sample_count": 1008,
+        "rotation_degrees": 3.0,
+        "translation_fraction": 0.02
+      },
+      "augmentation_scope": "gradient_train only",
+      "augmentation_seed": 2700723,
+      "auxiliary_condition_manifest_sha256": "f7a8a54ba49c25130d70bebbef4fb2c1858c952baa0cd6913164220533f11f00",
+      "auxiliary_condition_sample_count": 1008,
+      "auxiliary_scope": "gradient_train only",
+      "base_gradient_train_sample_count": 168,
+      "batch_size": 28,
+      "candidate_pool_sample_count": 1176,
+      "color_jitter_used": false,
+      "condition_sampling": "family-balanced",
+      "early_stopping": {
+        "enabled": true,
+        "metric": "validation_loss",
+        "min_delta": 0.0001,
+        "patience": 6
+      },
+      "early_stopping_effective_enabled": false,
+      "effective_gradient_train_sample_count": 168,
+      "epochs_completed": 30,
+      "epochs_requested": 30,
+      "family_class_counts_actual": {
+        "body_chip": 720,
+        "body_crack": 720,
+        "contamination": 720,
+        "discoloration": 720,
+        "lead_breakage": 720,
+        "scratch": 720,
+        "surface_spot": 720
+      },
+      "family_profile_counts_actual": {
+        "base": 720,
+        "cool_directional": 720,
+        "overexposure": 720,
+        "soft_shadow_vignette": 720,
+        "specular_sensor": 720,
+        "underexposure": 720,
+        "warm_directional": 720
+      },
+      "fine_tune_learning_rate": 5e-05,
+      "fixed_optimizer_update_budget_enforced": true,
+      "freeze_backbone_epochs": 4,
+      "gradient_train_samples_per_epoch": 168,
+      "head_learning_rate": 0.0005,
+      "optimizer_update_budget": 180,
+      "optimizer_updates_completed": 180,
+      "optimizer_updates_per_full_epoch": 6,
+      "planned_optimizer_updates_if_no_early_stop": 180,
+      "sample_counts": {
+        "gradient_train": 168,
+        "test": 504,
+        "validation": 28
+      },
+      "sample_severity_counts": {
+        "gradient_train": {
+          "mild": 66,
+          "moderate": 67,
+          "severe": 35
+        },
+        "test": {
+          "mild": 203,
+          "moderate": 203,
+          "severe": 98
+        },
+        "validation": {
+          "mild": 11,
+          "moderate": 10,
+          "severe": 7
+        }
+      },
+      "samples_per_class": {
+        "gradient_train": {
+          "body_chip": 24,
+          "body_crack": 24,
+          "contamination": 24,
+          "discoloration": 24,
+          "lead_breakage": 24,
+          "scratch": 24,
+          "surface_spot": 24
+        },
+        "test": {
+          "body_chip": 72,
+          "body_crack": 72,
+          "contamination": 72,
+          "discoloration": 72,
+          "lead_breakage": 72,
+          "scratch": 72,
+          "surface_spot": 72
+        },
+        "validation": {
+          "body_chip": 4,
+          "body_crack": 4,
+          "contamination": 4,
+          "discoloration": 4,
+          "lead_breakage": 4,
+          "scratch": 4,
+          "surface_spot": 4
+        }
+      },
+      "samples_per_class_severity": {
+        "gradient_train": {
+          "body_chip": {
+            "mild": 10,
+            "moderate": 9,
+            "severe": 5
+          },
+          "body_crack": {
+            "mild": 9,
+            "moderate": 10,
+            "severe": 5
+          },
+          "contamination": {
+            "mild": 10,
+            "moderate": 9,
+            "severe": 5
+          },
+          "discoloration": {
+            "mild": 9,
+            "moderate": 10,
+            "severe": 5
+          },
+          "lead_breakage": {
+            "mild": 9,
+            "moderate": 10,
+            "severe": 5
+          },
+          "scratch": {
+            "mild": 9,
+            "moderate": 10,
+            "severe": 5
+          },
+          "surface_spot": {
+            "mild": 10,
+            "moderate": 9,
+            "severe": 5
+          }
+        },
+        "test": {
+          "body_chip": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "body_crack": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "contamination": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "discoloration": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "lead_breakage": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "scratch": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          },
+          "surface_spot": {
+            "mild": 29,
+            "moderate": 29,
+            "severe": 14
+          }
+        },
+        "validation": {
+          "body_chip": {
+            "mild": 1,
+            "moderate": 2,
+            "severe": 1
+          },
+          "body_crack": {
+            "mild": 2,
+            "moderate": 1,
+            "severe": 1
+          },
+          "contamination": {
+            "mild": 1,
+            "moderate": 2,
+            "severe": 1
+          },
+          "discoloration": {
+            "mild": 2,
+            "moderate": 1,
+            "severe": 1
+          },
+          "lead_breakage": {
+            "mild": 2,
+            "moderate": 1,
+            "severe": 1
+          },
+          "scratch": {
+            "mild": 2,
+            "moderate": 1,
+            "severe": 1
+          },
+          "surface_spot": {
+            "mild": 1,
+            "moderate": 2,
+            "severe": 1
+          }
+        }
+      },
+      "seed": 2700721,
+      "test_sample_count_unchanged": 504,
+      "validation_or_test_augmentation_used": false,
+      "validation_sample_count_unchanged": 28,
+      "weight_decay": 0.0001
+    },
+    "warnings": [
+      "AUTO_PASS and generator visibility values are synthetic self-QC, not human verification.",
+      "All partitions originate from the same restored synthetic component base.",
+      "All samples share one synthetic base_group_id; train/test are not independent-specimen splits.",
+      "Auxiliary condition variants add no independent physical specimen or defect morphology.",
+      "Manifest rows are not marked evaluation-eligible; test metrics are synthetic same-base sanity metrics only.",
+      "Reported metrics do not estimate independent-specimen or real-domain generalization.",
+      "Some or all manifest rows are not human-verified; AUTO_PASS is generator self-QC.",
+      "The 504-image test set is never used for early stopping or model selection.",
+      "The auxiliary release is gradient-train-only and is excluded from validation/test metrics.",
+      "The six condition variants are derivatives of each base parent, not independent specimens.",
+      "Validation and test remain the immutable synthetic-v2 base split; these metrics remain same-base synthetic sanity checks.",
+      "base_group_id overlaps between train and test; metrics cannot estimate independent-specimen or real-domain generalization."
+    ]
+  },
+  "per_class": [
+    {
+      "class": "scratch",
+      "class_index": 0,
+      "f1": 0.9787234042553191,
+      "false_negative": 3,
+      "false_positive": 0,
+      "precision": 1.0,
+      "recall": 0.9583333333333334,
+      "support": 72,
+      "true_positive": 69
+    },
+    {
+      "class": "surface_spot",
+      "class_index": 1,
+      "f1": 0.9589041095890412,
+      "false_negative": 2,
+      "false_positive": 4,
+      "precision": 0.9459459459459459,
+      "recall": 0.9722222222222222,
+      "support": 72,
+      "true_positive": 70
+    },
+    {
+      "class": "discoloration",
+      "class_index": 2,
+      "f1": 0.9861111111111112,
+      "false_negative": 1,
+      "false_positive": 1,
+      "precision": 0.9861111111111112,
+      "recall": 0.9861111111111112,
+      "support": 72,
+      "true_positive": 71
+    },
+    {
+      "class": "contamination",
+      "class_index": 3,
+      "f1": 0.9352517985611511,
+      "false_negative": 7,
+      "false_positive": 2,
+      "precision": 0.9701492537313433,
+      "recall": 0.9027777777777778,
+      "support": 72,
+      "true_positive": 65
+    },
+    {
+      "class": "lead_breakage",
+      "class_index": 4,
+      "f1": 0.9350649350649352,
+      "false_negative": 0,
+      "false_positive": 10,
+      "precision": 0.8780487804878049,
+      "recall": 1.0,
+      "support": 72,
+      "true_positive": 72
+    },
+    {
+      "class": "body_chip",
+      "class_index": 5,
+      "f1": 0.943661971830986,
+      "false_negative": 5,
+      "false_positive": 3,
+      "precision": 0.9571428571428572,
+      "recall": 0.9305555555555556,
+      "support": 72,
+      "true_positive": 67
+    },
+    {
+      "class": "body_crack",
+      "class_index": 6,
+      "f1": 0.971830985915493,
+      "false_negative": 3,
+      "false_positive": 1,
+      "precision": 0.9857142857142858,
+      "recall": 0.9583333333333334,
+      "support": 72,
+      "true_positive": 69
+    }
+  ],
+  "sample_count": 504,
+  "schema_version": "1.0",
+  "weighted_avg": {
+    "f1": 0.9585069023325766,
+    "precision": 0.9604446048761927,
+    "recall": 0.9583333333333334,
+    "support": 504
+  }
+}

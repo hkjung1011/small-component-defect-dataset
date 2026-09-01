@@ -1,0 +1,122 @@
+{
+  "classes": [
+    "scratch",
+    "surface_spot",
+    "discoloration",
+    "contamination",
+    "lead_breakage",
+    "body_chip",
+    "body_crack"
+  ],
+  "evaluation": {
+    "disclaimers": [
+      "The 504-image test set is never used for early stopping or model selection.",
+      "All partitions originate from the same restored synthetic component base.",
+      "Reported metrics do not estimate independent-specimen or real-domain generalization.",
+      "AUTO_PASS and generator visibility values are synthetic self-QC, not human verification."
+    ],
+    "expected_same_base_overlap": true,
+    "scope": "synthetic_same_base_sanity_only"
+  },
+  "expected_samples_per_class": 100,
+  "expected_severity_per_class": {
+    "mild": 40,
+    "moderate": 40,
+    "severe": 20
+  },
+  "integrity": {
+    "expected_height": 512,
+    "expected_width": 512,
+    "require_unique_image_sha256": true,
+    "required_qc_status": "AUTO_PASS_POST_JPEG_512_224",
+    "verify_image_sha256": true
+  },
+  "manifest": "synthetic/v2_700/annotations/manifest.csv",
+  "model": {
+    "architecture": "resnet18",
+    "fixed_component_roi_xyxy": [
+      96,
+      64,
+      384,
+      416
+    ],
+    "input_size": 224,
+    "normalization": {
+      "mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    },
+    "weights": {
+      "expected_cache_filename": "resnet18-f37072fd.pth",
+      "mode": "torchvision_cache",
+      "network_download_permitted": false,
+      "path": null
+    }
+  },
+  "release": "synthetic-v2-700",
+  "schema_version": "1.1",
+  "severities": [
+    "mild",
+    "moderate",
+    "severe"
+  ],
+  "split": {
+    "seed": 2700700,
+    "severity_quotas": {
+      "mild": {
+        "test": 29,
+        "train": 11
+      },
+      "moderate": {
+        "test": 29,
+        "train": 11
+      },
+      "severe": {
+        "test": 14,
+        "train": 6
+      }
+    },
+    "strategy": "sha256_rank_within_class_severity",
+    "test_per_class": 72,
+    "train_per_class": 28,
+    "validation_per_class": 4,
+    "validation_seed": 2700702,
+    "validation_severity_policy": {
+      "base_per_severity": 1,
+      "extra_by_class_index_parity": {
+        "even": "mild",
+        "odd": "moderate"
+      }
+    }
+  },
+  "training": {
+    "augmentation": {
+      "enabled": true,
+      "horizontal_flip_probability": 0.5,
+      "rotation_degrees": 3.0,
+      "translation_fraction": 0.02
+    },
+    "augmentation_seed": 2700703,
+    "batch_size": 28,
+    "early_stopping": {
+      "enabled": true,
+      "metric": "validation_loss",
+      "min_delta": 0.0001,
+      "patience": 6
+    },
+    "epochs": 30,
+    "fine_tune_learning_rate": 5e-05,
+    "freeze_backbone_epochs": 4,
+    "head_learning_rate": 0.0005,
+    "num_workers": 0,
+    "seed": 2700701,
+    "weight_decay": 0.0001
+  }
+}

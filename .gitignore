@@ -3,6 +3,9 @@
 !training/results/final-stratified-seed-2700701/model_final.pt
 !training/results/final-stratified-seed-2700711/model_final.pt
 !training/results/final-stratified-seed-2700721/model_final.pt
+!training/results/v3-conditions-seed-2700701/model_final.pt
+!training/results/v3-conditions-seed-2700711/model_final.pt
+!training/results/v3-conditions-seed-2700721/model_final.pt
 *.joblib
 .env
 .env.*

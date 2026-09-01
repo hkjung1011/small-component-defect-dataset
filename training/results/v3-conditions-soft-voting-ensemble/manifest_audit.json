@@ -1,0 +1,92 @@
+{
+  "base_group_ids": [
+    "SYNTH-BASE-KIA7809AF-BACK-001"
+  ],
+  "class_counts": {
+    "body_chip": 100,
+    "body_crack": 100,
+    "contamination": 100,
+    "discoloration": 100,
+    "lead_breakage": 100,
+    "scratch": 100,
+    "surface_spot": 100
+  },
+  "class_severity_counts": {
+    "body_chip": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "body_crack": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "contamination": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "discoloration": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "lead_breakage": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "scratch": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    },
+    "surface_spot": {
+      "mild": 40,
+      "moderate": 40,
+      "severe": 20
+    }
+  },
+  "domain_counts": {
+    "synthetic_restored": 700
+  },
+  "evaluation_eligible_counts": {
+    "NO": 700
+  },
+  "expected_image_size": [
+    512,
+    512
+  ],
+  "fixed_component_roi_is_class_independent": true,
+  "fixed_component_roi_xyxy": [
+    96,
+    64,
+    384,
+    416
+  ],
+  "human_verified_counts": {
+    "NO": 700
+  },
+  "image_hashes_verified": true,
+  "manifest": "synthetic/v2_700/annotations/manifest.csv",
+  "manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+  "qc_status_counts": {
+    "AUTO_PASS_POST_JPEG_512_224": 700
+  },
+  "sample_count": 700,
+  "severity_counts": {
+    "mild": 280,
+    "moderate": 280,
+    "severe": 140
+  },
+  "source_specimen_groups": [
+    "SPEC-A"
+  ],
+  "unique_image_sha256_count": 700,
+  "warnings": [
+    "All samples share one synthetic base_group_id; train/test are not independent-specimen splits.",
+    "Some or all manifest rows are not human-verified; AUTO_PASS is generator self-QC.",
+    "Manifest rows are not marked evaluation-eligible; test metrics are synthetic same-base sanity metrics only."
+  ]
+}

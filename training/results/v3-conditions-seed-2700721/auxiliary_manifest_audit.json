@@ -1,0 +1,122 @@
+{
+  "augmentation_family_count": 168,
+  "class_counts": {
+    "body_chip": 144,
+    "body_crack": 144,
+    "contamination": 144,
+    "discoloration": 144,
+    "lead_breakage": 144,
+    "scratch": 144,
+    "surface_spot": 144
+  },
+  "class_profile_counts": {
+    "body_chip": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "body_crack": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "contamination": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "discoloration": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "lead_breakage": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "scratch": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    },
+    "surface_spot": {
+      "cool_directional": 24,
+      "overexposure": 24,
+      "soft_shadow_vignette": 24,
+      "specular_sensor": 24,
+      "underexposure": 24,
+      "warm_directional": 24
+    }
+  },
+  "config": "configs/synthetic_v3_conditions.json",
+  "config_sha256": "847191ef979b01216a55df5669128d1894ae8477702ee0704813167268267bfd",
+  "effective_gradient_train_count": 1176,
+  "evaluation_eligible": "NO",
+  "generator_version": "3.0.0",
+  "human_verified_counts": {
+    "NO": 1008
+  },
+  "image_and_mask_hashes_verified": true,
+  "image_sha256_overlap_with_base_count": 0,
+  "lineage_fingerprint_sha256": "56b59241e6c35a055202aad0031090860879bae85c3409105dcef5758db070db",
+  "manifest": "synthetic/v3_conditions/annotations/manifest.csv",
+  "manifest_sha256": "f7a8a54ba49c25130d70bebbef4fb2c1858c952baa0cd6913164220533f11f00",
+  "parent_class_counts": {
+    "body_chip": 24,
+    "body_crack": 24,
+    "contamination": 24,
+    "discoloration": 24,
+    "lead_breakage": 24,
+    "scratch": 24,
+    "surface_spot": 24
+  },
+  "parent_count": 168,
+  "parent_image_and_mask_lineage_verified": true,
+  "profile_counts": {
+    "cool_directional": 168,
+    "overexposure": 168,
+    "soft_shadow_vignette": 168,
+    "specular_sensor": 168,
+    "underexposure": 168,
+    "warm_directional": 168
+  },
+  "qc_gate_version": "condition-replay-post-jpeg-512-224-v1",
+  "qc_status_counts": {
+    "AUTO_PASS_CONDITION_POST_JPEG_512_224": 1008
+  },
+  "release_metadata": "synthetic/v3_conditions/annotations/release.json",
+  "release_metadata_sha256": "458e4f259e37b01d392a5180ff9f235aa0097b735db9677cbd764fe7a239d341",
+  "required_parent_model_split": "gradient_train",
+  "sample_count": 1008,
+  "sample_id_overlap_with_base_count": 0,
+  "source_manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+  "source_release": "synthetic-v2-700",
+  "source_split_fingerprint_sha256": "38edccbcdd706764a63e7d48a90a657f512712d5b28faeef788d5fd5009479c8",
+  "training_use": "TRAIN_ONLY_CONDITION_SYNTHETIC",
+  "unique_image_sha256_count": 1008,
+  "validation_or_test_parent_count": 0,
+  "variants_per_parent": 6,
+  "warnings": [
+    "Auxiliary condition variants add no independent physical specimen or defect morphology.",
+    "The auxiliary release is gradient-train-only and is excluded from validation/test metrics."
+  ]
+}

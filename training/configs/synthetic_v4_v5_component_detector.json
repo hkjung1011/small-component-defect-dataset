@@ -1,0 +1,167 @@
+{
+  "schema_version": "component-detector-train-v1",
+  "release": "synthetic-v4-v5-family-balanced",
+  "default_task": "component_localization",
+  "supported_tasks": {
+    "component_localization": {
+      "description": "Class-agnostic component foreground localization.",
+      "foreground_classes": [
+        "component"
+      ]
+    },
+    "component_status": {
+      "description": "Optional eight-class component-status localization.",
+      "foreground_classes": [
+        "normal_proxy",
+        "scratch",
+        "surface_spot",
+        "discoloration",
+        "contamination",
+        "lead_breakage",
+        "body_chip",
+        "body_crack"
+      ]
+    }
+  },
+  "annotation_namespace": "component_status_only",
+  "releases": [
+    {
+      "key": "v4",
+      "root": "synthetic/v4_conveyor",
+      "manifest": "synthetic/v4_conveyor/annotations/manifest.csv",
+      "component_coco": "synthetic/v4_conveyor/annotations/coco/component_status_train.json",
+      "release_metadata": "synthetic/v4_conveyor/annotations/release.json",
+      "expected_scene_count": 384,
+      "expected_training_use": "TRAIN_ONLY_MULTI_SCENE_SYNTHETIC",
+      "expected_manifest_sha256": "d0378e9693413f0efecab3ed6a780a78d32aa3f538519d5892396df8bc3ff77b",
+      "expected_component_coco_sha256": "de1260e0c52aefc116a5b65fc6f173bea3b81fbdc1404df726ed752189c5ac8d",
+      "expected_release_metadata_sha256": "128a3faf755b226cdcbcdfc309784cc5b9668f57129113bd01100b9eabe8fa22",
+      "expected_image_content_fingerprint_sha256": "6b8753f4c46aea3f235f094e3aaf3fbc16d2fe2e65e4b858d9553f71bc5202f0",
+      "expected_source_split_assignments_sha256": "7382226b846133b8e3049ce48d61c25ddd8247cd582d6f066a63cbac839fec22"
+    },
+    {
+      "key": "v5",
+      "root": "synthetic/v5_illumination",
+      "manifest": "synthetic/v5_illumination/annotations/manifest.csv",
+      "component_coco": "synthetic/v5_illumination/annotations/coco/component_status_train.json",
+      "release_metadata": "synthetic/v5_illumination/annotations/release.json",
+      "expected_scene_count": 768,
+      "expected_training_use": "TRAIN_ONLY_MULTI_LIGHT_AUXILIARY",
+      "expected_manifest_sha256": "714463a62ddd733070062c17a71f42914f166f5a8209f39a6ecfacf087ff77ab",
+      "expected_component_coco_sha256": "d895ca992a1c03f3ec01741e1e347b62993b945791d25ac5e79c0276a76b24e5",
+      "expected_release_metadata_sha256": "ffc9b87517d0bfbeb8fc98c98422d2354d4ba3e2c04fb6c42a4187bb45b20f32",
+      "expected_image_content_fingerprint_sha256": "b74b8dea0e966f9aa8151912ec52daf7862b476248ffa1598d5bc7d1b0c78dbf"
+    }
+  ],
+  "source_parent_catalog": {
+    "manifest": "synthetic/v2_700/annotations/manifest.csv",
+    "id_field": "sample_id",
+    "expected_row_count": 700,
+    "expected_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552"
+  },
+  "source_split_assignments": {
+    "path": "training/results/preflight-final/split_assignments.csv",
+    "expected_sha256": "7382226b846133b8e3049ce48d61c25ddd8247cd582d6f066a63cbac839fec22",
+    "expected_row_count": 700,
+    "required_columns": [
+      "sample_id",
+      "image_path",
+      "primary_class",
+      "severity",
+      "split",
+      "model_split",
+      "class_severity_rank",
+      "split_key_sha256",
+      "validation_key_sha256",
+      "sample_seed",
+      "image_sha256",
+      "base_group_id",
+      "source_specimen_group"
+    ],
+    "expected_model_split_counts": {
+      "gradient_train": 168,
+      "validation": 28,
+      "test": 504
+    },
+    "required_referenced_parent_model_split": "gradient_train",
+    "expected_referenced_parent_count": 168,
+    "expected_referenced_validation_count": 0,
+    "expected_referenced_test_count": 0
+  },
+  "family_policy": {
+    "family_field": "composition_family_id",
+    "expected_family_count": 384,
+    "expected_v4_variants_per_family": 1,
+    "expected_v5_variants_per_family": 2,
+    "instances_per_scene": 5,
+    "sampler": "one_rotating_variant_per_family_per_epoch"
+  },
+  "split_policy": {
+    "train_only": true,
+    "validation_permitted": false,
+    "test_permitted": false,
+    "reason": "The complete v4/v5 source-parent graph is one connected synthetic-restored base family."
+  },
+  "model": {
+    "architecture": "fasterrcnn_mobilenet_v3_large_fpn",
+    "min_size": 512,
+    "max_size": 1024,
+    "trainable_backbone_layers": 3,
+    "weights": {
+      "mode": "torchvision_cache_local_only",
+      "network_download_permitted": false,
+      "expected_cache_filename": "fasterrcnn_mobilenet_v3_large_fpn-fb6a3cc7.pth",
+      "expected_sha256": "fb6a3cc702b1df54c18a44b26708cd083614211062d0c36d2ca7bf9270df3533"
+    }
+  },
+  "training": {
+    "seed": 2700901,
+    "augmentation_seed": 2700903,
+    "epochs": 12,
+    "batch_size": 1,
+    "num_workers": 0,
+    "amp": true,
+    "optimizer": "sgd",
+    "learning_rate": 0.0025,
+    "momentum": 0.9,
+    "weight_decay": 0.0005,
+    "gradient_clip_norm": 5.0,
+    "nonfinite_gradient_max_retries_per_batch": 8,
+    "schedule": "fixed_epochs_no_validation",
+    "smoke_max_steps": 8,
+    "augmentation": {
+      "library": "torchvision.transforms.v2",
+      "bbox_aware": true,
+      "horizontal_flip_probability": 0.5,
+      "affine_probability": 0.35,
+      "rotation_degrees": 3.0,
+      "translation_fraction": 0.02,
+      "scale_range": [
+        0.96,
+        1.04
+      ],
+      "color_jitter_probability": 0.35,
+      "brightness": 0.08,
+      "contrast": 0.08,
+      "saturation": 0.04,
+      "hue": 0.01,
+      "gaussian_blur_probability": 0.15,
+      "gaussian_blur_kernel": 3,
+      "gaussian_blur_sigma": [
+        0.1,
+        0.6
+      ],
+      "random_erasing": false,
+      "cutmix": false,
+      "mixup": false,
+      "mosaic": false
+    }
+  },
+  "diagnostics": {
+    "scope": "TRAIN_DIAGNOSTIC_ONLY",
+    "performance_claim_permitted": false,
+    "write_sample_overlay": true,
+    "sample_score_threshold": 0.05,
+    "sample_max_predictions": 20
+  }
+}

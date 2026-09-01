@@ -1,0 +1,817 @@
+{
+  "members": [
+    {
+      "checkpoint": "model_final.pt",
+      "checkpoint_sha256": "89b4739a52376dc2f5cda661a76ff40191cc8c45bfb0723945b3170ecc54038c",
+      "member_id": "seed_2700701",
+      "metrics": {
+        "accuracy": 0.9821428571428571,
+        "macro_avg": {
+          "f1": 0.9823304354920502,
+          "precision": 0.9834807682908949,
+          "recall": 0.9821428571428571,
+          "support": 504
+        },
+        "per_class": [
+          {
+            "class": "scratch",
+            "class_index": 0,
+            "f1": 0.9787234042553191,
+            "false_negative": 3,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 0.9583333333333334,
+            "support": 72,
+            "true_positive": 69
+          },
+          {
+            "class": "surface_spot",
+            "class_index": 1,
+            "f1": 0.9859154929577464,
+            "false_negative": 2,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 0.9722222222222222,
+            "support": 72,
+            "true_positive": 70
+          },
+          {
+            "class": "discoloration",
+            "class_index": 2,
+            "f1": 0.993006993006993,
+            "false_negative": 1,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 0.9861111111111112,
+            "support": 72,
+            "true_positive": 71
+          },
+          {
+            "class": "contamination",
+            "class_index": 3,
+            "f1": 0.9863013698630138,
+            "false_negative": 0,
+            "false_positive": 2,
+            "precision": 0.972972972972973,
+            "recall": 1.0,
+            "support": 72,
+            "true_positive": 72
+          },
+          {
+            "class": "lead_breakage",
+            "class_index": 4,
+            "f1": 1.0,
+            "false_negative": 0,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 72,
+            "true_positive": 72
+          },
+          {
+            "class": "body_chip",
+            "class_index": 5,
+            "f1": 0.9536423841059603,
+            "false_negative": 0,
+            "false_positive": 7,
+            "precision": 0.9113924050632911,
+            "recall": 1.0,
+            "support": 72,
+            "true_positive": 72
+          },
+          {
+            "class": "body_crack",
+            "class_index": 6,
+            "f1": 0.9787234042553191,
+            "false_negative": 3,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 0.9583333333333334,
+            "support": 72,
+            "true_positive": 69
+          }
+        ],
+        "sample_count": 504,
+        "weighted_avg": {
+          "f1": 0.9823304354920502,
+          "precision": 0.9834807682908949,
+          "recall": 0.9821428571428571,
+          "support": 504
+        }
+      },
+      "overall_recall_by_severity": [
+        {
+          "correct": 194,
+          "recall": 0.9556650246305419,
+          "severity": "mild",
+          "support": 203
+        },
+        {
+          "correct": 203,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 203
+        },
+        {
+          "correct": 98,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 98
+        }
+      ],
+      "recall_by_class_severity": [
+        {
+          "class": "scratch",
+          "correct": 26,
+          "recall": 0.896551724137931,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "scratch",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "scratch",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "surface_spot",
+          "correct": 27,
+          "recall": 0.9310344827586207,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "surface_spot",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "surface_spot",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "discoloration",
+          "correct": 28,
+          "recall": 0.9655172413793104,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "discoloration",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "discoloration",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "contamination",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "contamination",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "contamination",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "lead_breakage",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "lead_breakage",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "lead_breakage",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "body_chip",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "body_chip",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "body_chip",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "body_crack",
+          "correct": 26,
+          "recall": 0.896551724137931,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "body_crack",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "body_crack",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        }
+      ],
+      "run_directory": "training/results/v3-conditions-seed-2700701",
+      "training_seed": 2700701
+    },
+    {
+      "checkpoint": "model_final.pt",
+      "checkpoint_sha256": "44d08dfc278300688c91ee3a6082db4f4760378c4a036b217f7ff1e1c47f278a",
+      "member_id": "seed_2700711",
+      "metrics": {
+        "accuracy": 0.9900793650793651,
+        "macro_avg": {
+          "f1": 0.9900926698871905,
+          "precision": 0.9901866151866152,
+          "recall": 0.990079365079365,
+          "support": 504
+        },
+        "per_class": [
+          {
+            "class": "scratch",
+            "class_index": 0,
+            "f1": 0.993006993006993,
+            "false_negative": 1,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 0.9861111111111112,
+            "support": 72,
+            "true_positive": 71
+          },
+          {
+            "class": "surface_spot",
+            "class_index": 1,
+            "f1": 1.0,
+            "false_negative": 0,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 72,
+            "true_positive": 72
+          },
+          {
+            "class": "discoloration",
+            "class_index": 2,
+            "f1": 0.993006993006993,
+            "false_negative": 1,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 0.9861111111111112,
+            "support": 72,
+            "true_positive": 71
+          },
+          {
+            "class": "contamination",
+            "class_index": 3,
+            "f1": 1.0,
+            "false_negative": 0,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 72,
+            "true_positive": 72
+          },
+          {
+            "class": "lead_breakage",
+            "class_index": 4,
+            "f1": 0.9863013698630138,
+            "false_negative": 0,
+            "false_positive": 2,
+            "precision": 0.972972972972973,
+            "recall": 1.0,
+            "support": 72,
+            "true_positive": 72
+          },
+          {
+            "class": "body_chip",
+            "class_index": 5,
+            "f1": 0.9722222222222222,
+            "false_negative": 2,
+            "false_positive": 2,
+            "precision": 0.9722222222222222,
+            "recall": 0.9722222222222222,
+            "support": 72,
+            "true_positive": 70
+          },
+          {
+            "class": "body_crack",
+            "class_index": 6,
+            "f1": 0.9861111111111112,
+            "false_negative": 1,
+            "false_positive": 1,
+            "precision": 0.9861111111111112,
+            "recall": 0.9861111111111112,
+            "support": 72,
+            "true_positive": 71
+          }
+        ],
+        "sample_count": 504,
+        "weighted_avg": {
+          "f1": 0.9900926698871904,
+          "precision": 0.9901866151866152,
+          "recall": 0.9900793650793651,
+          "support": 504
+        }
+      },
+      "overall_recall_by_severity": [
+        {
+          "correct": 198,
+          "recall": 0.9753694581280788,
+          "severity": "mild",
+          "support": 203
+        },
+        {
+          "correct": 203,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 203
+        },
+        {
+          "correct": 98,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 98
+        }
+      ],
+      "recall_by_class_severity": [
+        {
+          "class": "scratch",
+          "correct": 28,
+          "recall": 0.9655172413793104,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "scratch",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "scratch",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "surface_spot",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "surface_spot",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "surface_spot",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "discoloration",
+          "correct": 28,
+          "recall": 0.9655172413793104,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "discoloration",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "discoloration",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "contamination",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "contamination",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "contamination",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "lead_breakage",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "lead_breakage",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "lead_breakage",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "body_chip",
+          "correct": 27,
+          "recall": 0.9310344827586207,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "body_chip",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "body_chip",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "body_crack",
+          "correct": 28,
+          "recall": 0.9655172413793104,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "body_crack",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "body_crack",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        }
+      ],
+      "run_directory": "training/results/v3-conditions-seed-2700711",
+      "training_seed": 2700711
+    },
+    {
+      "checkpoint": "model_final.pt",
+      "checkpoint_sha256": "b7d62c5ec9586c417191e048d0815630ed0bad8fa583e0880e875915b3a11751",
+      "member_id": "seed_2700721",
+      "metrics": {
+        "accuracy": 0.9801587301587301,
+        "macro_avg": {
+          "f1": 0.9801102158088166,
+          "precision": 0.9812478179972258,
+          "recall": 0.9801587301587301,
+          "support": 504
+        },
+        "per_class": [
+          {
+            "class": "scratch",
+            "class_index": 0,
+            "f1": 0.993006993006993,
+            "false_negative": 1,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 0.9861111111111112,
+            "support": 72,
+            "true_positive": 71
+          },
+          {
+            "class": "surface_spot",
+            "class_index": 1,
+            "f1": 0.9664429530201343,
+            "false_negative": 0,
+            "false_positive": 5,
+            "precision": 0.935064935064935,
+            "recall": 1.0,
+            "support": 72,
+            "true_positive": 72
+          },
+          {
+            "class": "discoloration",
+            "class_index": 2,
+            "f1": 0.993103448275862,
+            "false_negative": 0,
+            "false_positive": 1,
+            "precision": 0.9863013698630136,
+            "recall": 1.0,
+            "support": 72,
+            "true_positive": 72
+          },
+          {
+            "class": "contamination",
+            "class_index": 3,
+            "f1": 0.9565217391304348,
+            "false_negative": 6,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 0.9166666666666666,
+            "support": 72,
+            "true_positive": 66
+          },
+          {
+            "class": "lead_breakage",
+            "class_index": 4,
+            "f1": 1.0,
+            "false_negative": 0,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 72,
+            "true_positive": 72
+          },
+          {
+            "class": "body_chip",
+            "class_index": 5,
+            "f1": 0.972972972972973,
+            "false_negative": 0,
+            "false_positive": 4,
+            "precision": 0.9473684210526315,
+            "recall": 1.0,
+            "support": 72,
+            "true_positive": 72
+          },
+          {
+            "class": "body_crack",
+            "class_index": 6,
+            "f1": 0.9787234042553191,
+            "false_negative": 3,
+            "false_positive": 0,
+            "precision": 1.0,
+            "recall": 0.9583333333333334,
+            "support": 72,
+            "true_positive": 69
+          }
+        ],
+        "sample_count": 504,
+        "weighted_avg": {
+          "f1": 0.9801102158088165,
+          "precision": 0.9812478179972258,
+          "recall": 0.9801587301587301,
+          "support": 504
+        }
+      },
+      "overall_recall_by_severity": [
+        {
+          "correct": 194,
+          "recall": 0.9556650246305419,
+          "severity": "mild",
+          "support": 203
+        },
+        {
+          "correct": 202,
+          "recall": 0.9950738916256158,
+          "severity": "moderate",
+          "support": 203
+        },
+        {
+          "correct": 98,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 98
+        }
+      ],
+      "recall_by_class_severity": [
+        {
+          "class": "scratch",
+          "correct": 28,
+          "recall": 0.9655172413793104,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "scratch",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "scratch",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "surface_spot",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "surface_spot",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "surface_spot",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "discoloration",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "discoloration",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "discoloration",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "contamination",
+          "correct": 24,
+          "recall": 0.8275862068965517,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "contamination",
+          "correct": 28,
+          "recall": 0.9655172413793104,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "contamination",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "lead_breakage",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "lead_breakage",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "lead_breakage",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "body_chip",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "body_chip",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "body_chip",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        },
+        {
+          "class": "body_crack",
+          "correct": 26,
+          "recall": 0.896551724137931,
+          "severity": "mild",
+          "support": 29
+        },
+        {
+          "class": "body_crack",
+          "correct": 29,
+          "recall": 1.0,
+          "severity": "moderate",
+          "support": 29
+        },
+        {
+          "class": "body_crack",
+          "correct": 14,
+          "recall": 1.0,
+          "severity": "severe",
+          "support": 14
+        }
+      ],
+      "run_directory": "training/results/v3-conditions-seed-2700721",
+      "training_seed": 2700721
+    }
+  ]
+}

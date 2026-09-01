@@ -89,6 +89,28 @@ def _experiment_identity(summary: dict[str, Any]) -> tuple[dict[str, Any], int]:
     training_seed = _required(training, "seed", f"{run}.metadata.training")
     if not isinstance(training_seed, int):
         raise PipelineError(f"training seed must be an integer: {run}")
+    early_stopping = _required(
+        training, "early_stopping", f"{run}.metadata.training"
+    )
+    early_stopping_enabled = _required(
+        early_stopping,
+        "enabled",
+        f"{run}.metadata.training.early_stopping",
+    )
+    early_stopping_effective = training.get(
+        "early_stopping_effective_enabled", early_stopping_enabled
+    )
+    if not isinstance(early_stopping_effective, bool):
+        raise PipelineError(
+            f"effective early-stopping flag must be boolean: {run}"
+        )
+    optimizer_update_budget = training.get("optimizer_update_budget")
+    if optimizer_update_budget is not None and (
+        not isinstance(optimizer_update_budget, int)
+        or isinstance(optimizer_update_budget, bool)
+        or optimizer_update_budget <= 0
+    ):
+        raise PipelineError(f"invalid optimizer-update budget: {run}")
 
     identity = {
         "release": _required(metadata, "release", f"{run}.metadata"),
@@ -137,9 +159,9 @@ def _experiment_identity(summary: dict[str, Any]) -> tuple[dict[str, Any], int]:
             "augmentation": _required(
                 training, "augmentation", f"{run}.metadata.training"
             ),
-            "early_stopping": _required(
-                training, "early_stopping", f"{run}.metadata.training"
-            ),
+            "early_stopping": early_stopping,
+            "early_stopping_effective_enabled": early_stopping_effective,
+            "optimizer_update_budget": optimizer_update_budget,
         },
     }
     return identity, training_seed

@@ -97,7 +97,20 @@ KEC `KIA7809AF`로 식별된 소형 전원 반도체 사진 17장을 직접 수�
 
 `synthetic-v5-illumination`은 v4의 geometry·placement·label을 그대로 replay하면서 검정 belt, component-only positive light, multi-source lighting, contact/directional shadow와 sensor condition을 적용합니다. 48개 condition cell은 각 16 scenes이고 class별 cell count는 9–11 instances입니다. Paired-clean reference로 결함 가시성을 자동 검사하지만 새 실제 정상품이나 실물 조명 사진을 추가하지는 않습니다. 실측 조명 촬영은 [실물 조명 촬영 프로토콜](docs/REAL_LIGHTING_CAPTURE_PROTOCOL.md)과 [capture manifest template](annotations/real_lighting_capture_template.csv)을 사용하며 현재 해당 실물 이미지는 0장입니다.
 
-현재 저장된 `model_final.pt` 3개는 기존 `synthetic-v2-700`의 단일 부품 7-class classifier 결과입니다. v3/v4/v5 condition data로 재학습한 checkpoint가 아니며, 다중 부품 전체 장면을 입력받는 detector도 아닙니다. 여러 새 사진을 일괄 판독하려면 v4/v5를 train-only auxiliary로 사용하는 별도 detector/segmenter를 학습하고 독립 실물 test set으로 검증해야 합니다.
+추적 중인 classifier checkpoint는 두 실험의 seed별 3개씩입니다. `final-stratified-seed-*` 3개는 v2-only C0 기준 모델이고, `v3-conditions-seed-*` 3개는 v3 조명·카메라 condition을 단순 append한 C2 모델입니다. 둘 다 단일 부품 crop용 7-class ResNet-18이며 `normal/OK` class와 full-scene 검출 기능이 없습니다. C3와 detector smoke checkpoint는 일반 `*.pt` ignore 규칙으로 GitHub에 올리지 않습니다.
+
+### 즉시 적용한 학습 방법과 결과
+
+| 방법 | 학습 구성 | synthetic same-base 결과 | 판정 |
+|---|---|---:|---|
+| C0 transfer baseline | ImageNet-pretrained ResNet-18, v2 base | macro-F1 `0.971091`, mild recall `0.937603` | 기준 |
+| C2 condition append | C0 + v3 6조건 전부 append | macro-F1 `0.984178`, mild recall `0.962233` | 개선 관찰, update 수 confound |
+| C3 family-balanced | parent당 base/조건 1개, C0와 같은 180 updates | macro-F1 `0.964601`, mild recall `0.919540` | 현재 recipe 기각 |
+| C4 soft voting | C2 세 seed의 class probability 평균 | macro-F1 `0.986186`, mild recall `0.965517` | 일부 class recall 퇴보, 실물 calibration 불가 |
+
+모든 수치는 같은 합성 base에서 파생된 504장 sanity test 결과이며 실제 검출률이 아닙니다. C2가 가장 나은 단일 모델 결과를 보였지만 C0보다 optimizer update가 많으므로 condition 증강 자체의 순효과로 확정할 수 없습니다. C4도 body-crack·discoloration recall이 각 member 평균보다 낮아 모든 class에서 우월하지 않습니다. 세부 비교와 다음 실험 규칙은 [ML method roadmap](docs/ML_METHOD_ROADMAP.md)에 있습니다.
+
+Full-scene용으로는 COCO-pretrained `FasterRCNN-MobileNetV3-Large-FPN` 기반 class-agnostic component detector와 선택적 8-status mode를 구현했습니다. v4/v5의 384 composition family에서 epoch마다 한 variant만 순환하고, bbox-aware 약한 증강과 finite-gradient/state gate를 적용했습니다. CUDA smoke에서 finite optimizer update 8회가 확인됐지만 full 학습과 독립 성능 평가는 아직 수행하지 않았으므로 smoke checkpoint는 배포 모델이 아닙니다. 여러 새 사진을 일괄 판독하려면 detector full training 뒤 독립 실물 validation/test로 threshold와 `HOLD` 정책을 결정해야 합니다.
 
 Synthetic 자료는 모두 `TRAIN_ONLY / evaluation_eligible=NO`입니다. 실제 정상품이나 독립 실물 specimen 수로 집계하면 안 됩니다. 자세한 생성 조건·라벨·QA는 [synthetic-v1 문서](docs/SYNTHETIC_DATA.md), [synthetic-v1-450 문서](docs/SYNTHETIC_DATA_V1_450.md), [synthetic-v2-700 실험 보고서](docs/SYNTHETIC_DATA_V2_700.md), [synthetic-v3 조건 증강 문서](docs/SYNTHETIC_DATA_V3_CONDITIONS.md), [synthetic-v4 컨베이어 문서](docs/SYNTHETIC_DATA_V4_CONVEYOR.md), [synthetic-v5 다중 조명 문서](docs/SYNTHETIC_DATA_V5_ILLUMINATION.md)에 있습니다. 학습·batch inference 구조는 [detection 안내](training/detection/README.md)를 참고하십시오.
 
@@ -144,6 +157,10 @@ synthetic/v4_conveyor/          384 train-only scenes, 1,920 component instances
 synthetic/v5_illumination/       768 train-only scenes, 3,840 component instances
 annotations/real_lighting_capture_template.csv  실측 조명 촬영용 빈 manifest template
 training/                       고정 split, ResNet-18 학습·평가·3-seed 집계
+training/configs/synthetic_v4_v5_component_detector.json  family-balanced detector 설정
+training/configs/v3_conditions_soft_voting_ensemble.json  SHA-pinned C2 ensemble 설정
+training/scripts/train_eval_detector.py  detector preflight·transfer learning·smoke/full run
+training/scripts/evaluate_classifier_ensemble.py  3-checkpoint soft-voting 평가
 ```
 
 ## 부품 식별
@@ -167,9 +184,11 @@ py -3.14 -B scripts\validate_synthetic_v5_illumination.py
 py -3.14 -B scripts\validate_real_lighting_capture_manifest.py --schema-only
 python training/scripts/train_eval_classifier.py --check-only
 python training/scripts/train_eval_classifier.py --check-only --auxiliary-condition-manifest synthetic/v3_conditions/annotations/manifest.csv
+python training/scripts/train_eval_classifier.py --check-only --auxiliary-condition-manifest synthetic/v3_conditions/annotations/manifest.csv --condition-sampling family-balanced --optimizer-update-budget 180
+python training/scripts/train_eval_detector.py --check-only
 ```
 
-성공 시 real label audit은 `OK=0, NG=13, HOLD=4`, 기존 단일 부품 synthetic validator는 각각 `synthetic=900`, `synthetic=450`, `synthetic=700`, `synthetic=1008` PASS를 출력합니다. v4 validator는 384개 장면과 1,920개 instance를, v5 validator는 768개 장면과 3,840개 instance를 deterministic replay하며 COCO/YOLO/mask/계보/조명·shadow·paired-clean QC를 검사합니다. 실물 manifest의 `--schema-only`는 99개 column schema를 검사하며 실물 image가 추가되었다는 뜻이 아닙니다. 이 batch validator들은 dataset 생성 무결성 검사이지 새 현장 사진의 결함을 판독하는 trained-model inference가 아닙니다. 마지막 classifier preflight는 기존 validation/test를 바꾸지 않고 `effective_gradient_train_sample_count=1176`인지 확인합니다.
+성공 시 real label audit은 `OK=0, NG=13, HOLD=4`, 기존 단일 부품 synthetic validator는 각각 `synthetic=900`, `synthetic=450`, `synthetic=700`, `synthetic=1008` PASS를 출력합니다. v4 validator는 384개 장면과 1,920개 instance를, v5 validator는 768개 장면과 3,840개 instance를 deterministic replay하며 COCO/YOLO/mask/계보/조명·shadow·paired-clean QC를 검사합니다. 실물 manifest의 `--schema-only`는 99개 column schema를 검사하며 실물 image가 추가되었다는 뜻이 아닙니다. 이 batch validator들은 dataset 생성 무결성 검사이지 새 현장 사진의 결함을 판독하는 trained-model inference가 아닙니다. C2 preflight는 기존 validation/test를 바꾸지 않고 `effective_gradient_train_sample_count=1176`인지 확인하고, C3는 168 family·180 updates·validation/test leakage 0을 확인합니다. Detector preflight는 1,152 scenes·5,760 instances·384 families, 단일 source-parent graph와 synthetic validation/test 미생성을 확인합니다. Torch가 없는 일반 Python 대신 [학습 실행 안내](training/scripts/README.md)에 설명된 ML runtime을 사용해야 합니다.
 
 ## 사용 제한
 

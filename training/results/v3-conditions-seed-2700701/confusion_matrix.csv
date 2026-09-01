@@ -1,0 +1,8 @@
+true_class\predicted_class,scratch,surface_spot,discoloration,contamination,lead_breakage,body_chip,body_crack
+scratch,69,0,0,0,0,3,0
+surface_spot,0,70,0,2,0,0,0
+discoloration,0,0,71,0,0,1,0
+contamination,0,0,0,72,0,0,0
+lead_breakage,0,0,0,0,72,0,0
+body_chip,0,0,0,0,0,72,0
+body_crack,0,0,0,0,0,3,69

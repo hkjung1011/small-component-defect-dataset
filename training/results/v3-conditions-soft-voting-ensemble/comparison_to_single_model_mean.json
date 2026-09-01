@@ -1,0 +1,317 @@
+{
+  "definition": "Ensemble metrics are computed from one argmax after averaging the three members' per-class probabilities. The comparator is the arithmetic mean of three independently argmaxed single-model metrics.",
+  "overall_recall_by_severity": [
+    {
+      "delta": 0.003284072249589487,
+      "ensemble_recall": 0.9655172413793104,
+      "severity": "mild",
+      "single_model_3seed_mean_recall": 0.9622331691297209,
+      "support": 203
+    },
+    {
+      "delta": 0.0016420361247947435,
+      "ensemble_recall": 1.0,
+      "severity": "moderate",
+      "single_model_3seed_mean_recall": 0.9983579638752053,
+      "support": 203
+    },
+    {
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "severe",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 98
+    }
+  ],
+  "per_class_recall": [
+    {
+      "class": "scratch",
+      "delta": 0.0092592592592593,
+      "ensemble_recall": 0.9861111111111112,
+      "member_values": [
+        0.9583333333333334,
+        0.9861111111111112,
+        0.9861111111111112
+      ],
+      "single_model_3seed_mean_recall": 0.9768518518518519
+    },
+    {
+      "class": "surface_spot",
+      "delta": 0.0092592592592593,
+      "ensemble_recall": 1.0,
+      "member_values": [
+        0.9722222222222222,
+        1.0,
+        1.0
+      ],
+      "single_model_3seed_mean_recall": 0.9907407407407407
+    },
+    {
+      "class": "discoloration",
+      "delta": -0.00462962962962965,
+      "ensemble_recall": 0.9861111111111112,
+      "member_values": [
+        0.9861111111111112,
+        0.9861111111111112,
+        1.0
+      ],
+      "single_model_3seed_mean_recall": 0.9907407407407408
+    },
+    {
+      "class": "contamination",
+      "delta": 0.0,
+      "ensemble_recall": 0.9722222222222222,
+      "member_values": [
+        1.0,
+        1.0,
+        0.9166666666666666
+      ],
+      "single_model_3seed_mean_recall": 0.9722222222222222
+    },
+    {
+      "class": "lead_breakage",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "member_values": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "single_model_3seed_mean_recall": 1.0
+    },
+    {
+      "class": "body_chip",
+      "delta": 0.0092592592592593,
+      "ensemble_recall": 1.0,
+      "member_values": [
+        1.0,
+        0.9722222222222222,
+        1.0
+      ],
+      "single_model_3seed_mean_recall": 0.9907407407407407
+    },
+    {
+      "class": "body_crack",
+      "delta": -0.0092592592592593,
+      "ensemble_recall": 0.9583333333333334,
+      "member_values": [
+        0.9583333333333334,
+        0.9861111111111112,
+        0.9583333333333334
+      ],
+      "single_model_3seed_mean_recall": 0.9675925925925927
+    }
+  ],
+  "recall_by_class_severity": [
+    {
+      "class": "scratch",
+      "delta": 0.02298850574712641,
+      "ensemble_recall": 0.9655172413793104,
+      "severity": "mild",
+      "single_model_3seed_mean_recall": 0.942528735632184,
+      "support": 29
+    },
+    {
+      "class": "scratch",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "moderate",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 29
+    },
+    {
+      "class": "scratch",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "severe",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 14
+    },
+    {
+      "class": "surface_spot",
+      "delta": 0.02298850574712641,
+      "ensemble_recall": 1.0,
+      "severity": "mild",
+      "single_model_3seed_mean_recall": 0.9770114942528736,
+      "support": 29
+    },
+    {
+      "class": "surface_spot",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "moderate",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 29
+    },
+    {
+      "class": "surface_spot",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "severe",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 14
+    },
+    {
+      "class": "discoloration",
+      "delta": -0.011494252873563204,
+      "ensemble_recall": 0.9655172413793104,
+      "severity": "mild",
+      "single_model_3seed_mean_recall": 0.9770114942528736,
+      "support": 29
+    },
+    {
+      "class": "discoloration",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "moderate",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 29
+    },
+    {
+      "class": "discoloration",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "severe",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 14
+    },
+    {
+      "class": "contamination",
+      "delta": -0.011494252873563204,
+      "ensemble_recall": 0.9310344827586207,
+      "severity": "mild",
+      "single_model_3seed_mean_recall": 0.9425287356321839,
+      "support": 29
+    },
+    {
+      "class": "contamination",
+      "delta": 0.011494252873563204,
+      "ensemble_recall": 1.0,
+      "severity": "moderate",
+      "single_model_3seed_mean_recall": 0.9885057471264368,
+      "support": 29
+    },
+    {
+      "class": "contamination",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "severe",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 14
+    },
+    {
+      "class": "lead_breakage",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "mild",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 29
+    },
+    {
+      "class": "lead_breakage",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "moderate",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 29
+    },
+    {
+      "class": "lead_breakage",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "severe",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 14
+    },
+    {
+      "class": "body_chip",
+      "delta": 0.02298850574712641,
+      "ensemble_recall": 1.0,
+      "severity": "mild",
+      "single_model_3seed_mean_recall": 0.9770114942528736,
+      "support": 29
+    },
+    {
+      "class": "body_chip",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "moderate",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 29
+    },
+    {
+      "class": "body_chip",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "severe",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 14
+    },
+    {
+      "class": "body_crack",
+      "delta": -0.02298850574712641,
+      "ensemble_recall": 0.896551724137931,
+      "severity": "mild",
+      "single_model_3seed_mean_recall": 0.9195402298850575,
+      "support": 29
+    },
+    {
+      "class": "body_crack",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "moderate",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 29
+    },
+    {
+      "class": "body_crack",
+      "delta": 0.0,
+      "ensemble_recall": 1.0,
+      "severity": "severe",
+      "single_model_3seed_mean_recall": 1.0,
+      "support": 14
+    }
+  ],
+  "scalar_metrics": {
+    "accuracy": {
+      "ensemble": 0.9861111111111112,
+      "ensemble_minus_single_model_3seed_mean": 0.001984126984127088,
+      "member_values": [
+        0.9821428571428571,
+        0.9900793650793651,
+        0.9801587301587301
+      ],
+      "single_model_3seed_mean": 0.9841269841269841
+    },
+    "macro_f1": {
+      "ensemble": 0.9861862003753095,
+      "ensemble_minus_single_model_3seed_mean": 0.0020084266459570177,
+      "member_values": [
+        0.9823304354920502,
+        0.9900926698871905,
+        0.9801102158088166
+      ],
+      "single_model_3seed_mean": 0.9841777737293524
+    },
+    "macro_precision": {
+      "ensemble": 0.98678248800558,
+      "ensemble_minus_single_model_3seed_mean": 0.001810754180668006,
+      "member_values": [
+        0.9834807682908949,
+        0.9901866151866152,
+        0.9812478179972258
+      ],
+      "single_model_3seed_mean": 0.984971733824912
+    },
+    "macro_recall": {
+      "ensemble": 0.986111111111111,
+      "ensemble_minus_single_model_3seed_mean": 0.001984126984126977,
+      "member_values": [
+        0.9821428571428571,
+        0.990079365079365,
+        0.9801587301587301
+      ],
+      "single_model_3seed_mean": 0.9841269841269841
+    }
+  }
+}

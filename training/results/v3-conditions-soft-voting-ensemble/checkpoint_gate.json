@@ -1,0 +1,91 @@
+{
+  "data_config_sha_match": true,
+  "members": [
+    {
+      "adjacent_audit_sha_match": true,
+      "checkpoint": "model_final.pt",
+      "checkpoint_identity_match": true,
+      "checkpoint_sha256": "89b4739a52376dc2f5cda661a76ff40191cc8c45bfb0723945b3170ecc54038c",
+      "class_order_match": true,
+      "manifest_sha_match": true,
+      "member_id": "seed_2700701",
+      "run_directory": "training/results/v3-conditions-seed-2700701",
+      "spec_sha_match": true,
+      "split_fingerprint_match": true,
+      "status": "PASS",
+      "training_seed": 2700701
+    },
+    {
+      "adjacent_audit_sha_match": true,
+      "checkpoint": "model_final.pt",
+      "checkpoint_identity_match": true,
+      "checkpoint_sha256": "44d08dfc278300688c91ee3a6082db4f4760378c4a036b217f7ff1e1c47f278a",
+      "class_order_match": true,
+      "manifest_sha_match": true,
+      "member_id": "seed_2700711",
+      "run_directory": "training/results/v3-conditions-seed-2700711",
+      "spec_sha_match": true,
+      "split_fingerprint_match": true,
+      "status": "PASS",
+      "training_seed": 2700711
+    },
+    {
+      "adjacent_audit_sha_match": true,
+      "checkpoint": "model_final.pt",
+      "checkpoint_identity_match": true,
+      "checkpoint_sha256": "b7d62c5ec9586c417191e048d0815630ed0bad8fa583e0880e875915b3a11751",
+      "class_order_match": true,
+      "manifest_sha_match": true,
+      "member_id": "seed_2700721",
+      "run_directory": "training/results/v3-conditions-seed-2700721",
+      "spec_sha_match": true,
+      "split_fingerprint_match": true,
+      "status": "PASS",
+      "training_seed": 2700721
+    }
+  ],
+  "overall_status": "PASS",
+  "schema_version": "1.0",
+  "test_target_gate": {
+    "sample_count": 504,
+    "status": "PASS",
+    "support_per_class_severity": {
+      "body_chip": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "body_crack": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "contamination": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "discoloration": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "lead_breakage": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "scratch": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "surface_spot": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      }
+    },
+    "target_fingerprint_sha256": "0c4e554c39fca3afd6a65a241a8290c898bd7c298e446bc906b51537b63da132"
+  }
+}

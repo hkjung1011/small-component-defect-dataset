@@ -1,0 +1,171 @@
+{
+  "base_group_overlap": [
+    "SYNTH-BASE-KIA7809AF-BACK-001"
+  ],
+  "checkpoint": "model_final.pt",
+  "checkpoint_selected_epoch": 19,
+  "environment": {
+    "device": "cuda",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+    "torch": "2.11.0+cu128"
+  },
+  "evaluation_scope": "synthetic_same_base_sanity_only",
+  "fixed_component_roi_xyxy": [
+    96,
+    64,
+    384,
+    416
+  ],
+  "manifest_sha256": "c1dc18c44a9b37b8029ce6a807b73ec7c391aa19089611196be407439fce5552",
+  "release": "synthetic-v2-700",
+  "roi_source": "single class-independent config constant",
+  "roi_uses_label_mask_or_bbox": false,
+  "sample_counts": {
+    "gradient_train": 168,
+    "test": 504,
+    "validation": 28
+  },
+  "sample_severity_counts": {
+    "gradient_train": {
+      "mild": 66,
+      "moderate": 67,
+      "severe": 35
+    },
+    "test": {
+      "mild": 203,
+      "moderate": 203,
+      "severe": 98
+    },
+    "validation": {
+      "mild": 11,
+      "moderate": 10,
+      "severe": 7
+    }
+  },
+  "samples_per_class_severity": {
+    "gradient_train": {
+      "body_chip": {
+        "mild": 10,
+        "moderate": 9,
+        "severe": 5
+      },
+      "body_crack": {
+        "mild": 9,
+        "moderate": 10,
+        "severe": 5
+      },
+      "contamination": {
+        "mild": 10,
+        "moderate": 9,
+        "severe": 5
+      },
+      "discoloration": {
+        "mild": 9,
+        "moderate": 10,
+        "severe": 5
+      },
+      "lead_breakage": {
+        "mild": 9,
+        "moderate": 10,
+        "severe": 5
+      },
+      "scratch": {
+        "mild": 9,
+        "moderate": 10,
+        "severe": 5
+      },
+      "surface_spot": {
+        "mild": 10,
+        "moderate": 9,
+        "severe": 5
+      }
+    },
+    "test": {
+      "body_chip": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "body_crack": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "contamination": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "discoloration": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "lead_breakage": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "scratch": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      },
+      "surface_spot": {
+        "mild": 29,
+        "moderate": 29,
+        "severe": 14
+      }
+    },
+    "validation": {
+      "body_chip": {
+        "mild": 1,
+        "moderate": 2,
+        "severe": 1
+      },
+      "body_crack": {
+        "mild": 2,
+        "moderate": 1,
+        "severe": 1
+      },
+      "contamination": {
+        "mild": 1,
+        "moderate": 2,
+        "severe": 1
+      },
+      "discoloration": {
+        "mild": 2,
+        "moderate": 1,
+        "severe": 1
+      },
+      "lead_breakage": {
+        "mild": 2,
+        "moderate": 1,
+        "severe": 1
+      },
+      "scratch": {
+        "mild": 2,
+        "moderate": 1,
+        "severe": 1
+      },
+      "surface_spot": {
+        "mild": 1,
+        "moderate": 2,
+        "severe": 1
+      }
+    }
+  },
+  "split_fingerprint_sha256": "38edccbcdd706764a63e7d48a90a657f512712d5b28faeef788d5fd5009479c8",
+  "test_set_used_for_model_selection": false,
+  "warnings": [
+    "AUTO_PASS and generator visibility values are synthetic self-QC, not human verification.",
+    "All partitions originate from the same restored synthetic component base.",
+    "All samples share one synthetic base_group_id; train/test are not independent-specimen splits.",
+    "Manifest rows are not marked evaluation-eligible; test metrics are synthetic same-base sanity metrics only.",
+    "Reported metrics do not estimate independent-specimen or real-domain generalization.",
+    "Some or all manifest rows are not human-verified; AUTO_PASS is generator self-QC.",
+    "The 504-image test set is never used for early stopping or model selection.",
+    "base_group_id overlaps between train and test; metrics cannot estimate independent-specimen or real-domain generalization."
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "files": [
+    {
+      "bytes": 423,
+      "path": "calibration_status.json",
+      "sha256": "11fd9fa08603bb1872544db5ba3841ce3db6eb383e1773705051070218093d7c"
+    },
+    {
+      "bytes": 2667,
+      "path": "checkpoint_gate.json",
+      "sha256": "a36da640d90b56fb6ae5451f1ee1d04eda03b90a494b57d2dbca54c95a96b112"
+    },
+    {
+      "bytes": 8473,
+      "path": "comparison_to_single_model_mean.json",
+      "sha256": "b648665437b587d3555c9955692153ff673ac9caf915a7dcf4ccdfde40f67e6c"
+    },
+    {
+      "bytes": 300,
+      "path": "confusion_matrix.csv",
+      "sha256": "affe4ff884138f6bde61133e56a970574b689761a0340404b7c377e0152181ae"
+    },
+    {
+      "bytes": 29165,
+      "path": "confusion_matrix.png",
+      "sha256": "72f52dda15aa450b4473899d4fa13a6a73dc671364ce7aca87fa54f8444e6977"
+    },
+    {
+      "bytes": 2423,
+      "path": "ensemble_config_snapshot.json",
+      "sha256": "a8e16cb82ea7c02c4c0aff480d1de61ee001ff25a46c22d20d1580b930b10a9f"
+    },
+    {
+      "bytes": 126735,
+      "path": "ensemble_probabilities.csv",
+      "sha256": "50cbec59859008aa065977f089dcdfeccdd2216df5a632a9cc335e4300574752"
+    },
+    {
+      "bytes": 2086,
+      "path": "manifest_audit.json",
+      "sha256": "7a6596862585359ef3e2171b196def23bae94c73a6280bdb9a2803a0b28c6965"
+    },
+    {
+      "bytes": 21700,
+      "path": "member_metrics.json",
+      "sha256": "3ef901f4ba9e1692de6267e779ad18aa132f74dd594270d54234acd7d9c6a7f4"
+    },
+    {
+      "bytes": 302650,
+      "path": "member_probabilities.csv",
+      "sha256": "1c4f03c6a6ab2bd4f976bdcc2aa7bcace320fdd8e275b722eb8c41f2c777a23f"
+    },
+    {
+      "bytes": 531,
+      "path": "metrics_per_class.csv",
+      "sha256": "e330c00b9b8a30cc2cf0ea624bab47a19fa101028b8d1420ce6bb36ddbef7fb0"
+    },
+    {
+      "bytes": 21489,
+      "path": "metrics_summary.json",
+      "sha256": "94101833e7ac53600284e91ac809f89526ffe5153c273d927db28f15312841e2"
+    },
+    {
+      "bytes": 75165,
+      "path": "predictions.csv",
+      "sha256": "452fa2e496de8ab17beb935b79c149dd62d4844e362bedb2f88a1101c63b3ab1"
+    },
+    {
+      "bytes": 1314,
+      "path": "recall_by_severity.csv",
+      "sha256": "8572a875e0dfaee0dea877d0570061654d3f36d8259862f626e89e3038ae27e4"
+    },
+    {
+      "bytes": 4978,
+      "path": "run_metadata.json",
+      "sha256": "5cd9f37e7e123de659f4e728454f3ae533606ecc41ca5b2ec7c0bcf42bad2e27"
+    },
+    {
+      "bytes": 229091,
+      "path": "split_assignments.csv",
+      "sha256": "7382226b846133b8e3049ce48d61c25ddd8247cd582d6f066a63cbac839fec22"
+    },
+    {
+      "bytes": 6967,
+      "path": "split_audit.json",
+      "sha256": "3f95d5da9aed2707f933c8e056aed056df6f1ec00c334e7513baa9463e0d9796"
+    }
+  ],
+  "hash_algorithm": "SHA-256",
+  "schema_version": "1.0"
+}

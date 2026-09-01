@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "method": "derived_from_training_history_rows",
+  "batch_size": 28,
+  "gradient_train_samples_per_epoch": 1176,
+  "optimizer_updates_per_complete_epoch": 42,
+  "configured_max_epochs": 30,
+  "configured_max_optimizer_updates": 1260,
+  "comparison": {
+    "c0_fixed_full_schedule_updates": 180,
+    "c3_fixed_budget_updates": 180,
+    "note": "C2 used a larger and early-stopping-dependent update count, so its gain cannot be attributed to condition diversity alone."
+  },
+  "runs": [
+    {
+      "run": "v3-conditions-seed-2700701",
+      "training_seed": 2700701,
+      "epochs_completed": 25,
+      "optimizer_updates_completed": 1050,
+      "training_history_sha256": "d13da373d1c25c47d19cdadb2f0f9d4f06bf6e6003377f1c0a9317ff168e4292"
+    },
+    {
+      "run": "v3-conditions-seed-2700711",
+      "training_seed": 2700711,
+      "epochs_completed": 20,
+      "optimizer_updates_completed": 840,
+      "training_history_sha256": "9813afdbdbcf3f83109c7a97bd80d3ec6a666192e2f6d8b51ab8578a3d97860b"
+    },
+    {
+      "run": "v3-conditions-seed-2700721",
+      "training_seed": 2700721,
+      "epochs_completed": 27,
+      "optimizer_updates_completed": 1134,
+      "training_history_sha256": "c005246b72ef5c54397dd0dfd80a04f3c9e8462ed83f3fa9468422ef9cff8754"
+    }
+  ],
+  "status": "PASS"
+}

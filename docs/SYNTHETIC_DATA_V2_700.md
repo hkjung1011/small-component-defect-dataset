@@ -95,7 +95,9 @@ Severity 전체 평균 Recall은 `mild 93.76 ± 0.28%p`, `moderate 99.01 ± 0.85
 
 - 3-seed aggregate: `training/results/final-stratified-aggregate-3seeds/`
 - seed별 confusion matrix, prediction, metrics: `training/results/final-stratified-seed-*/`
-- checkpoint: 각 seed directory의 `model_final.pt` (최종 3개만 저장소에 명시적으로 포함)
+- checkpoint: 각 `final-stratified-seed-*` directory의 `model_final.pt`
+  (이 v2-only C0 release의 최종 3개를 저장소에 명시적으로 포함; 별도로
+  v3 condition C2 checkpoint 3개도 포함)
 
 ## 재현 명령
 
