@@ -52,7 +52,7 @@
 ```powershell
 python -m pip install -r requirements-synthetic.txt
 python scripts/generate_synthetic.py --force
-python scripts/validate_synthetic.py
+py -3.14 -B scripts\validate_synthetic.py
 ```
 
 기본 seed는 `7809208`이고 config와 generator script, manifest, instance label, summary의 SHA-256을 `release.json`에 기록합니다. 출력 폴더를 제거하는 `--force`는 `.synthetic_release_marker`가 있는 repository 내부 `synthetic/` 하위 경로에만 허용됩니다.

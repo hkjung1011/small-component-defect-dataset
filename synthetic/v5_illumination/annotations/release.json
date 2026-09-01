@@ -1,0 +1,120 @@
+{
+  "absolute_lux_eligible": "NO",
+  "capture_plan_target_lux_by_proxy_bin": {
+    "P0": 50,
+    "P1": 100,
+    "P2": 200,
+    "P3": 400,
+    "P4": 800,
+    "P5": 1600
+  },
+  "class_condition_cell_count_range": [
+    9,
+    11
+  ],
+  "class_counts": {
+    "body_chip": 480,
+    "body_crack": 480,
+    "contamination": 480,
+    "discoloration": 480,
+    "lead_breakage": 480,
+    "normal_proxy": 480,
+    "scratch": 480,
+    "surface_spot": 480
+  },
+  "class_illuminance_proxy_bin_count_range": [
+    79,
+    81
+  ],
+  "class_rig_count_range": [
+    119,
+    121
+  ],
+  "class_rig_illuminance_proxy_count_range": [
+    19,
+    21
+  ],
+  "classification_eligible": "NO",
+  "component_coco_sha256": "d895ca992a1c03f3ec01741e1e347b62993b945791d25ac5e79c0276a76b24e5",
+  "component_instance_count": 3840,
+  "composition_family_policy": "SOURCE_V4_SCENE_SHARED_BY_BOTH_VARIANTS",
+  "condition_cell_count": 48,
+  "condition_cell_scene_count_range": [
+    16,
+    16
+  ],
+  "condition_matrix_sha256": "b6a098be43b2cfc1755ad1c842060d5c7172cb52fe41883fc8be2827d115e347",
+  "config_path": "configs/synthetic_v5_illumination.json",
+  "config_sha256": "4ad0c3beb74fb766d6702b71cf1475fd6f9d1d62d9132d9f8320f1ca689057eb",
+  "contact_sheet_overlay_sha256": "bb79ff2faeb1cdee8f92a6b2cc461bfe8060fac5232b8cbfd87b770f3cf47e6c",
+  "contact_sheet_sha256": "dcb1581689ffa389fd20a4886669ffbb1be894105fa72cd51f929a06421958dc",
+  "defect_coco_sha256": "d710a4ea961efbc72b2b585e3167fe82c4562e04c966a4a36fbef60273998923",
+  "defect_instance_count": 3360,
+  "evaluation_eligible": "NO",
+  "generator_script": "scripts/generate_synthetic_v5_illumination.py",
+  "generator_script_sha256": "60603aad54df4e82a6bf12b9a0160f5af51baaae1d39086116301c5f190717b7",
+  "generator_version": "5.0.0",
+  "instances_per_scene": 5,
+  "instances_sha256": "a374e41f831bc2481b3790510b9c5bcb9fc2865425181fa00f65ece91db5891c",
+  "light_sources_sha256": "ec68184677bb79f68879040a5235984612e68b874343b9864b15ae141d891456",
+  "lighting_scenes_sha256": "9a6892d42f2d7d485f3d5893b7f33b20354fd06e7a00475133c9e6e78481f611",
+  "limitations": [
+    "capture_plan_target_lux is a future real-capture plan target, not measured synthetic lux.",
+    "All photometric changes are deterministic 2D proxies and are not radiometrically calibrated.",
+    "Each v4 composition is replayed twice under distinct proxy lighting conditions; both variants and their v4 source share one composition_family_id and must stay in one split.",
+    "All scenes inherit the same train-only v4/v2 physical base family and must not enter validation or test.",
+    "normal_proxy is paired-clean synthetic data and is not confirmed real OK data.",
+    "This auxiliary release changes lighting appearance but adds no new real specimen diversity."
+  ],
+  "manifest_sha256": "714463a62ddd733070062c17a71f42914f166f5a8209f39a6ecfacf087ff77ab",
+  "measured_illuminance_lux": null,
+  "multi_light_rig_scene_counts": {
+    "dual_cross_mixed_cct": 192,
+    "dual_opposed_neutral": 192,
+    "triple_asymmetric": 192,
+    "triple_raking": 192
+  },
+  "paired_condition_comparison_sha256": "ad5106193ead0f827eadac3eb2cb96cfaa62a62bf61ac4f0659ff6b82e88e7aa",
+  "photometric_calibration_status": "NOT_CALIBRATED_SYNTHETIC_PROXY",
+  "photometry_domain": "SYNTHETIC_PROXY",
+  "pixel_base_method": "v4_geometry_replay_neutral_added_light_shadow_sensor_pre_jpeg",
+  "qc_gate_version": "paired-neutral-multi-light-proxy-v2",
+  "release": "synthetic-v5-illumination",
+  "runtime_contract": {
+    "libjpeg": "8.0",
+    "numpy": "2.5.1",
+    "pillow": "12.3.0",
+    "python": "3.14.6",
+    "zlib": "1.3.1.zlib-ng"
+  },
+  "scene_count": 768,
+  "shadow_regime_scene_counts": {
+    "defined_directional": 384,
+    "soft_contact_dominant": 384
+  },
+  "source_pins": {
+    "component_coco": "de1260e0c52aefc116a5b65fc6f173bea3b81fbdc1404df726ed752189c5ac8d",
+    "config": "fa5adb968da368a28b85a711cd7b3d0aab6829453361eb686e915af6797cf717",
+    "defect_coco": "0a2459a30546f793e879e82aaa738408e54b334b3b2a6bd0118a5aae37840714",
+    "generator": "177cc44d3f14b4466a2b6b4a1cb0329d0eb57c9094b129f0544511be63c05524",
+    "instances": "2c76f4422b6caed8bd1a67bd036e767feeea342662d98e9c87ce5967fd27ef45",
+    "manifest": "d0378e9693413f0efecab3ed6a780a78d32aa3f538519d5892396df8bc3ff77b",
+    "release": "128a3faf755b226cdcbcdfc309784cc5b9668f57129113bd01100b9eabe8fa22"
+  },
+  "source_release": "synthetic-v4-conveyor",
+  "source_scene_count": 384,
+  "split": "train",
+  "summary_sha256": "6b78f3f5d42b1516f958b4ea545da4625890900a058da4ebcae1494d5bb5ad1a",
+  "synthetic_illuminance_proxy_bin_scene_counts": {
+    "P0": 128,
+    "P1": 128,
+    "P2": 128,
+    "P3": 128,
+    "P4": 128,
+    "P5": 128
+  },
+  "task_type": "multi_instance_detection_segmentation_lighting_auxiliary",
+  "tracked_payload_bytes": 262629134,
+  "training_use": "TRAIN_ONLY_MULTI_LIGHT_AUXILIARY",
+  "variants_per_source_scene": 2
+}

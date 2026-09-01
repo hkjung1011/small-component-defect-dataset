@@ -38,7 +38,7 @@
 ```powershell
 python -m pip install -r requirements-synthetic.txt
 python scripts/generate_synthetic_v1_450.py --force
-python scripts/validate_synthetic.py --config configs/synthetic_v1_450.json --release synthetic/v1_450
+py -3.14 -B scripts\validate_synthetic.py --config configs\synthetic_v1_450.json --release synthetic\v1_450
 ```
 
 검증 결과:

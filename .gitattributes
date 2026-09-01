@@ -1,4 +1,5 @@
 *.md text eol=lf
+LICENSE text eol=lf
 .gitattributes text eol=lf
 *.csv text eol=lf
 *.py text eol=lf
@@ -10,3 +11,4 @@
 *.png binary
 *.pdf binary
 synthetic/v4_conveyor/.synthetic_v4_conveyor_marker text eol=lf
+synthetic/v5_illumination/.synthetic_v5_illumination_marker text eol=lf

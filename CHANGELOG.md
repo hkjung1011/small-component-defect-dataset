@@ -1,5 +1,18 @@
 # Changelog
 
+## v8 / synthetic-v5-illumination - 2026-09-01
+
+- v4의 384개 multi-instance composition을 중립 replay하고 composition별 서로 다른 조명 variant 2개, 총 768개 train-only 장면 추가
+- 장면당 component 5개, 총 3,840개 instance와 8개 status class 각 480개 구성
+- 2–3개 광원을 동시에 쓰는 4개 rig × synthetic illuminance proxy `P0`–`P5` × 2개 shadow regime의 48개 full condition cell을 cell당 16 scenes로 균형화
+- `capture_plan_target_lux` 50/100/200/400/800/1600은 향후 실물 촬영 목표이며 실측 lux가 아님을 명시하고 `measured_illuminance_lux=null`, `absolute_lux_eligible=NO` 고정
+- 검정 belt에는 양의 조명을 더하지 않고 component-only positive light, contact shadow와 directional cast shadow를 합성하며 shadow attenuation mask 추가
+- 동일 composition의 두 variant와 source v4 장면이 같은 `composition_family_id`를 공유하도록 해 split leakage 차단
+- 동일 lighting·shadow·sensor의 paired-clean reference로 class별 결함 가시성과 post-JPEG spill 자동 gate 추가
+- COCO/YOLO, component instance mask, defect semantic mask 외에 장면별 lighting, 개별 light source, condition matrix metadata 추가
+- 실측 조명·그림자·camera 설정을 기록하는 99-column capture template, 촬영 프로토콜과 manifest validator 추가; 해당 프로토콜로 추가된 실물 이미지는 0장
+- 전체 synthetic image 수를 4,210장으로 갱신하고 All Rights Reserved 공개 열람 조건 유지
+
 ## v7 / synthetic-v4-conveyor - 2026-09-01
 
 - 1280×720 검정 컨베이어 배경의 train-only 다중 부품 장면 384장 추가

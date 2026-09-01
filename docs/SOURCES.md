@@ -30,3 +30,15 @@
 배경 prompt 원문과 asset hash는 repository에 함께 보존합니다. ImageGen은 빈 배경 asset에만 사용했고 부품의 결함 형상이나 label geometry를 생성·수정하는 데 사용하지 않았습니다. 네 가지 조명 profile은 generator가 component alpha 내부에만 deterministic transform으로 적용합니다.
 
 이 provenance 기록은 공개 재사용 허가가 아닙니다. v4 asset, 합성 장면, mask와 annotation의 이용 조건은 [LICENSE_STATUS.md](../LICENSE_STATUS.md)를 따릅니다.
+
+## Synthetic v5 illumination provenance
+
+생성일: 2026-09-01
+
+`synthetic-v5-illumination`에는 인터넷에서 수집한 사진이나 신규 제3자 asset을 추가하지 않았습니다. v4의 고정 composition plan, source image와 canonical label/mask를 hash로 pin하고, 기존 matte-black conveyor asset 위에서 geometry를 중립 replay한 뒤 deterministic 2D multi-source light, contact/directional shadow와 sensor transform을 적용합니다.
+
+한 장면의 2–3개 광원 방향·상대 세기·CCT는 rendering proxy입니다. `P0`–`P5`와 `capture_plan_target_lux`는 향후 실물 촬영 조건을 연결하기 위한 계획값일 뿐 실측 photometry가 아닙니다. 정확한 source SHA-256 map, generator/config hash, runtime과 release payload hash는 `synthetic/v5_illumination/annotations/release.json`에 기록합니다.
+
+실제 조명 촬영에는 [실물 조명 촬영 프로토콜](REAL_LIGHTING_CAPTURE_PROTOCOL.md)과 [`real_lighting_capture_template.csv`](../annotations/real_lighting_capture_template.csv)를 사용합니다. 현재 이 프로토콜로 repository에 추가된 실물 이미지는 0장입니다.
+
+이 provenance 기록은 공개 재사용 허가가 아닙니다. v5 합성 장면, mask, annotation과 metadata의 이용 조건은 [LICENSE_STATUS.md](../LICENSE_STATUS.md)를 따릅니다.
